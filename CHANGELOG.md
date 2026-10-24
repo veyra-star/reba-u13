@@ -1,3 +1,8 @@
+## v0.3.4 — 24/10/2026
+- Cambiati esclusivamente i colori dei cinque riquadri delle squadre sotto la mappa: A rosso, B verde, C blu, D arancione, E viola.
+- Sfondi scuri coordinati, bordi e titoli in tinta.
+- Nessuna modifica a mappa, calendari, classifiche, simulatore o script FIP.
+
 # REBA U13F — Registro release
 
 ## v03.2 — 24/10/2026
