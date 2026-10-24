@@ -682,8 +682,8 @@
     {
       "id": "8725",
       "girone": "D",
-      "casa": "POLISPORTIVA REBA",
-      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "casa": "POLISPORTIVA REBA BIANCO",
+      "trasferta": "AVIGLIANA BASKET",
       "data": "15/11/2026",
       "ora": "16:10",
       "giornata": "3 andata",
@@ -732,8 +732,8 @@
     {
       "id": "8730",
       "girone": "D",
-      "casa": "POLISPORTIVA REBA",
-      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "casa": "POLISPORTIVA REBA BIANCO",
+      "trasferta": "SAN MAURO BASKET",
       "data": "29/11/2026",
       "ora": "16:15",
       "giornata": "5 andata",
@@ -812,8 +812,8 @@
     {
       "id": "8738",
       "girone": "D",
-      "casa": "POLISPORTIVA REBA",
-      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "casa": "POLISPORTIVA REBA BIANCO",
+      "trasferta": "POLISPORTIVA REBA",
       "data": "09/01/2027",
       "ora": "17:30",
       "giornata": "4 ritorno",
@@ -840,6 +840,16 @@
       "risultato": null
     },
     {
+      "id": "8741",
+      "girone": "E",
+      "casa": "BCC DERTHONA BASKET",
+      "trasferta": "A.S.D. OLYMPIA BASKET 2000",
+      "data": "01/11/2026",
+      "ora": "11:00",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
       "id": "8742",
       "girone": "E",
       "casa": "NOVARA BASKET",
@@ -860,12 +870,32 @@
       "risultato": null
     },
     {
+      "id": "8744",
+      "girone": "E",
+      "casa": "A.S.D. OLYMPIA BASKET 2000",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "08/11/2026",
+      "ora": "11:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
       "id": "8745",
       "girone": "E",
       "casa": "POLISPORTIVA SAN GIACOMO",
       "trasferta": "BASKET FEMM.LE ALESSANDRIA",
       "data": "14/11/2026",
       "ora": "14:15",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8746",
+      "girone": "E",
+      "casa": "NOVARA BASKET",
+      "trasferta": "A.S.D. OLYMPIA BASKET 2000",
+      "data": "11/11/2026",
+      "ora": "19:00",
       "giornata": "3 andata",
       "risultato": null
     },
@@ -900,6 +930,26 @@
       "risultato": null
     },
     {
+      "id": "8750",
+      "girone": "E",
+      "casa": "A.S.D. OLYMPIA BASKET 2000",
+      "trasferta": "BASKET FEMM.LE ALESSANDRIA",
+      "data": "28/11/2026",
+      "ora": "15:00",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8751",
+      "girone": "E",
+      "casa": "A.S.D. OLYMPIA BASKET 2000",
+      "trasferta": "BCC DERTHONA BASKET",
+      "data": "04/12/2026",
+      "ora": "18:15",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
       "id": "8752",
       "girone": "E",
       "casa": "POLISPORTIVA SAN GIACOMO",
@@ -927,6 +977,16 @@
       "data": "13/12/2026",
       "ora": "11:00",
       "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8755",
+      "girone": "E",
+      "casa": "A.S.D. OLYMPIA BASKET 2000",
+      "trasferta": "NOVARA BASKET",
+      "data": "19/12/2026",
+      "ora": "15:00",
+      "giornata": "3 ritorno",
       "risultato": null
     },
     {
