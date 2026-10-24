@@ -136,20 +136,60 @@ function installBulkButton() {
   button.insertAdjacentElement('afterend', note);
   button.addEventListener('click', simulateRemaining);
 }
-function standings(g) {
-  let rows = db.squadre[g].map(nome => ({nome,G:0,V:0,P:0,PF:0,PS:0,pts:0}));
-  for (const p of db.partite.filter(x => x.girone === g)) {
-    let r = results(p); if (!r) continue;
-    let a = rows.find(x => x.nome === p.casa), b = rows.find(x => x.nome === p.trasferta);
-    if (!a || !b) continue;
-    const [h,v] = r;
-    for (const [t,forp,against] of [[a,h,v],[b,v,h]]) {
-      t.G++; t.PF += forp; t.PS += against;
-      if (forp > against) { t.V++; t.pts += 2; }
-      else if (forp < against) { t.P++; t.pts += 1; }
-    }
+// Regolamento Esecutivo Gare FIP 25/03/2026, artt. 60 e 62.
+// 2 punti per vittoria, 0 per sconfitta. Graduatorie in corso provvisorie.
+function quotient(pf, ps) {
+  if (ps === 0) return pf > 0 ? Infinity : 1;
+  return Math.floor((pf / ps) * 10000 + 1e-9) / 10000;
+}
+function orderTies(group, games, depth = 0) {
+  if (group.length < 2 || depth > 12) return group;
+  const names = new Set(group.map(x => x.nome));
+  const direct = Object.fromEntries(group.map(x => [x.nome,{wins:0,points:0,pf:0,ps:0}]));
+  for (const p of games) {
+    if (!names.has(p.casa) || !names.has(p.trasferta)) continue;
+    const r=results(p); if (!r || r[0] === r[1]) continue;
+    const [h,a]=r.map(Number), home=direct[p.casa], away=direct[p.trasferta];
+    home.pf+=h; home.ps+=a; away.pf+=a; away.ps+=h;
+    if (h>a) {home.wins++;home.points+=2;} else {away.wins++;away.points+=2;}
   }
-  return rows.sort((a,b) => b.pts-a.pts || (b.PF-b.PS)-(a.PF-a.PS) || a.nome.localeCompare(b.nome));
+  const keys=group.length===2
+    ? [x=>direct[x.nome].wins,x=>quotient(direct[x.nome].pf,direct[x.nome].ps),x=>quotient(x.PF,x.PS)]
+    : [x=>direct[x.nome].points,x=>quotient(direct[x.nome].pf,direct[x.nome].ps),x=>quotient(x.PF,x.PS)];
+  function apply(items,step) {
+    if(items.length<2 || step>=keys.length) return items;
+    const key=keys[step], ordered=[...items].sort((x,y)=>key(y)-key(x));
+    const out=[];
+    for(let i=0;i<ordered.length;) {
+      let j=i+1;while(j<ordered.length && key(ordered[i])===key(ordered[j]))j++;
+      const tied=ordered.slice(i,j);
+      if(tied.length>1 && tied.length<items.length && step<2)
+        out.push(...orderTies(tied,games,depth+1));
+      else out.push(...apply(tied,step+1));
+      i=j;
+    }
+    return out;
+  }
+  return apply(group,0);
+}
+function standings(g) {
+  const rows=db.squadre[g].map(nome=>({nome,G:0,V:0,P:0,PF:0,PS:0,pts:0}));
+  const games=db.partite.filter(x=>x.girone===g);
+  for(const p of games) {
+    const r=results(p);if(!r || r[0]===r[1])continue;
+    const home=rows.find(x=>x.nome===p.casa),away=rows.find(x=>x.nome===p.trasferta);
+    if(!home||!away)continue;
+    const [h,a]=r.map(Number);
+    home.G++;away.G++;home.PF+=h;home.PS+=a;away.PF+=a;away.PS+=h;
+    if(h>a){home.V++;home.pts+=2;away.P++;}else{away.V++;away.pts+=2;home.P++;}
+  }
+  const sorted=[...rows].sort((x,y)=>y.pts-x.pts);
+  const out=[];
+  for(let i=0;i<sorted.length;) {
+    let j=i+1;while(j<sorted.length && sorted[j].pts===sorted[i].pts)j++;
+    out.push(...orderTies(sorted.slice(i,j),games));i=j;
+  }
+  return out;
 }
 function matchHTML(p) {
   let r = results(p);
