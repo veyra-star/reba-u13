@@ -1,0 +1,983 @@
+{
+  "stagione": "2026/27",
+  "fonte": "FIP Piemonte, calendario definitivo 23/10/2026",
+  "squadre": {
+    "A": [
+      "OLIMPO BASKET ALBA",
+      "BANCA B.T.M.",
+      "PROMO CUNEO BASKET",
+      "GATORS",
+      "NEW BASKET ABET"
+    ],
+    "B": [
+      "BEA CHIERI SSDRL",
+      "ERIDANIA BASKET",
+      "POLISPORTIVA PASTA",
+      "ALFIERI BASKET",
+      "AREA PRO 2020"
+    ],
+    "C": [
+      "USAC RIVAROLO BK 2009",
+      "BASKET NOLE",
+      "BASKET VENARIA",
+      "LETTERA 22 A.S.D.",
+      "LAPOLISMILE"
+    ],
+    "D": [
+      "POLISPORTIVA REBA",
+      "POLISPORTIVA REBA BIANCO",
+      "SAN MAURO BASKET",
+      "AVIGLIANA BASKET",
+      "VIRTUS BASKET SALUGGIA"
+    ],
+    "E": [
+      "BASKET FEMM.LE ALESSANDRIA",
+      "NOVARA BASKET",
+      "BCC DERTHONA BASKET",
+      "A.S.D. OLYMPIA BASKET 2000",
+      "POLISPORTIVA SAN GIACOMO"
+    ]
+  },
+  "partite": [
+    {
+      "id": "8661",
+      "girone": "A",
+      "casa": "NEW BASKET ABET",
+      "trasferta": "PROMO CUNEO BASKET",
+      "data": "31/10/2026",
+      "ora": "14:30",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8662",
+      "girone": "A",
+      "casa": "BANCA B.T.M.",
+      "trasferta": "OLIMPO BASKET ALBA",
+      "data": "31/10/2026",
+      "ora": "16:30",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8663",
+      "girone": "A",
+      "casa": "PROMO CUNEO BASKET",
+      "trasferta": "BANCA B.T.M.",
+      "data": "08/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8664",
+      "girone": "A",
+      "casa": "OLIMPO BASKET ALBA",
+      "trasferta": "GATORS",
+      "data": "07/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8665",
+      "girone": "A",
+      "casa": "GATORS",
+      "trasferta": "NEW BASKET ABET",
+      "data": "16/11/2026",
+      "ora": "18:00",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8666",
+      "girone": "A",
+      "casa": "OLIMPO BASKET ALBA",
+      "trasferta": "PROMO CUNEO BASKET",
+      "data": "14/11/2026",
+      "ora": "15:00",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8667",
+      "girone": "A",
+      "casa": "GATORS",
+      "trasferta": "BANCA B.T.M.",
+      "data": "22/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8668",
+      "girone": "A",
+      "casa": "NEW BASKET ABET",
+      "trasferta": "OLIMPO BASKET ALBA",
+      "data": "19/11/2026",
+      "ora": "18:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8669",
+      "girone": "A",
+      "casa": "PROMO CUNEO BASKET",
+      "trasferta": "GATORS",
+      "data": "29/11/2026",
+      "ora": "15:00",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8670",
+      "girone": "A",
+      "casa": "BANCA B.T.M.",
+      "trasferta": "NEW BASKET ABET",
+      "data": "29/11/2026",
+      "ora": "14:30",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8671",
+      "girone": "A",
+      "casa": "PROMO CUNEO BASKET",
+      "trasferta": "NEW BASKET ABET",
+      "data": "05/12/2026",
+      "ora": "11:00",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8672",
+      "girone": "A",
+      "casa": "OLIMPO BASKET ALBA",
+      "trasferta": "BANCA B.T.M.",
+      "data": "05/12/2026",
+      "ora": "17:00",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8673",
+      "girone": "A",
+      "casa": "GATORS",
+      "trasferta": "OLIMPO BASKET ALBA",
+      "data": "09/12/2026",
+      "ora": "19:00",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8674",
+      "girone": "A",
+      "casa": "BANCA B.T.M.",
+      "trasferta": "PROMO CUNEO BASKET",
+      "data": "12/12/2026",
+      "ora": "14:30",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8675",
+      "girone": "A",
+      "casa": "PROMO CUNEO BASKET",
+      "trasferta": "OLIMPO BASKET ALBA",
+      "data": "17/12/2026",
+      "ora": "19:15",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8676",
+      "girone": "A",
+      "casa": "NEW BASKET ABET",
+      "trasferta": "GATORS",
+      "data": "17/12/2026",
+      "ora": "18:00",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8677",
+      "girone": "A",
+      "casa": "OLIMPO BASKET ALBA",
+      "trasferta": "NEW BASKET ABET",
+      "data": "09/01/2027",
+      "ora": "15:00",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8678",
+      "girone": "A",
+      "casa": "BANCA B.T.M.",
+      "trasferta": "GATORS",
+      "data": "09/01/2027",
+      "ora": "14:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8679",
+      "girone": "A",
+      "casa": "GATORS",
+      "trasferta": "PROMO CUNEO BASKET",
+      "data": "17/01/2027",
+      "ora": "11:30",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8680",
+      "girone": "A",
+      "casa": "NEW BASKET ABET",
+      "trasferta": "BANCA B.T.M.",
+      "data": "16/01/2027",
+      "ora": "15:00",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8681",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "ERIDANIA BASKET",
+      "data": "31/10/2026",
+      "ora": "12:00",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8682",
+      "girone": "B",
+      "casa": "BEA CHIERI SSDRL",
+      "trasferta": "AREA PRO 2020",
+      "data": "01/11/2026",
+      "ora": "11:30",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8683",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "BEA CHIERI SSDRL",
+      "data": "07/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8684",
+      "girone": "B",
+      "casa": "ALFIERI BASKET",
+      "trasferta": "AREA PRO 2020",
+      "data": "08/11/2026",
+      "ora": "09:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8685",
+      "girone": "B",
+      "casa": "AREA PRO 2020",
+      "trasferta": "POLISPORTIVA PASTA",
+      "data": "15/11/2026",
+      "ora": "14:30",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8686",
+      "girone": "B",
+      "casa": "ERIDANIA BASKET",
+      "trasferta": "ALFIERI BASKET",
+      "data": "14/11/2026",
+      "ora": "16:30",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8687",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "ALFIERI BASKET",
+      "data": "21/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8688",
+      "girone": "B",
+      "casa": "ERIDANIA BASKET",
+      "trasferta": "BEA CHIERI SSDRL",
+      "data": "21/11/2026",
+      "ora": "16:15",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8689",
+      "girone": "B",
+      "casa": "AREA PRO 2020",
+      "trasferta": "ERIDANIA BASKET",
+      "data": "30/11/2026",
+      "ora": "19:30",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8690",
+      "girone": "B",
+      "casa": "BEA CHIERI SSDRL",
+      "trasferta": "ALFIERI BASKET",
+      "data": "28/11/2026",
+      "ora": "15:00",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8691",
+      "girone": "B",
+      "casa": "AREA PRO 2020",
+      "trasferta": "BEA CHIERI SSDRL",
+      "data": "05/12/2026",
+      "ora": "11:30",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8692",
+      "girone": "B",
+      "casa": "ERIDANIA BASKET",
+      "trasferta": "POLISPORTIVA PASTA",
+      "data": "06/12/2026",
+      "ora": "15:30",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8693",
+      "girone": "B",
+      "casa": "BEA CHIERI SSDRL",
+      "trasferta": "POLISPORTIVA PASTA",
+      "data": "13/12/2026",
+      "ora": "11:30",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8694",
+      "girone": "B",
+      "casa": "AREA PRO 2020",
+      "trasferta": "ALFIERI BASKET",
+      "data": "13/12/2026",
+      "ora": "09:00",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8695",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "AREA PRO 2020",
+      "data": "19/12/2026",
+      "ora": "15:00",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8696",
+      "girone": "B",
+      "casa": "ALFIERI BASKET",
+      "trasferta": "ERIDANIA BASKET",
+      "data": "20/12/2026",
+      "ora": "09:00",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8697",
+      "girone": "B",
+      "casa": "ALFIERI BASKET",
+      "trasferta": "POLISPORTIVA PASTA",
+      "data": "10/01/2027",
+      "ora": "09:00",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8698",
+      "girone": "B",
+      "casa": "BEA CHIERI SSDRL",
+      "trasferta": "ERIDANIA BASKET",
+      "data": "09/01/2027",
+      "ora": "18:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8699",
+      "girone": "B",
+      "casa": "ERIDANIA BASKET",
+      "trasferta": "AREA PRO 2020",
+      "data": "15/01/2027",
+      "ora": "19:15",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8700",
+      "girone": "B",
+      "casa": "ALFIERI BASKET",
+      "trasferta": "BEA CHIERI SSDRL",
+      "data": "17/01/2027",
+      "ora": "09:00",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8701",
+      "girone": "C",
+      "casa": "LAPOLISMILE",
+      "trasferta": "BASKET NOLE",
+      "data": "29/10/2026",
+      "ora": "18:45",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8702",
+      "girone": "C",
+      "casa": "BASKET VENARIA",
+      "trasferta": "LETTERA 22 A.S.D.",
+      "data": "01/11/2026",
+      "ora": "11:30",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8703",
+      "girone": "C",
+      "casa": "LETTERA 22 A.S.D.",
+      "trasferta": "LAPOLISMILE",
+      "data": "08/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8704",
+      "girone": "C",
+      "casa": "USAC RIVAROLO BK 2009",
+      "trasferta": "BASKET VENARIA",
+      "data": "07/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8705",
+      "girone": "C",
+      "casa": "BASKET NOLE",
+      "trasferta": "LETTERA 22 A.S.D.",
+      "data": "14/11/2026",
+      "ora": "11:30",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8706",
+      "girone": "C",
+      "casa": "LAPOLISMILE",
+      "trasferta": "USAC RIVAROLO BK 2009",
+      "data": "15/11/2026",
+      "ora": "11:15",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8707",
+      "girone": "C",
+      "casa": "USAC RIVAROLO BK 2009",
+      "trasferta": "BASKET NOLE",
+      "data": "21/11/2026",
+      "ora": "11:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8708",
+      "girone": "C",
+      "casa": "BASKET VENARIA",
+      "trasferta": "LAPOLISMILE",
+      "data": "21/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8709",
+      "girone": "C",
+      "casa": "BASKET NOLE",
+      "trasferta": "BASKET VENARIA",
+      "data": "02/12/2026",
+      "ora": "18:00",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8710",
+      "girone": "C",
+      "casa": "LETTERA 22 A.S.D.",
+      "trasferta": "USAC RIVAROLO BK 2009",
+      "data": "29/11/2026",
+      "ora": "15:00",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8711",
+      "girone": "C",
+      "casa": "BASKET NOLE",
+      "trasferta": "LAPOLISMILE",
+      "data": "05/12/2026",
+      "ora": "17:30",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8712",
+      "girone": "C",
+      "casa": "LETTERA 22 A.S.D.",
+      "trasferta": "BASKET VENARIA",
+      "data": "06/12/2026",
+      "ora": "15:00",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8713",
+      "girone": "C",
+      "casa": "BASKET VENARIA",
+      "trasferta": "USAC RIVAROLO BK 2009",
+      "data": "12/12/2026",
+      "ora": "15:00",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8714",
+      "girone": "C",
+      "casa": "LAPOLISMILE",
+      "trasferta": "LETTERA 22 A.S.D.",
+      "data": "13/12/2026",
+      "ora": "14:30",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8715",
+      "girone": "C",
+      "casa": "LETTERA 22 A.S.D.",
+      "trasferta": "BASKET NOLE",
+      "data": "20/12/2026",
+      "ora": "16:00",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8716",
+      "girone": "C",
+      "casa": "USAC RIVAROLO BK 2009",
+      "trasferta": "LAPOLISMILE",
+      "data": "21/12/2026",
+      "ora": "19:00",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8717",
+      "girone": "C",
+      "casa": "LAPOLISMILE",
+      "trasferta": "BASKET VENARIA",
+      "data": "11/01/2027",
+      "ora": "18:45",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8718",
+      "girone": "C",
+      "casa": "BASKET NOLE",
+      "trasferta": "USAC RIVAROLO BK 2009",
+      "data": "09/01/2027",
+      "ora": "11:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8719",
+      "girone": "C",
+      "casa": "BASKET VENARIA",
+      "trasferta": "BASKET NOLE",
+      "data": "17/01/2027",
+      "ora": "09:40",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8720",
+      "girone": "C",
+      "casa": "USAC RIVAROLO BK 2009",
+      "trasferta": "LETTERA 22 A.S.D.",
+      "data": "16/01/2027",
+      "ora": "15:00",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8721",
+      "girone": "D",
+      "casa": "VIRTUS BASKET SALUGGIA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "31/10/2026",
+      "ora": "17:30",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8722",
+      "girone": "D",
+      "casa": "SAN MAURO BASKET",
+      "trasferta": "AVIGLIANA BASKET",
+      "data": "01/11/2026",
+      "ora": "14:00",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8723",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "SAN MAURO BASKET",
+      "data": "07/11/2026",
+      "ora": "17:45",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8724",
+      "girone": "D",
+      "casa": "AVIGLIANA BASKET",
+      "trasferta": "VIRTUS BASKET SALUGGIA",
+      "data": "08/11/2026",
+      "ora": "11:45",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8725",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "15/11/2026",
+      "ora": "16:10",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8726",
+      "girone": "D",
+      "casa": "VIRTUS BASKET SALUGGIA",
+      "trasferta": "POLISPORTIVA REBA",
+      "data": "16/11/2026",
+      "ora": "18:30",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8727",
+      "girone": "D",
+      "casa": "SAN MAURO BASKET",
+      "trasferta": "VIRTUS BASKET SALUGGIA",
+      "data": "21/11/2026",
+      "ora": "11:30",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8728",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "22/11/2026",
+      "ora": "11:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8729",
+      "girone": "D",
+      "casa": "AVIGLIANA BASKET",
+      "trasferta": "POLISPORTIVA REBA",
+      "data": "27/11/2026",
+      "ora": "21:00",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8730",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "29/11/2026",
+      "ora": "16:15",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8731",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA BIANCO",
+      "trasferta": "VIRTUS BASKET SALUGGIA",
+      "data": "06/12/2026",
+      "ora": "15:30",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8732",
+      "girone": "D",
+      "casa": "AVIGLIANA BASKET",
+      "trasferta": "SAN MAURO BASKET",
+      "data": "06/12/2026",
+      "ora": "18:30",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8733",
+      "girone": "D",
+      "casa": "SAN MAURO BASKET",
+      "trasferta": "POLISPORTIVA REBA",
+      "data": "09/12/2026",
+      "ora": "19:30",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8734",
+      "girone": "D",
+      "casa": "VIRTUS BASKET SALUGGIA",
+      "trasferta": "AVIGLIANA BASKET",
+      "data": "12/12/2026",
+      "ora": "14:30",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8735",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "VIRTUS BASKET SALUGGIA",
+      "data": "19/12/2026",
+      "ora": "18:30",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8736",
+      "girone": "D",
+      "casa": "AVIGLIANA BASKET",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "20/12/2026",
+      "ora": "11:45",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8737",
+      "girone": "D",
+      "casa": "VIRTUS BASKET SALUGGIA",
+      "trasferta": "SAN MAURO BASKET",
+      "data": "09/01/2027",
+      "ora": "14:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8738",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "09/01/2027",
+      "ora": "17:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8739",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "AVIGLIANA BASKET",
+      "data": "17/01/2027",
+      "ora": "09:00",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8740",
+      "girone": "D",
+      "casa": "SAN MAURO BASKET",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "17/01/2027",
+      "ora": "14:00",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8742",
+      "girone": "E",
+      "casa": "NOVARA BASKET",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "02/11/2026",
+      "ora": "19:00",
+      "giornata": "1 andata",
+      "risultato": null
+    },
+    {
+      "id": "8743",
+      "girone": "E",
+      "casa": "BASKET FEMM.LE ALESSANDRIA",
+      "trasferta": "BCC DERTHONA BASKET",
+      "data": "10/11/2026",
+      "ora": "18:30",
+      "giornata": "2 andata",
+      "risultato": null
+    },
+    {
+      "id": "8745",
+      "girone": "E",
+      "casa": "POLISPORTIVA SAN GIACOMO",
+      "trasferta": "BASKET FEMM.LE ALESSANDRIA",
+      "data": "14/11/2026",
+      "ora": "14:15",
+      "giornata": "3 andata",
+      "risultato": null
+    },
+    {
+      "id": "8747",
+      "girone": "E",
+      "casa": "BASKET FEMM.LE ALESSANDRIA",
+      "trasferta": "NOVARA BASKET",
+      "data": "22/11/2026",
+      "ora": "11:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8748",
+      "girone": "E",
+      "casa": "BCC DERTHONA BASKET",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "22/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": null
+    },
+    {
+      "id": "8749",
+      "girone": "E",
+      "casa": "NOVARA BASKET",
+      "trasferta": "BCC DERTHONA BASKET",
+      "data": "29/11/2026",
+      "ora": "09:30",
+      "giornata": "5 andata",
+      "risultato": null
+    },
+    {
+      "id": "8752",
+      "girone": "E",
+      "casa": "POLISPORTIVA SAN GIACOMO",
+      "trasferta": "NOVARA BASKET",
+      "data": "06/12/2026",
+      "ora": "11:00",
+      "giornata": "1 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8753",
+      "girone": "E",
+      "casa": "POLISPORTIVA SAN GIACOMO",
+      "trasferta": "A.S.D. OLYMPIA BASKET 2000",
+      "data": "13/12/2026",
+      "ora": "11:00",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8754",
+      "girone": "E",
+      "casa": "BCC DERTHONA BASKET",
+      "trasferta": "BASKET FEMM.LE ALESSANDRIA",
+      "data": "13/12/2026",
+      "ora": "11:00",
+      "giornata": "2 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8756",
+      "girone": "E",
+      "casa": "BASKET FEMM.LE ALESSANDRIA",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "16/01/2027",
+      "ora": "11:00",
+      "giornata": "3 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8757",
+      "girone": "E",
+      "casa": "POLISPORTIVA SAN GIACOMO",
+      "trasferta": "BCC DERTHONA BASKET",
+      "data": "09/01/2027",
+      "ora": "14:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8758",
+      "girone": "E",
+      "casa": "NOVARA BASKET",
+      "trasferta": "BASKET FEMM.LE ALESSANDRIA",
+      "data": "10/01/2027",
+      "ora": "11:30",
+      "giornata": "4 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8759",
+      "girone": "E",
+      "casa": "BCC DERTHONA BASKET",
+      "trasferta": "NOVARA BASKET",
+      "data": "16/01/2027",
+      "ora": "15:00",
+      "giornata": "5 ritorno",
+      "risultato": null
+    },
+    {
+      "id": "8760",
+      "girone": "E",
+      "casa": "BASKET FEMM.LE ALESSANDRIA",
+      "trasferta": "A.S.D. OLYMPIA BASKET 2000",
+      "data": "19/01/2027",
+      "ora": "18:30",
+      "giornata": "5 ritorno",
+      "risultato": null
+    }
+  ]
+}
