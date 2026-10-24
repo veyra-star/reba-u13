@@ -22,8 +22,20 @@ function venueFor(p) {
   }
   return { nome, indirizzo };
 }
-function renderNext(p) {
-  $('#nextTitle').textContent = p ? `${short(p.casa)}  —  ${short(p.trasferta)}` : 'Nessuna prossima gara in calendario';
+function eloLabel(team, ratings) {
+  const value = Math.round(ratings.get(team) ?? INITIAL_RATING);
+  return `<span class="elo-rating" title="Coefficiente Elo stimato">(${value})</span>`;
+}
+function currentRatings() {
+  const ratings = initialRatings();
+  for (const p of orderedGames()) {
+    const score = p.risultato || sim[p.id];
+    if (score) updateRatings(p, score, ratings);
+  }
+  return ratings;
+}
+function renderNext(p, ratings) {
+  $('#nextTitle').innerHTML = p ? `${escapeHTML(short(p.casa))} ${eloLabel(p.casa, ratings)} <span aria-hidden="true">—</span> ${escapeHTML(short(p.trasferta))} ${eloLabel(p.trasferta, ratings)}` : 'Nessuna prossima gara in calendario';
   $('#nextInfo').textContent = p ? `${when(p)} · Girone ${p.girone}` : '';
   let el = $('#nextVenue');
   if (!el) {
@@ -43,6 +55,86 @@ function renderNext(p) {
     parts.push('<div>📍 Indirizzo palestra da confermare</div>');
   }
   el.innerHTML = parts.join('');
+}
+// Coefficiente Elo: ogni squadra parte da 1000, senza favoriti.
+// I risultati ufficiali e le simulazioni manuali aggiornano il coefficiente;
+// le partite generate lo aggiornano una alla volta, in ordine di calendario.
+const INITIAL_RATING = 1000;
+const RATING_K = 28;
+const HOME_ADVANTAGE = 30;
+const orderedGames = () => [...db.partite].sort((a,b) =>
+  date(a.data)-date(b.data) || String(a.ora||'').localeCompare(String(b.ora||'')) || String(a.girone).localeCompare(String(b.girone)) || String(a.id).localeCompare(String(b.id))
+);
+function initialRatings() {
+  const ratings = new Map();
+  for (const teams of Object.values(db.squadre)) for (const team of teams) ratings.set(team, INITIAL_RATING);
+  return ratings;
+}
+function winProbability(home, away, ratings) {
+  const difference = (ratings.get(home) ?? INITIAL_RATING) + HOME_ADVANTAGE - (ratings.get(away) ?? INITIAL_RATING);
+  return 1 / (1 + Math.pow(10, -difference / 400));
+}
+function updateRatings(p, score, ratings) {
+  if (!score || !Number.isFinite(Number(score[0])) || !Number.isFinite(Number(score[1]))) return;
+  const [h,a] = score.map(Number);
+  if (h === a) return;
+  const probability = winProbability(p.casa, p.trasferta, ratings);
+  const actual = h > a ? 1 : 0;
+  // La differenza punti conta, ma e limitata per non premiare eccessivamente i divari ampi.
+  const marginFactor = Math.min(1.6, 1 + Math.log1p(Math.abs(h-a))/10);
+  const change = RATING_K * marginFactor * (actual-probability);
+  ratings.set(p.casa, (ratings.get(p.casa) ?? INITIAL_RATING) + change);
+  ratings.set(p.trasferta, (ratings.get(p.trasferta) ?? INITIAL_RATING) - change);
+}
+function normalNoise() {
+  const u = Math.max(1e-9, Math.random()), v = Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+function simulatedScore(p, ratings) {
+  const probability = winProbability(p.casa, p.trasferta, ratings);
+  const homeWins = Math.random() < probability;
+  // Coefficienti simili producono gare piu equilibrate; differenze crescenti,
+  // margini medi piu ampi. La casualita rimane anche a stagione avanzata.
+  const gap = Math.abs((ratings.get(p.casa) ?? INITIAL_RATING) - (ratings.get(p.trasferta) ?? INITIAL_RATING));
+  const margin = Math.max(1, Math.round(3 + gap/35 + Math.abs(normalNoise())*6));
+  const losingScore = Math.max(8, Math.min(85, Math.round(35 + normalNoise()*10)));
+  return homeWins ? [losingScore+margin, losingScore] : [losingScore, losingScore+margin];
+}
+function simulateRemaining() {
+  const ratings = initialRatings();
+  let count = 0;
+  for (const p of orderedGames()) {
+    // I risultati ufficiali hanno sempre precedenza. Le simulazioni manuali
+    // gia inserite vengono rispettate, senza essere sovrascritte.
+    let score = p.risultato || sim[p.id];
+    if (!score) {
+      score = simulatedScore(p, ratings);
+      sim[p.id] = score;
+      count++;
+    }
+    updateRatings(p, score, ratings);
+  }
+  render();
+  const msg = document.querySelector('#simBulkNote');
+  if (msg) msg.textContent = count ? `${count} gare simulate. Ogni squadra parte da coefficiente 1000; il coefficiente si aggiorna dopo ogni risultato.` : 'Nessuna gara rimasta da simulare. Premi Ripristina per ricominciare.';
+}
+function installBulkButton() {
+  if (document.querySelector('#simulateAll')) return;
+  const button = document.createElement('button');
+  button.id = 'simulateAll';
+  button.type = 'button';
+  button.textContent = '🎲 Simula tutte le restanti';
+  button.title = 'Simula le partite ancora senza punteggio, usando progressivamente i risultati precedenti';
+  button.style.marginLeft = '8px';
+  button.style.marginTop = '8px';
+  document.querySelector('#simulate').insertAdjacentElement('afterend', button);
+  const note = document.createElement('p');
+  note.id = 'simBulkNote';
+  note.style.fontSize = '0.85em';
+  note.style.opacity = '0.8';
+  note.textContent = 'Ogni squadra parte da coefficiente 1000. Vittorie, sconfitte e scarti aggiornano la forza stimata dopo ogni partita; la probabilità di vittoria cambia di conseguenza.';
+  button.insertAdjacentElement('afterend', note);
+  button.addEventListener('click', simulateRemaining);
 }
 function standings(g) {
   let rows = db.squadre[g].map(nome => ({nome,G:0,V:0,P:0,PF:0,PS:0,pts:0}));
@@ -67,12 +159,13 @@ function render() {
   let all = [...db.partite].sort((a,b) => date(a.data)-date(b.data));
   const today = new Date(new Date().toDateString());
   let upcoming = all.filter(p => date(p.data) >= today && (isReba(p.casa) || isReba(p.trasferta)) && !p.risultato);
-  renderNext(upcoming[0]);
+  const ratings = currentRatings();
+  renderNext(upcoming[0], ratings);
   let grp = $('#matchGroup').value;
   let filtered = all.filter(p => grp === 'all' || p.girone === grp);
   $('#matches').innerHTML = filtered.map(matchHTML).join('');
   $('#rebaGames').innerHTML = all.filter(p => isReba(p.casa)||isReba(p.trasferta)).map(matchHTML).join('');
-  $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${g}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${short(t.nome)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
+  $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${g}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
   let gs = 'ABCDE';
   $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = standings(g)[0], b = standings(other)[1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${a?.G?a.nome:'Da definire'}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${b?.G?b.nome:'Da definire'}</div></div>`; }).join('');
   let done = all.filter(p => results(p));
@@ -88,13 +181,39 @@ fetch('data/campionato.json').then(r => r.json()).then(data => {
   }
   $('#matchGroup').innerHTML = '<option value="all">Tutti i gironi</option>' + Object.keys(db.squadre).map(g => `<option value="${g}">Girone ${g}</option>`).join('');
   $('#matchGroup').onchange = render;
-  $('#simMatch').innerHTML = db.partite.filter(p => !p.risultato).map(p => `<option value="${p.id}">${p.data} · ${p.casa} / ${p.trasferta}</option>`).join('');
+  // Raggruppa per giornata ufficiale, quando disponibile nei dati.
+  // In assenza del campo giornata, raggruppa per data senza inventare numeri di turno.
+  const available = db.partite.filter(p => !p.risultato).sort((a,b) =>
+    date(a.data) - date(b.data) || String(a.ora || '').localeCompare(String(b.ora || '')) || String(a.girone).localeCompare(String(b.girone))
+  );
+  const groups = new Map();
+  for (const p of available) {
+    const hasRound = p.giornata !== undefined && p.giornata !== null && String(p.giornata).trim() !== '';
+    const key = hasRound ? `turno:${p.giornata}` : `data:${p.data}`;
+    if (!groups.has(key)) groups.set(key, {label: hasRound ? `Giornata ${p.giornata}` : `Partite del ${p.data} (giornata non indicata)`, games: []});
+    groups.get(key).games.push(p);
+  }
+  $('#simMatch').innerHTML = [...groups.values()].map(group =>
+    `<optgroup label="${escapeHTML(group.label)}">${group.games.map(p =>
+      `<option value="${escapeHTML(p.id)}">${escapeHTML(p.data)} · Girone ${escapeHTML(p.girone)} · ${escapeHTML(short(p.casa))} vs ${escapeHTML(short(p.trasferta))}</option>`
+    ).join('')}</optgroup>`
+  ).join('');
   $('#simulate').onclick = () => {
     let h = Number($('#scoreHome').value), a = Number($('#scoreAway').value);
     if ($('#scoreHome').value === '' || $('#scoreAway').value === '' || h === a || h < 0 || a < 0) { alert('Inserisci due punteggi validi e diversi.'); return; }
     if (!$('#simMatch').value) { alert('Nessuna partita disponibile per la simulazione'); return; }
     sim[$('#simMatch').value] = [h,a]; render();
   };
-  $('#reset').onclick = () => { sim = {}; render(); };
+  $('#reset').onclick = () => { sim = {}; render(); const msg = $('#simBulkNote'); if (msg) msg.textContent = 'Simulazioni azzerate. Puoi avviare una nuova simulazione.'; };
+  installBulkButton();
   render();
 }).catch(e => { $('#nextTitle').textContent = 'Dati non caricati'; console.error(e); });
+
+// Elo discreto, senza modificare il foglio di stile del sito.
+(function installEloStyle(){
+  if (document.getElementById("elo-rating-style")) return;
+  const style = document.createElement("style");
+  style.id = "elo-rating-style";
+  style.textContent = ".elo-rating{font-size:.72em;font-weight:400;opacity:.55;white-space:nowrap;letter-spacing:0;color:inherit}#nextTitle .elo-rating{font-size:.48em;vertical-align:middle;opacity:.55}";
+  document.head.appendChild(style);
+})();
