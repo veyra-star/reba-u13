@@ -175,6 +175,27 @@ function render() {
 }
 fetch('data/campionato.json').then(r => r.json()).then(data => {
   db = data;
+  // Controllo strutturale: ogni girone deve avere 20 gare, ogni squadra 8.
+  const errors = [];
+  const seenIds = new Set();
+  for (const game of db.partite) {
+    if (seenIds.has(String(game.id))) errors.push(`Gara duplicata: ${game.id}`);
+    seenIds.add(String(game.id));
+  }
+  for (const [group, teams] of Object.entries(db.squadre)) {
+    const games = db.partite.filter(p => p.girone === group);
+    if (games.length !== 20) errors.push(`Girone ${group}: ${games.length}/20 gare`);
+    for (const team of teams) {
+      const n = games.filter(p => p.casa === team || p.trasferta === team).length;
+      if (n !== 8) errors.push(`${team}: ${n}/8 gare`);
+    }
+  }
+  if (errors.length) {
+    console.error('Calendario non valido:', errors);
+    $('#status').textContent = 'ATTENZIONE: calendario incompleto, controllare la console.';
+    alert('Calendario incompleto o non valido: ' + errors.join('; '));
+    return;
+  }
   if (db.ultimo_aggiornamento_fip) {
     $('#sync').textContent = 'Risultati FIP aggiornati: ' + new Date(db.ultimo_aggiornamento_fip).toLocaleString('it-IT');
     $('#status').textContent = 'Risultati FIP sincronizzati.';
