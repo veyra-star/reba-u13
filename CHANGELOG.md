@@ -1,3 +1,9 @@
+## v0.3.6 — 24/10/2026
+- Classifiche: 2 punti per vittoria e 0 per sconfitta; spareggi di parita' con scontri diretti e quozienti canestri (REG FIP 25/03/2026, artt. 60 e 62).
+- Classifiche provvisorie durante la stagione; criteri che richiedono dati non presenti nel feed da verificare con FIP.
+- Numero versione e data visibili nel footer.
+- Colori dei riquadri sotto la mappa invariati rispetto a v0.3.4.
+
 ## v0.3.4 — 24/10/2026
 - Cambiati esclusivamente i colori dei cinque riquadri delle squadre sotto la mappa: A rosso, B verde, C blu, D arancione, E viola.
 - Sfondi scuri coordinati, bordi e titoli in tinta.
