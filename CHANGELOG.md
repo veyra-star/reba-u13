@@ -1,3 +1,8 @@
+## v0.3.8 - 25/10/2026
+- Ripristinata cartella assets con logo WebP trasparente.
+- Aggiornati riferimento e resa CSS del logo, senza alterare proporzioni.
+- Dati sportivi e aggiornamento FIP invariati.
+
 ## v0.3.7 — 25/10/2026
 - Sostituito il logo con il JPEG `Logo_037.jpeg` approvato, senza alterazioni di proporzioni o grafica.
 - Ottimizzata la dimensione del logo su smartphone: massimo 210 px di larghezza e 170 px di altezza.
