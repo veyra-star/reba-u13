@@ -1,3 +1,8 @@
+## v0.3.7 — 25/10/2026
+- Aggiunto il logo Ultras REBA (cobra verde neon) come `assets/logo037.png` e aggiornato il riferimento nella pagina.
+- Mantenute le dimensioni grafiche e le regole CSS; aggiornato il footer a v0.3.7.
+- Nessuna modifica a calendario, simulazione Elo, classifiche o sincronizzazione FIP.
+
 ## v0.3.6 — 24/10/2026
 - Classifiche: 2 punti per vittoria e 0 per sconfitta; spareggi di parita' con scontri diretti e quozienti canestri (REG FIP 25/03/2026, artt. 60 e 62).
 - Classifiche provvisorie durante la stagione; criteri che richiedono dati non presenti nel feed da verificare con FIP.
