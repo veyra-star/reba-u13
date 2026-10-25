@@ -1,4 +1,5 @@
 ## v0.3.7 — 25/10/2026
+- Ottimizzata la dimensione del logo su smartphone: massimo 210 px di larghezza e 170 px di altezza.
 - Aggiunto il logo Ultras REBA (cobra verde neon) come `assets/logo037.png` e aggiornato il riferimento nella pagina.
 - Mantenute le dimensioni grafiche e le regole CSS; aggiornato il footer a v0.3.7.
 - Nessuna modifica a calendario, simulazione Elo, classifiche o sincronizzazione FIP.
