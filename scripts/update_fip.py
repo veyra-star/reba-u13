@@ -84,9 +84,16 @@ def main():
                     raise ValueError('Response too small for a results page')
                 parsed = extract(resp.text, [p for p in db['partite'] if p['girone'] == group])
                 updates.update(parsed)
+                if not parsed and group == 'C':
+                    soup = BeautifulSoup(resp.text, 'html.parser')
+                    print('DIAGNOSTICA FIP C: titolo=', soup.title.get_text(' ', strip=True) if soup.title else '(nessuno)')
+                    print('DIAGNOSTICA FIP C: testo=', soup.get_text(' ', strip=True)[:1800])
+                    print('DIAGNOSTICA FIP C: selettori=', {k: len(soup.select(k)) for k in ['tr', 'table', '.match-row', '.risultato', '.partita', '.gara', 'script']})
                 print(f'Girone {group}: HTTP {resp.status_code}; extracted {len(parsed)} scores')
             except (requests.RequestException, ValueError) as exc:
                 errors.append(f'{group}: {exc}')
+    if not errors and not updates and dt.datetime.now(dt.timezone.utc).date() >= dt.date(2026, 10, 30):
+        errors.append('Nessun punteggio riconosciuto dopo l avvio del campionato: verificare struttura FIP e parser')
     if errors:
         print('FIP request failed; leaving JSON unchanged:\n' + '\n'.join(errors), file=sys.stderr)
         return 1
