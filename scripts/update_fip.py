@@ -62,6 +62,30 @@ def extract(html, fixtures):
                 candidates.append(score)
         if len(candidates) == 1:
             results[matched[0]['id']] = candidates[0]
+    # FIP renders each club's score as a separate number beside its name,
+    # e.g. "LAPOLISMILE 92 BASKET NOLE 14 29 Ottobre 2026 18:45 008701".
+    # Require the exact fixture ID after the score and match date, so standings
+    # points or a different meeting between the same teams cannot be mistaken.
+    page_text = soup.get_text(' ', strip=True)
+    for game in fixtures:
+        home = re.escape(game['casa']).replace(r'\\ ', r'\\s+')
+        away = re.escape(game['trasferta']).replace(r'\\ ', r'\\s+')
+        pattern = re.compile(
+            rf'(?<![\\w]){home}\\s+(\\d{{1,3}})\\s+{away}\\s+(\\d{{1,3}})'
+            rf'\\s+(\\d{{1,2}})\\s+[A-Za-zÀ-ÿ]+\\s+(\\d{{4}})\\s+'
+            rf'\\d{{1,2}}:\\d{{2}}\\s+(0*{re.escape(str(game["id"]))})(?!\\d)',
+            re.IGNORECASE,
+        )
+        matches = list(pattern.finditer(page_text))
+        if len(matches) != 1:
+            continue
+        match = matches[0]
+        expected_day, expected_month, expected_year = game['data'].split('/')
+        if int(match.group(3)) != int(expected_day) or match.group(4) != expected_year:
+            continue
+        score = [int(match.group(1)), int(match.group(2))]
+        if score[0] != score[1]:
+            results[game['id']] = score
     return results
 
 
