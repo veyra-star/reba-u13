@@ -13,3 +13,13 @@
 #teams > div:nth-child(5){background:linear-gradient(145deg,#381442,#23152c 78%);border-color:#ae48cb}
 #teams > div:nth-child(5) b{color:#e4a0f5}
 #teams > div p{color:#e0e6df}
+
+/* Next match: centered vertical scoreboard */
+.feature{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0}
+.feature>div:first-child{width:100%;min-width:0}
+.feature h2#nextTitle{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:clamp(23px,4vw,38px);line-height:1.16;letter-spacing:-.5px;margin:18px 0}
+.next-team{display:block;max-width:100%;overflow-wrap:normal}
+.next-team .elo-rating{font-size:.42em;vertical-align:middle;white-space:nowrap;letter-spacing:0;font-weight:400}
+.next-vs{display:block;font-size:clamp(34px,6vw,54px);font-weight:1000;font-style:italic;color:var(--cream);line-height:1.1;margin:6px 0}
+.feature>.big-vs{display:none}
+@media(max-width:800px){.feature h2#nextTitle{font-size:clamp(21px,5.5vw,30px)}.feature{padding:24px 18px}.next-vs{font-size:42px}}
