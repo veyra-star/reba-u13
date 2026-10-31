@@ -68,12 +68,12 @@ def extract(html, fixtures):
     # points or a different meeting between the same teams cannot be mistaken.
     page_text = soup.get_text(' ', strip=True)
     for game in fixtures:
-        home = re.escape(game['casa']).replace(r'\\ ', r'\\s+')
-        away = re.escape(game['trasferta']).replace(r'\\ ', r'\\s+')
+        home = re.escape(game['casa']).replace(r'\ ', r'\s+')
+        away = re.escape(game['trasferta']).replace(r'\ ', r'\s+')
         pattern = re.compile(
-            rf'(?<![\\w]){home}\\s+(\\d{{1,3}})\\s+{away}\\s+(\\d{{1,3}})'
-            rf'\\s+(\\d{{1,2}})\\s+[A-Za-zÀ-ÿ]+\\s+(\\d{{4}})\\s+'
-            rf'\\d{{1,2}}:\\d{{2}}\\s+(0*{re.escape(str(game["id"]))})(?!\\d)',
+            rf'(?<![\w]){home}\s+(\d{{1,3}})\s+{away}\s+(\d{{1,3}})'
+            rf'\s+(\d{{1,2}})\s+[A-Za-zÀ-ÿ]+\s+(\d{{4}})\s+'
+            rf'\d{{1,2}}:\d{{2}}\s+(0*{re.escape(str(game["id"]))})(?!\d)',
             re.IGNORECASE,
         )
         matches = list(pattern.finditer(page_text))
