@@ -35,7 +35,7 @@ function currentRatings() {
   return ratings;
 }
 function renderNext(p, ratings) {
-  $('#nextTitle').innerHTML = p ? `<span class="next-team">REBA ${eloLabel('POLISPORTIVA REBA', ratings)}</span><span class="next-vs">${isReba(p.casa) ? 'VS' : '@'}</span><span class="next-team">${escapeHTML(short(isReba(p.casa) ? p.trasferta : p.casa))} ${eloLabel(isReba(p.casa) ? p.trasferta : p.casa, ratings)}</span>` : 'Nessuna prossima gara in calendario';
+  $('#nextTitle').innerHTML = p ? `<span class="next-team">REBA<span class="next-rating">${eloLabel('POLISPORTIVA REBA', ratings)}</span></span><span class="next-vs">${isReba(p.casa) ? 'VS' : '@'}</span><span class="next-team">${escapeHTML(short(isReba(p.casa) ? p.trasferta : p.casa))}<span class="next-rating">${eloLabel(isReba(p.casa) ? p.trasferta : p.casa, ratings)}</span></span>` : 'Nessuna prossima gara in calendario';
   $('#nextInfo').textContent = p ? `${when(p)} · Girone ${p.girone}` : '';
   let el = $('#nextVenue');
   if (!el) {
