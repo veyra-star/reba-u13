@@ -35,7 +35,7 @@ function currentRatings() {
   return ratings;
 }
 function renderNext(p, ratings) {
-  $('#nextTitle').innerHTML = p ? `${escapeHTML(short(p.casa))} ${eloLabel(p.casa, ratings)} <span aria-hidden="true">—</span> ${escapeHTML(short(p.trasferta))} ${eloLabel(p.trasferta, ratings)}` : 'Nessuna prossima gara in calendario';
+  $('#nextTitle').innerHTML = p ? `<span class="next-team">${escapeHTML(short(p.casa))} ${eloLabel(p.casa, ratings)}</span><span class="next-vs">VS</span><span class="next-team">${escapeHTML(short(p.trasferta))} ${eloLabel(p.trasferta, ratings)}</span>` : 'Nessuna prossima gara in calendario';
   $('#nextInfo').textContent = p ? `${when(p)} · Girone ${p.girone}` : '';
   let el = $('#nextVenue');
   if (!el) {
