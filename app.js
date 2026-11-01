@@ -251,7 +251,7 @@ function matchHTML(p) {
   let r = results(p);
   const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
   const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 36 * 60 * 60 * 1000;
-  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${when(p)}</span><span>${short(p.casa)}</span><span class="score">${r?r.join(' : '):'—'}</span><span class="away">${short(p.trasferta)}</span><span class="meta date">Girone ${p.girone}</span></div>`;
+  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
 }
 function render() {
   let all = [...db.partite].sort((a,b) => date(a.data)-date(b.data));
@@ -273,12 +273,12 @@ function render() {
     if (row) matchList.scrollTop = Math.max(0, row.offsetTop - matchList.offsetTop - matchList.clientHeight / 2 + row.offsetHeight / 2);
   }
   $('#rebaGames').innerHTML = all.filter(p => isReba(p.casa)||isReba(p.trasferta)).map(matchHTML).join('');
-  $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${g}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
+  $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${escapeHTML(g)}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
   let gs = 'ABCDE';
   $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = standings(g)[0], b = standings(other)[1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${a?.G?escapeHTML(short(a.nome)):'Da definire'}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${b?.G?escapeHTML(short(b.nome)):'Da definire'}</div></div>`; }).join('');
   let done = all.filter(p => results(p));
   $('#stats').innerHTML = `<div><b>${done.length}</b><p>Partite con risultato</p></div><div><b>${all.length}</b><p>Gare nel calendario importato</p></div><div><b>25</b><p>Squadre partecipanti</p></div>`;
-  $('#teams').innerHTML = Object.entries(db.squadre).map(([g,teams]) => `<div><b>GIRONE ${g}</b>${teams.map(t => `<p>${escapeHTML(short(t))}</p>`).join('')}</div>`).join('');
+  $('#teams').innerHTML = Object.entries(db.squadre).map(([g,teams]) => `<div><b>GIRONE ${escapeHTML(g)}</b>${teams.map(t => `<p>${escapeHTML(short(t))}</p>`).join('')}</div>`).join('');
   $('#simStatus').textContent = Object.keys(sim).length ? `${Object.keys(sim).length} simulazione/i attiva/e · risultati non ufficiali` : '';
 }
 fetch('data/campionato.json').then(r => r.json()).then(data => {
@@ -308,7 +308,7 @@ fetch('data/campionato.json').then(r => r.json()).then(data => {
     $('#sync').textContent = 'Risultati FIP aggiornati: ' + new Date(db.ultimo_aggiornamento_fip).toLocaleString('it-IT');
     $('#status').textContent = 'Risultati FIP sincronizzati.';
   }
-  $('#matchGroup').innerHTML = '<option value="all">Tutti i gironi</option>' + Object.keys(db.squadre).map(g => `<option value="${g}">Girone ${g}</option>`).join('');
+  $('#matchGroup').innerHTML = '<option value="all">Tutti i gironi</option>' + Object.keys(db.squadre).map(g => `<option value="${escapeHTML(g)}">Girone ${escapeHTML(g)}</option>`).join('');
   $('#matchGroup').onchange = render;
   // Raggruppa per giornata ufficiale, quando disponibile nei dati.
   // In assenza del campo giornata, raggruppa per data senza inventare numeri di turno.
