@@ -102,8 +102,7 @@ def extract(html, fixtures):
             segment = page_text[max(0, marker.start()-240):marker.start()]
             h = r'[^\\w]*'.join(map(re.escape, re.findall(r'[A-Z0-9]+', game['casa'].upper())))
             a = r'[^\\w]*'.join(map(re.escape, re.findall(r'[A-Z0-9]+', game['trasferta'].upper())))
-            m = re.search(rf'{h}\\s+(\\d{{1,3}})\\s+{a}\\s+(\\d{{1,3}})\\s+\\d{{1,2}}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{{4}}\\s+\\d{{1,2}}:\\d{{2}}\\s*
-, segment, re.I)
+            m = re.search(rf'{h}\\s+(\\d{{1,3}})\\s+{a}\\s+(\\d{{1,3}})\\s+\\d{{1,2}}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{{4}}\\s+\\d{{1,2}}:\\d{{2}}\\s*$', segment, re.I)
             if m and m.group(1) != m.group(2):
                 results[game['id']] = [int(m.group(1)), int(m.group(2))]
                 break
