@@ -136,6 +136,7 @@ def main():
         score = updates.get(game['id'])
         if score is not None and game['risultato'] != score:
             game['risultato'] = score
+            game['acquisito_il'] = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
             changed += 1
     # A successful request is not proof that markup was parsed correctly.
     # Keep explicit validation status until real published scores are observed.
