@@ -3,7 +3,35 @@ let db, sim = {};
 const date = s => { const [d,m,y] = s.split('/'); return new Date(`${y}-${m}-${d}T12:00:00`); };
 const when = p => `${p.data} · ${p.ora}`;
 const isReba = s => s === 'POLISPORTIVA REBA';
-const short = s => s.replace('POLISPORTIVA ','').replace('A.S.D. ','');
+// Nomi pubblici: le chiavi restano identiche ai dati FIP per risultati, Elo e sincronizzazione.
+const TEAM_DISPLAY_NAMES = {
+  "OLIMPO BASKET ALBA": "Alba Olimpo",
+  "BANCA B.T.M.": "Carmagnola",
+  "PROMO CUNEO BASKET": "Cuneo Pink",
+  "GATORS": "Savigliano Gators",
+  "NEW BASKET ABET": "Bra ABET",
+  "BEA CHIERI SSDRL": "Chieri BEA",
+  "ERIDANIA BASKET": "Eridania",
+  "POLISPORTIVA PASTA": "Rivalta Pasta",
+  "ALFIERI BASKET": "Alfieri",
+  "AREA PRO 2020": "Rivalta Area Pro",
+  "USAC RIVAROLO BK 2009": "Rivarolo USAC",
+  "BASKET NOLE": "Nole",
+  "BASKET VENARIA": "Venaria",
+  "LETTERA 22 A.S.D.": "Ivrea Lettera 22",
+  "LAPOLISMILE": "Lapolismile",
+  "POLISPORTIVA REBA": "REBA",
+  "POLISPORTIVA REBA BIANCO": "REBA Bianco",
+  "SAN MAURO BASKET": "San Mauro",
+  "AVIGLIANA BASKET": "Avigliana",
+  "VIRTUS BASKET SALUGGIA": "Saluggia Virtus",
+  "BASKET FEMM.LE ALESSANDRIA": "Alessandria",
+  "NOVARA BASKET": "Novara",
+  "BCC DERTHONA BASKET": "Derthona",
+  "A.S.D. OLYMPIA BASKET 2000": "Casale Olympia",
+  "POLISPORTIVA SAN GIACOMO": "Novara San Giacomo"
+};
+const short = s => TEAM_DISPLAY_NAMES[s] || s;
 const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function results(p) { return sim[p.id] || p.risultato; }
 
@@ -235,10 +263,10 @@ function render() {
   $('#rebaGames').innerHTML = all.filter(p => isReba(p.casa)||isReba(p.trasferta)).map(matchHTML).join('');
   $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${g}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
   let gs = 'ABCDE';
-  $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = standings(g)[0], b = standings(other)[1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${a?.G?a.nome:'Da definire'}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${b?.G?b.nome:'Da definire'}</div></div>`; }).join('');
+  $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = standings(g)[0], b = standings(other)[1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${a?.G?escapeHTML(short(a.nome)):'Da definire'}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${b?.G?escapeHTML(short(b.nome)):'Da definire'}</div></div>`; }).join('');
   let done = all.filter(p => results(p));
   $('#stats').innerHTML = `<div><b>${done.length}</b><p>Partite con risultato</p></div><div><b>${all.length}</b><p>Gare nel calendario importato</p></div><div><b>25</b><p>Squadre partecipanti</p></div>`;
-  $('#teams').innerHTML = Object.entries(db.squadre).map(([g,teams]) => `<div><b>GIRONE ${g}</b>${teams.map(t => `<p>${t}</p>`).join('')}</div>`).join('');
+  $('#teams').innerHTML = Object.entries(db.squadre).map(([g,teams]) => `<div><b>GIRONE ${g}</b>${teams.map(t => `<p>${escapeHTML(short(t))}</p>`).join('')}</div>`).join('');
   $('#simStatus').textContent = Object.keys(sim).length ? `${Object.keys(sim).length} simulazione/i attiva/e · risultati non ufficiali` : '';
 }
 fetch('data/campionato.json').then(r => r.json()).then(data => {
