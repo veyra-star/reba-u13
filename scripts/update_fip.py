@@ -144,7 +144,7 @@ def main():
         db['ultimo_aggiornamento_fip'] = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
         DATA.write_text(json.dumps(db, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'New/changed verified score pairs: {changed}. Unrecognized scores are not guessed.')
-    # Trigger diagnostic refresh on script changes.
+    # Trigger an immediate FIP check after adjusting the hourly schedule.
     return 0
 
 
