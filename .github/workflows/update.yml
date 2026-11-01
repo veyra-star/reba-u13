@@ -2,7 +2,7 @@ name: Aggiorna risultati FIP
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '17 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
