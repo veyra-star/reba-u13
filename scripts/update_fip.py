@@ -67,12 +67,12 @@ def extract(html, fixtures):
     # A match must still contain both exact team names, two scores and its ID.
     page_text = soup.get_text(' ', strip=True)
     for game in fixtures:
-        home = re.escape(game['casa']).replace(r'\\ ', r'\\s+')
-        away = re.escape(game['trasferta']).replace(r'\\ ', r'\\s+')
+        home = re.escape(game['casa']).replace(r'\ ', r'\s+')
+        away = re.escape(game['trasferta']).replace(r'\ ', r'\s+')
         pattern = re.compile(
-            rf'(?<![\\w]){home}\\s+(\\d{{1,3}})\\s+{away}\\s+(\\d{{1,3}})'
-            rf'\\s+\\d{{1,2}}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{{4}}\\s+'
-            rf'\\d{{1,2}}:\\d{{2}}\\s+(0*{re.escape(str(game["id"]))})(?!\\d)',
+            rf'(?<![\w]){home}\s+(\d{{1,3}})\s+{away}\s+(\d{{1,3}})'
+            rf'\s+\d{{1,2}}\s+[A-Za-zÀ-ÿ]+\s+\d{{4}}\s+'
+            rf'\d{{1,2}}:\d{{2}}\s+(0*{re.escape(str(game["id"]))})(?!\d)',
             re.IGNORECASE,
         )
         matches = list(pattern.finditer(page_text))
@@ -87,10 +87,10 @@ def extract(html, fixtures):
     for game in fixtures:
         if game['id'] in results:
             continue
-        marker = re.search(rf'(?<!\\d)0*{re.escape(str(game["id"]))}(?!\\d)', page_text)
+        marker = re.search(rf'(?<!\d)0*{re.escape(str(game["id"]))}(?!\d)', page_text)
         if marker:
             context = page_text[max(0, marker.start()-170):marker.end()]
-            if re.search(r'\\b\\d{1,3}\\s+.{3,90}\\s+\\d{1,3}\\s+\\d{1,2}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{4}', context):
+            if re.search(r'\b\d{1,3}\s+.{3,90}\s+\d{1,3}\s+\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4}', context):
                 print(f'WARNING: potential unparsed FIP score for game {game["id"]}: {context[-150:]}')
     return results
 
