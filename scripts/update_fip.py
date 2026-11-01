@@ -40,58 +40,54 @@ def norm(text):
     return re.sub(r'[^A-Z0-9]', '', text.upper())
 
 
-def extract(html, fixtures):
-    """Match only an unambiguous row containing both clubs AND an isolated score.
+def team_pattern(name):
+    """Allow punctuation and spacing differences in the same known club name."""
+    tokens = re.findall(r'[A-Z0-9]+', name.upper())
+    return r'[^\\w]*'.join(map(re.escape, tokens))
 
-    Deliberately conservative until live HTML is inspected and parser validated.
+
+def extract(html, fixtures):
+    """Find known fixture IDs, then read only scores adjacent to its two clubs.
+
+    Dates and times are intentionally ignored: the FIP can move a match.
+    No score is inferred from an ID, a date, or an unplayed fixture.
     """
     soup = BeautifulSoup(html, 'html.parser')
+    text = soup.get_text(' ', strip=True)
     results = {}
-    for row in soup.select('tr, .match-row, .risultato, .partita, .gara'):
-        text = row.get_text(' ', strip=True)
-        if not text:
-            continue
-        matched = [p for p in fixtures if norm(p['casa']) in norm(text) and norm(p['trasferta']) in norm(text)]
-        if len(matched) != 1:
-            continue
-        # Require score in its own element; avoid interpreting calendar dates.
-        candidates = []
-        for el in row.select('td, .score, .punteggio, .risultato, strong'):
-            score = parse_score(el.get_text(' ', strip=True))
-            if score and score not in candidates:
-                candidates.append(score)
-        if len(candidates) == 1:
-            results[matched[0]['id']] = candidates[0]
-    # FIP lists scores as separate numbers after team names. Match by game ID,
-    # not by the originally scheduled day: FIP may reschedule a fixture.
-    # A match must still contain both exact team names, two scores and its ID.
-    page_text = soup.get_text(' ', strip=True)
     for game in fixtures:
-        home = re.escape(game['casa']).replace(r'\ ', r'\s+')
-        away = re.escape(game['trasferta']).replace(r'\ ', r'\s+')
-        pattern = re.compile(
-            rf'(?<![\w]){home}\s+(\d{{1,3}})\s+{away}\s+(\d{{1,3}})'
-            rf'\s+\d{{1,2}}\s+[A-Za-zÀ-ÿ]+\s+\d{{4}}\s+'
-            rf'\d{{1,2}}:\d{{2}}\s+(0*{re.escape(str(game["id"]))})(?!\d)',
-            re.IGNORECASE,
-        )
-        matches = list(pattern.finditer(page_text))
-        if len(matches) == 1:
-            score = [int(matches[0].group(1)), int(matches[0].group(2))]
-            if score[0] != score[1]:
-                results[game['id']] = score
-        elif len(matches) > 1:
-            print(f'WARNING: ambiguous result for game {game["id"]}; skipped')
-    # Flag fixtures whose ID appears on the FIP page with a plausible result
-    # but which did not match the strict parser, rather than silently ignoring.
-    for game in fixtures:
-        if game['id'] in results:
+        game_id = re.escape(str(int(game['id'])))
+        ids = list(re.finditer(rf'(?<!\\d)0*{game_id}(?!\\d)', text))
+        if not ids:
             continue
-        marker = re.search(rf'(?<!\d)0*{re.escape(str(game["id"]))}(?!\d)', page_text)
-        if marker:
-            context = page_text[max(0, marker.start()-170):marker.end()]
-            if re.search(r'\b\d{1,3}\s+.{3,90}\s+\d{1,3}\s+\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4}', context):
-                print(f'WARNING: potential unparsed FIP score for game {game["id"]}: {context[-150:]}')
+        home = team_pattern(game['casa'])
+        away = team_pattern(game['trasferta'])
+        # FIP prints: HOME 92 AWAY 14 DATE TIME 008701.
+        # Restrict the search to the same match, immediately before its ID.
+        scores = set()
+        for marker in ids:
+            snippet = text[max(0, marker.start()-350):marker.start()]
+            pattern = re.compile(
+                rf'(?<![A-Za-z0-9]){home}\\s+(\\d{{1,3}})\\s+'
+                rf'{away}\\s+(\\d{{1,3}})\\s+'
+                rf'\\d{{1,2}}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{{4}}\\s+'
+                rf'\\d{{1,2}}:\\d{{2}}\\s*$',
+                re.IGNORECASE,
+            )
+            match = pattern.search(snippet)
+            if match:
+                score = tuple(map(int, match.groups()))
+                if score[0] != score[1]:
+                    scores.add(score)
+        if len(scores) == 1:
+            results[game['id']] = list(scores.pop())
+        elif len(scores) > 1:
+            print(f'WARNING: conflicting FIP scores for game {game["id"]}: {sorted(scores)}')
+        else:
+            # Diagnose a known fixture ID with score-like text nearby.
+            snippet = text[max(0, ids[0].start()-160):ids[0].start()]
+            if re.search(r'\\b\\d{1,3}\\s+.{3,90}\\s+\\d{1,3}\\s+\\d{1,2}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{4}', snippet):
+                print(f'WARNING: possible unparsed result for {game["id"]}: {snippet[-140:]}')
     return results
 
 
