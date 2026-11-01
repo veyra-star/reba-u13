@@ -44,3 +44,6 @@ section{scroll-margin-top:125px}
 .top{position:fixed;top:12px;left:50%;transform:translateX(-50%);margin:0;width:calc(100% - 24px)}
 body{padding-top:85px}
 @media(max-width:430px){.top{top:8px;margin:0;width:calc(100% - 16px)}body{padding-top:112px}}
+
+/* Mobile floating header: one compact row without hiding navigation links */
+@media(max-width:600px){.top{flex-wrap:nowrap;align-items:center;gap:10px;padding:10px 12px;min-height:54px}.top .brand{font-size:18px;flex:0 0 auto;white-space:nowrap}.top .brand span{display:none}.top nav{width:auto;min-width:0;flex:1 1 auto;display:flex;justify-content:space-between;gap:5px;flex-wrap:nowrap;font-size:9px;letter-spacing:0}.top nav a{white-space:nowrap}body{padding-top:74px}section{scroll-margin-top:85px}}
