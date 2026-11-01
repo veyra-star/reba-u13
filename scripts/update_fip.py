@@ -62,30 +62,36 @@ def extract(html, fixtures):
                 candidates.append(score)
         if len(candidates) == 1:
             results[matched[0]['id']] = candidates[0]
-    # FIP renders each club's score as a separate number beside its name,
-    # e.g. "LAPOLISMILE 92 BASKET NOLE 14 29 Ottobre 2026 18:45 008701".
-    # Require the exact fixture ID after the score and match date, so standings
-    # points or a different meeting between the same teams cannot be mistaken.
+    # FIP lists scores as separate numbers after team names. Match by game ID,
+    # not by the originally scheduled day: FIP may reschedule a fixture.
+    # A match must still contain both exact team names, two scores and its ID.
     page_text = soup.get_text(' ', strip=True)
     for game in fixtures:
-        home = re.escape(game['casa']).replace(r'\ ', r'\s+')
-        away = re.escape(game['trasferta']).replace(r'\ ', r'\s+')
+        home = re.escape(game['casa']).replace(r'\\ ', r'\\s+')
+        away = re.escape(game['trasferta']).replace(r'\\ ', r'\\s+')
         pattern = re.compile(
-            rf'(?<![\w]){home}\s+(\d{{1,3}})\s+{away}\s+(\d{{1,3}})'
-            rf'\s+(\d{{1,2}})\s+[A-Za-zÀ-ÿ]+\s+(\d{{4}})\s+'
-            rf'\d{{1,2}}:\d{{2}}\s+(0*{re.escape(str(game["id"]))})(?!\d)',
+            rf'(?<![\\w]){home}\\s+(\\d{{1,3}})\\s+{away}\\s+(\\d{{1,3}})'
+            rf'\\s+\\d{{1,2}}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{{4}}\\s+'
+            rf'\\d{{1,2}}:\\d{{2}}\\s+(0*{re.escape(str(game["id"]))})(?!\\d)',
             re.IGNORECASE,
         )
         matches = list(pattern.finditer(page_text))
-        if len(matches) != 1:
+        if len(matches) == 1:
+            score = [int(matches[0].group(1)), int(matches[0].group(2))]
+            if score[0] != score[1]:
+                results[game['id']] = score
+        elif len(matches) > 1:
+            print(f'WARNING: ambiguous result for game {game["id"]}; skipped')
+    # Flag fixtures whose ID appears on the FIP page with a plausible result
+    # but which did not match the strict parser, rather than silently ignoring.
+    for game in fixtures:
+        if game['id'] in results:
             continue
-        match = matches[0]
-        expected_day, expected_month, expected_year = game['data'].split('/')
-        if int(match.group(3)) != int(expected_day) or match.group(4) != expected_year:
-            continue
-        score = [int(match.group(1)), int(match.group(2))]
-        if score[0] != score[1]:
-            results[game['id']] = score
+        marker = re.search(rf'(?<!\\d)0*{re.escape(str(game["id"]))}(?!\\d)', page_text)
+        if marker:
+            context = page_text[max(0, marker.start()-170):marker.end()]
+            if re.search(r'\\b\\d{1,3}\\s+.{3,90}\\s+\\d{1,3}\\s+\\d{1,2}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{4}', context):
+                print(f'WARNING: potential unparsed FIP score for game {game["id"]}: {context[-150:]}')
     return results
 
 
