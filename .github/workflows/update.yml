@@ -2,7 +2,7 @@ name: Aggiorna risultati FIP
 
 on:
   schedule:
-    - cron: '17 7-22 * * *'
+    - cron: '17 6-22 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -25,13 +25,32 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Verifica fascia oraria italiana
+        id: local_time
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          import os
+          local = datetime.now(ZoneInfo('Europe/Rome'))
+          enabled = os.environ['EVENT_NAME'] != 'schedule' or 8 <= local.hour <= 23
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'run={str(enabled).lower()}\n')
+          print(f'Ora italiana: {local.isoformat()}; eseguire: {enabled}')
+          PY
+
       - name: Installa dipendenze
+        if: steps.local_time.outputs.run == 'true'
         run: pip install -r requirements.txt
 
       - name: Recupera risultati FIP
+        if: steps.local_time.outputs.run == 'true'
         run: python scripts/update_fip.py
 
       - name: Salva aggiornamenti
+        if: steps.local_time.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
