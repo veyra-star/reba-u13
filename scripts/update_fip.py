@@ -106,6 +106,43 @@ def extract(html, fixtures):
             if m and m.group(1) != m.group(2):
                 results[game['id']] = [int(m.group(1)), int(m.group(2))]
                 break
+    # Primary fallback: the unique FIP game ID anchors a single score line.
+    # Team labels may include sponsors missing from the original calendar.
+    for game in fixtures:
+        if game['id'] in results:
+            continue
+        ident = re.escape(str(int(game['id'])))
+        candidates = set()
+        for marker in re.finditer(rf'(?<!\\d)0*{ident}(?!\\d)', page_text):
+            prefix = page_text[max(0, marker.start()-240):marker.start()]
+            date_match = re.search(r'\\s+\\d{1,2}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{4}\\s+\\d{1,2}:\\d{2}\\s*$', prefix)
+            if not date_match:
+                continue
+            teams_scores = prefix[:date_match.start()]
+            # The away team is the one directly before the date. Its score
+            # is the last number (not a club's number embedded in its name).
+            away = re.search(r'\\s+(\\d{1,3})\\s*$', teams_scores)
+            if not away:
+                continue
+            before_away_score = teams_scores[:away.start()]
+            # Find home score between two nonempty club labels. Validate
+            # against the five known teams in the same girone by similarity.
+            import difflib
+            known = list(dict.fromkeys([x[k] for x in fixtures for k in ('casa', 'trasferta')]))
+            for m in re.finditer(r'\\s+(\\d{1,3})\\s+', before_away_score):
+                home_label = before_away_score[max(0,m.start()-90):m.start()].split(' RITORNO ')[-1]
+                away_label = before_away_score[m.end():]
+                home_similarity = difflib.SequenceMatcher(None, norm(game['casa']), norm(home_label)).ratio()
+                away_similarity = difflib.SequenceMatcher(None, norm(game['trasferta']), norm(away_label)).ratio()
+                if home_similarity >= 0.55 and away_similarity >= 0.55:
+                    candidates.add((int(m.group(1)), int(away.group(1))))
+        if len(candidates) == 1:
+            score = next(iter(candidates))
+            if score[0] != score[1]:
+                results[game['id']] = list(score)
+                print(f'FIP ID-based score: {game["id"]} -> {score}')
+        elif len(candidates) > 1:
+            print(f'WARNING: ambiguous ID-based scores for {game["id"]}: {sorted(candidates)}')
     return results
 
 
