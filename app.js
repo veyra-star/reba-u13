@@ -249,7 +249,9 @@ function standings(g) {
 }
 function matchHTML(p) {
   let r = results(p);
-  return `<div class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''}"><span class="date">${when(p)}</span><span>${short(p.casa)}</span><span class="score">${r?r.join(' : '):'—'}</span><span class="away">${short(p.trasferta)}</span><span class="meta date">Girone ${p.girone}</span></div>`;
+  const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
+  const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 36 * 60 * 60 * 1000;
+  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${when(p)}</span><span>${short(p.casa)}</span><span class="score">${r?r.join(' : '):'—'}</span><span class="away">${short(p.trasferta)}</span><span class="meta date">Girone ${p.girone}</span></div>`;
 }
 function render() {
   let all = [...db.partite].sort((a,b) => date(a.data)-date(b.data));
@@ -259,7 +261,17 @@ function render() {
   renderNext(upcoming[0], ratings);
   let grp = $('#matchGroup').value;
   let filtered = all.filter(p => grp === 'all' || p.girone === grp);
-  $('#matches').innerHTML = filtered.map(matchHTML).join('');
+  const matchList = $('#matches');
+  matchList.innerHTML = filtered.map(matchHTML).join('');
+  // Preserve chronological order; initially center the most recently
+  // acquired result, leaving previous and following fixtures scrollable.
+  const latest = filtered.filter(p => p.risultato && p.acquisito_il && Number.isFinite(Date.parse(p.acquisito_il)))
+    .sort((a,b) => Date.parse(b.acquisito_il)-Date.parse(a.acquisito_il))[0];
+  const focus = latest || [...filtered].filter(p => p.risultato).slice(-1)[0] || filtered[0];
+  if (focus) {
+    const row = [...matchList.children].find(el => el.dataset.matchId === String(focus.id));
+    if (row) matchList.scrollTop = Math.max(0, row.offsetTop - matchList.offsetTop - matchList.clientHeight / 2 + row.offsetHeight / 2);
+  }
   $('#rebaGames').innerHTML = all.filter(p => isReba(p.casa)||isReba(p.trasferta)).map(matchHTML).join('');
   $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${g}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
   let gs = 'ABCDE';
