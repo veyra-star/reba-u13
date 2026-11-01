@@ -26,11 +26,42 @@ function eloLabel(team, ratings) {
   const value = Math.round(ratings.get(team) ?? INITIAL_RATING);
   return `<span class="elo-rating" title="Coefficiente Elo stimato">(${value})</span>`;
 }
+// Stima Elo retrospettiva, indipendente per ciascun girone.
+// Ogni nuovo risultato rivaluta tutte le partite gia giocate del girone.
+function retrospectiveRatings(games, scoreFor) {
+  const ratings = initialRatings();
+  const completed = games.map(p => ({p, score: scoreFor(p)}))
+    .filter(({score}) => Array.isArray(score) && score.length === 2 &&
+      score.every(v => v !== '' && Number.isFinite(Number(v))) &&
+      Number(score[0]) !== Number(score[1]));
+  if (!completed.length) return ratings;
+  // Aggiornamenti simultanei: nessuna partita ha vantaggi cronologici.
+  // Il fattore di apprendimento decrescente evita oscillazioni.
+  for (let pass = 0; pass < 48; pass++) {
+    const delta = new Map();
+    for (const {p, score} of completed) {
+      const [h,a] = score.map(Number);
+      const expected = winProbability(p.casa, p.trasferta, ratings);
+      const marginFactor = Math.min(1.6, 1 + Math.log1p(Math.abs(h-a))/10);
+      const change = RATING_K * marginFactor * ((h > a ? 1 : 0) - expected);
+      delta.set(p.casa, (delta.get(p.casa) || 0) + change);
+      delta.set(p.trasferta, (delta.get(p.trasferta) || 0) - change);
+    }
+    const step = 0.14 / (1 + pass * 0.1);
+    for (const [team, change] of delta)
+      ratings.set(team, (ratings.get(team) ?? INITIAL_RATING) + step * change);
+  }
+  return ratings;
+}
 function currentRatings() {
   const ratings = initialRatings();
-  for (const p of orderedGames()) {
-    const score = p.risultato || sim[p.id];
-    if (score) updateRatings(p, score, ratings);
+  for (const group of Object.keys(db.squadre)) {
+    const groupRatings = retrospectiveRatings(
+      db.partite.filter(p => p.girone === group),
+      p => p.risultato || sim[p.id]
+    );
+    for (const team of db.squadre[group])
+      ratings.set(team, groupRatings.get(team) ?? INITIAL_RATING);
   }
   return ratings;
 }
@@ -56,9 +87,7 @@ function renderNext(p, ratings) {
   }
   el.innerHTML = parts.join('');
 }
-// Coefficiente Elo: ogni squadra parte da 1000, senza favoriti.
-// I risultati ufficiali e le simulazioni manuali aggiornano il coefficiente;
-// le partite generate lo aggiornano una alla volta, in ordine di calendario.
+// REBA v4.01: Elo retrospettivo per girone, base 1000 e nessun favorito.
 const INITIAL_RATING = 1000;
 const RATING_K = 28;
 const HOME_ADVANTAGE = 30;
@@ -101,18 +130,17 @@ function simulatedScore(p, ratings) {
   return homeWins ? [losingScore+margin, losingScore] : [losingScore, losingScore+margin];
 }
 function simulateRemaining() {
-  const ratings = initialRatings();
   let count = 0;
   for (const p of orderedGames()) {
-    // I risultati ufficiali hanno sempre precedenza. Le simulazioni manuali
-    // gia inserite vengono rispettate, senza essere sovrascritte.
-    let score = p.risultato || sim[p.id];
-    if (!score) {
-      score = simulatedScore(p, ratings);
-      sim[p.id] = score;
+    // Risultati ufficiali e simulazioni manuali hanno precedenza.
+    if (!p.risultato && !sim[p.id]) {
+      const ratings = retrospectiveRatings(
+        db.partite.filter(x => x.girone === p.girone),
+        x => x.risultato || sim[x.id]
+      );
+      sim[p.id] = simulatedScore(p, ratings);
       count++;
     }
-    updateRatings(p, score, ratings);
   }
   render();
   const msg = document.querySelector('#simBulkNote');
