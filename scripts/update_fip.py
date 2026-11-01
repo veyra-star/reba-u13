@@ -41,108 +41,61 @@ def norm(text):
 
 
 def extract(html, fixtures):
-    """Match only an unambiguous row containing both clubs AND an isolated score.
+    """Extract a result from the unique FIP fixture ID, independent of sponsors.
 
-    Deliberately conservative until live HTML is inspected and parser validated.
+    The ID anchors the record; the score must be immediately before the
+    match date/time and each score must follow a recognizable team name.
     """
     soup = BeautifulSoup(html, 'html.parser')
+    text = soup.get_text(' ', strip=True)
     results = {}
-    for row in soup.select('tr, .match-row, .risultato, .partita, .gara'):
-        text = row.get_text(' ', strip=True)
-        if not text:
-            continue
-        matched = [p for p in fixtures if norm(p['casa']) in norm(text) and norm(p['trasferta']) in norm(text)]
-        if len(matched) != 1:
-            continue
-        # Require score in its own element; avoid interpreting calendar dates.
-        candidates = []
-        for el in row.select('td, .score, .punteggio, .risultato, strong'):
-            score = parse_score(el.get_text(' ', strip=True))
-            if score and score not in candidates:
-                candidates.append(score)
-        if len(candidates) == 1:
-            results[matched[0]['id']] = candidates[0]
-    # FIP lists scores as separate numbers after team names. Match by game ID,
-    # not by the originally scheduled day: FIP may reschedule a fixture.
-    # A match must still contain both exact team names, two scores and its ID.
-    page_text = soup.get_text(' ', strip=True)
+    date_time = re.compile(
+        r'\s+\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4}\s+\d{1,2}:\d{2}\s*$',
+        re.I,
+    )
+
+    def significant_tokens(name):
+        return [t for t in re.findall(r'[A-Z0-9]+', name.upper())
+                if len(t) >= 3 and t not in {'ASD', 'SSD', 'SSDRL', 'BASKET', 'POLISPORTIVA'}]
+
+    def team_matches(label, name):
+        normalized = norm(label)
+        tokens = significant_tokens(name)
+        return bool(tokens) and sum(t in normalized for t in tokens) >= max(1, len(tokens) - 1)
+
     for game in fixtures:
-        home = re.escape(game['casa']).replace(r'\ ', r'\s+')
-        away = re.escape(game['trasferta']).replace(r'\ ', r'\s+')
-        pattern = re.compile(
-            rf'(?<![\w]){home}\s+(\d{{1,3}})\s+{away}\s+(\d{{1,3}})'
-            rf'\s+\d{{1,2}}\s+[A-Za-zÀ-ÿ]+\s+\d{{4}}\s+'
-            rf'\d{{1,2}}:\d{{2}}\s+(0*{re.escape(str(game["id"]))})(?!\d)',
-            re.IGNORECASE,
-        )
-        matches = list(pattern.finditer(page_text))
-        if len(matches) == 1:
-            score = [int(matches[0].group(1)), int(matches[0].group(2))]
-            if score[0] != score[1]:
-                results[game['id']] = score
-        elif len(matches) > 1:
-            print(f'WARNING: ambiguous result for game {game["id"]}; skipped')
-    # Flag fixtures whose ID appears on the FIP page with a plausible result
-    # but which did not match the strict parser, rather than silently ignoring.
-    for game in fixtures:
-        if game['id'] in results:
-            continue
-        marker = re.search(rf'(?<!\d)0*{re.escape(str(game["id"]))}(?!\d)', page_text)
-        if marker:
-            context = page_text[max(0, marker.start()-170):marker.end()]
-            if re.search(r'\b\d{1,3}\s+.{3,90}\s+\d{1,3}\s+\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4}', context):
-                print(f'WARNING: potential unparsed FIP score for game {game["id"]}: {context[-150:]}')
-    # Alternate match using the known fixture ID and the nearest team-score
-    # segment; accepts changes in punctuation or spacing in club names.
-    for game in fixtures:
-        if game['id'] in results:
-            continue
-        ident = re.escape(str(int(game['id'])))
-        for marker in re.finditer(rf'(?<!\\d)0*{ident}(?!\\d)', page_text):
-            segment = page_text[max(0, marker.start()-240):marker.start()]
-            h = r'[^\\w]*'.join(map(re.escape, re.findall(r'[A-Z0-9]+', game['casa'].upper())))
-            a = r'[^\\w]*'.join(map(re.escape, re.findall(r'[A-Z0-9]+', game['trasferta'].upper())))
-            m = re.search(rf'{h}\\s+(\\d{{1,3}})\\s+{a}\\s+(\\d{{1,3}})\\s+\\d{{1,2}}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{{4}}\\s+\\d{{1,2}}:\\d{{2}}\\s*$', segment, re.I)
-            if m and m.group(1) != m.group(2):
-                results[game['id']] = [int(m.group(1)), int(m.group(2))]
-                break
-    # Primary fallback: the unique FIP game ID anchors a single score line.
-    # Team labels may include sponsors missing from the original calendar.
-    for game in fixtures:
-        if game['id'] in results:
-            continue
         ident = re.escape(str(int(game['id'])))
         candidates = set()
-        for marker in re.finditer(rf'(?<!\\d)0*{ident}(?!\\d)', page_text):
-            prefix = page_text[max(0, marker.start()-240):marker.start()]
-            date_match = re.search(r'\\s+\\d{1,2}\\s+[A-Za-zÀ-ÿ]+\\s+\\d{4}\\s+\\d{1,2}:\\d{2}\\s*$', prefix)
-            if not date_match:
+        for marker in re.finditer(rf'(?<!\d)0*{ident}(?!\d)', text):
+            prefix = text[max(0, marker.start() - 250):marker.start()]
+            date = date_time.search(prefix)
+            if not date:
                 continue
-            teams_scores = prefix[:date_match.start()]
-            # The away team is the one directly before the date. Its score
-            # is the last number (not a club's number embedded in its name).
-            away = re.search(r'\\s+(\\d{1,3})\\s*$', teams_scores)
-            if not away:
+            body = prefix[:date.start()]
+            # The away score is the last number immediately before the date.
+            away_score = re.search(r'\s+(\d{1,3})\s*$', body)
+            if not away_score:
                 continue
-            before_away_score = teams_scores[:away.start()]
-            # Find home score between two nonempty club labels. Validate
-            # against the five known teams in the same girone by similarity.
-            import difflib
-            known = list(dict.fromkeys([x[k] for x in fixtures for k in ('casa', 'trasferta')]))
-            for m in re.finditer(r'\\s+(\\d{1,3})\\s+', before_away_score):
-                home_label = before_away_score[max(0,m.start()-90):m.start()].split(' RITORNO ')[-1]
-                away_label = before_away_score[m.end():]
-                home_similarity = difflib.SequenceMatcher(None, norm(game['casa']), norm(home_label)).ratio()
-                away_similarity = difflib.SequenceMatcher(None, norm(game['trasferta']), norm(away_label)).ratio()
-                if home_similarity >= 0.55 and away_similarity >= 0.55:
-                    candidates.add((int(m.group(1)), int(away.group(1))))
+            before_away = body[:away_score.start()]
+            # Identify the home score, allowing a sponsor or suffix in the
+            # FIP club names. A club number (e.g. 2020) is not a score.
+            for home_score in re.finditer(r'\s+(\d{1,3})\s+', before_away):
+                home_label = before_away[max(0, home_score.start() - 110):home_score.start()]
+                away_label = before_away[home_score.end():]
+                if not team_matches(home_label, game['casa']):
+                    continue
+                if not team_matches(away_label, game['trasferta']):
+                    continue
+                score = (int(home_score.group(1)), int(away_score.group(1)))
+                if score[0] != score[1]:
+                    candidates.add(score)
         if len(candidates) == 1:
-            score = next(iter(candidates))
-            if score[0] != score[1]:
-                results[game['id']] = list(score)
-                print(f'FIP ID-based score: {game["id"]} -> {score}')
+            results[game['id']] = list(next(iter(candidates)))
+            print(f'FIP game {game["id"]}: {results[game["id"]]}')
         elif len(candidates) > 1:
-            print(f'WARNING: ambiguous ID-based scores for {game["id"]}: {sorted(candidates)}')
+            print(f'WARNING: conflicting scores for game {game["id"]}: {sorted(candidates)}')
+        elif re.search(rf'(?<!\d)0*{ident}(?!\d)', text):
+            print(f'WARNING: game {game["id"]} present but no verified score')
     return results
 
 
