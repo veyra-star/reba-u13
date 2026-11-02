@@ -304,8 +304,11 @@ fetch('data/campionato.json').then(r => r.json()).then(data => {
     alert('Calendario incompleto o non valido: ' + errors.join('; '));
     return;
   }
-  if (db.ultimo_aggiornamento_fip) {
-    $('#sync').textContent = 'Risultati FIP aggiornati: ' + new Date(db.ultimo_aggiornamento_fip).toLocaleString('it-IT');
+  if (db.ultimo_controllo_fip) {
+    const checked = new Date(db.ultimo_controllo_fip);
+    const day = checked.toLocaleDateString('it-IT', { timeZone: 'Europe/Rome', day: '2-digit', month: '2-digit', year: 'numeric' });
+    const time = checked.toLocaleTimeString('it-IT', { timeZone: 'Europe/Rome', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+    $('#sync').textContent = `Ultimo controllo FIP effettuato: ${day} · ${time}`;
     $('#status').textContent = 'Risultati FIP sincronizzati.';
   }
   $('#matchGroup').innerHTML = '<option value="all">Tutti i gironi</option>' + Object.keys(db.squadre).map(g => `<option value="${escapeHTML(g)}">Girone ${escapeHTML(g)}</option>`).join('');

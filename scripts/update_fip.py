@@ -116,7 +116,11 @@ def main():
                 resp.raise_for_status()
                 if len(resp.content) < 1000:
                     raise ValueError('Response too small for a results page')
-                parsed = extract(resp.text, [p for p in db['partite'] if p['girone'] == group])
+                fixtures = [p for p in db['partite'] if p['girone'] == group]
+                text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
+                if not any(re.search(rf'(?<!\d)0*{re.escape(str(int(p["id"])))}(?!\d)', text) for p in fixtures):
+                    raise ValueError('No recognized fixture IDs for this group')
+                parsed = extract(resp.text, fixtures)
                 updates.update(parsed)
                 if not parsed and group == 'C':
                     soup = BeautifulSoup(resp.text, 'html.parser')
@@ -131,20 +135,23 @@ def main():
     if errors:
         print('FIP request failed; leaving JSON unchanged:\n' + '\n'.join(errors), file=sys.stderr)
         return 1
+    checked_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
     changed = 0
     for game in db['partite']:
         score = updates.get(game['id'])
         if score is not None and game['risultato'] != score:
             game['risultato'] = score
-            game['acquisito_il'] = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
+            game['acquisito_il'] = checked_at
             changed += 1
-    # A successful request is not proof that markup was parsed correctly.
-    # Keep explicit validation status until real published scores are observed.
     if changed:
-        db['ultimo_aggiornamento_fip'] = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
+        db['ultimo_aggiornamento_fip'] = checked_at
+    # Only a successful live cycle across all five groups is a FIP check.
+    # Offline fixture parsing must never advance this timestamp.
+    if not args.fixture_html:
+        db['ultimo_controllo_fip'] = checked_at
+    if changed or not args.fixture_html:
         DATA.write_text(json.dumps(db, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'New/changed verified score pairs: {changed}. Unrecognized scores are not guessed.')
-    # Trigger an immediate FIP check after adjusting the hourly schedule.
     return 0
 
 
