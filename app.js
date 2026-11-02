@@ -181,8 +181,6 @@ function installBulkButton() {
   button.type = 'button';
   button.textContent = '🎲 Simula tutte le restanti';
   button.title = 'Simula le partite ancora senza punteggio, usando progressivamente i risultati precedenti';
-  button.style.marginLeft = '8px';
-  button.style.marginTop = '8px';
   document.querySelector('#simulate').insertAdjacentElement('afterend', button);
   const note = document.createElement('p');
   note.id = 'simBulkNote';
