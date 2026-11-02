@@ -31,6 +31,7 @@
 /* REBA 0.4.3: scrollable match center, 12 rows at a time. */
 #matches.match-list{--match-row-height:76px;max-height:calc(12 * var(--match-row-height));overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;align-content:start;display:flex;flex-direction:column;gap:9px;padding-right:4px}
 #matches .match{flex:0 0 auto;min-height:67px;box-sizing:border-box}
-#matches .match.fresh-result{border-color:#77f64e;background:#194c28;box-shadow:inset 4px 0 0 #91ff5e}
-#matches .match.fresh-result .score{color:#b8ff8c;font-weight:900}
+/* Recent results add a cream marker; REBA keeps its own border and background. */
+.match.fresh-result{box-shadow:inset 3px 0 0 var(--cream)}
+.match.fresh-result .score{color:var(--lime);font-weight:900}
 @media(max-width:800px){#matches.match-list{--match-row-height:71px}#matches .match{min-height:62px}}
