@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/update_fip.py'
+      - '.github/workflows/update.yml'
 
 permissions:
   contents: write
@@ -38,7 +39,7 @@ jobs:
           enabled = os.environ['EVENT_NAME'] != 'schedule' or 8 <= local.hour <= 23
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f'run={str(enabled).lower()}\n')
-          print(f'Ora italiana: {local.isoformat()}; eseguire: {enabled}')
+          print(f'Ora italiana: {local.isoformat()}; evento: {os.environ["EVENT_NAME"]}; eseguire: {enabled}')
           PY
 
       - name: Installa dipendenze
