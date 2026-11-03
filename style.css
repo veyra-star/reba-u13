@@ -28,8 +28,8 @@
 .feature h2#nextTitle .next-rating{display:block;line-height:1.2;margin-top:3px}
 .feature h2#nextTitle .next-rating .elo-rating{display:block;font-size:14px;line-height:1.25;letter-spacing:0;font-weight:500;color:var(--muted)}
 
-/* REBA 0.4.3: scrollable match center, 12 rows at a time. */
-#matches.match-list{--match-row-height:76px;max-height:calc(12 * var(--match-row-height));overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;align-content:start;display:flex;flex-direction:column;gap:9px;padding-right:4px}
+/* REBA 0.4.3: scrollable match center, 8 rows at a time. */
+#matches.match-list{--match-row-height:76px;max-height:calc(8 * var(--match-row-height));overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;align-content:start;display:flex;flex-direction:column;gap:9px;padding-right:4px}
 #matches .match{flex:0 0 auto;min-height:67px;box-sizing:border-box}
 /* Recent results add a cream marker; REBA keeps its own border and background. */
 .match.fresh-result{box-shadow:inset 3px 0 0 var(--cream)}

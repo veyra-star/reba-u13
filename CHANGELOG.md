@@ -1,4 +1,5 @@
 ## v0.4.4 — 03/11/2026
+- Ridotta la finestra del centro partite da 12 a 8 righe, mantenendo lo scorrimento.
 - Aggiunto il filtro Solo REBA in Risultati e partite, prima del selettore gironi.
 - Con Solo REBA attivo, tutte le gare della squadra principale restano in ordine cronologico e il selettore gironi è disabilitato; disattivandolo si ripristina il girone precedente.
 - Rimossi Calendario REBA, il collegamento di navigazione e il relativo rendering duplicato.
