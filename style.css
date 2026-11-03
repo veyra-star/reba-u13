@@ -35,3 +35,10 @@
 .match.fresh-result{box-shadow:inset 3px 0 0 var(--cream)}
 .match.fresh-result .score{color:var(--lime);font-weight:900}
 @media(max-width:800px){#matches.match-list{--match-row-height:71px}#matches .match{min-height:62px}}
+
+/* Match center filters wrap with the heading on smaller screens. */
+.match-filters{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.reba-filter{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;cursor:pointer;color:var(--cream);font-weight:700}
+.reba-filter input{width:18px;height:18px;margin:0;accent-color:var(--lime);cursor:pointer}
+.match-filters select:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:800px){#risultati .section-head{flex-wrap:wrap}.match-filters{max-width:100%}}

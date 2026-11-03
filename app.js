@@ -252,13 +252,17 @@ function matchHTML(p) {
   return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
 }
 function render() {
-  let all = [...db.partite].sort((a,b) => date(a.data)-date(b.data));
+  let all = orderedGames();
   const today = new Date(new Date().toDateString());
   let upcoming = all.filter(p => date(p.data) >= today && (isReba(p.casa) || isReba(p.trasferta)) && !p.risultato);
   const ratings = currentRatings();
   renderNext(upcoming[0], ratings);
   let grp = $('#matchGroup').value;
-  let filtered = all.filter(p => grp === 'all' || p.girone === grp);
+  const onlyReba = $('#onlyReba').checked;
+  $('#matchGroup').disabled = onlyReba;
+  let filtered = all.filter(p => onlyReba
+    ? isReba(p.casa) || isReba(p.trasferta)
+    : grp === 'all' || p.girone === grp);
   const matchList = $('#matches');
   matchList.innerHTML = filtered.map(matchHTML).join('');
   // Preserve chronological order; initially center the most recently
@@ -270,7 +274,6 @@ function render() {
     const row = [...matchList.children].find(el => el.dataset.matchId === String(focus.id));
     if (row) matchList.scrollTop = Math.max(0, row.offsetTop - matchList.offsetTop - matchList.clientHeight / 2 + row.offsetHeight / 2);
   }
-  $('#rebaGames').innerHTML = all.filter(p => isReba(p.casa)||isReba(p.trasferta)).map(matchHTML).join('');
   $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${escapeHTML(g)}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
   let gs = 'ABCDE';
   $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = standings(g)[0], b = standings(other)[1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${a?.G?escapeHTML(short(a.nome)):'Da definire'}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${b?.G?escapeHTML(short(b.nome)):'Da definire'}</div></div>`; }).join('');
@@ -311,6 +314,7 @@ fetch('data/campionato.json').then(r => r.json()).then(data => {
   }
   $('#matchGroup').innerHTML = '<option value="all">Tutti i gironi</option>' + Object.keys(db.squadre).map(g => `<option value="${escapeHTML(g)}">Girone ${escapeHTML(g)}</option>`).join('');
   $('#matchGroup').onchange = render;
+  $('#onlyReba').onchange = render;
   // Raggruppa per giornata ufficiale, quando disponibile nei dati.
   // In assenza del campo giornata, raggruppa per data senza inventare numeri di turno.
   const available = db.partite.filter(p => !p.risultato).sort((a,b) =>

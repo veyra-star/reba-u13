@@ -1,3 +1,9 @@
+## v0.4.4 — 03/11/2026
+- Aggiunto il filtro Solo REBA in Risultati e partite, prima del selettore gironi.
+- Con Solo REBA attivo, tutte le gare della squadra principale restano in ordine cronologico e il selettore gironi è disabilitato; disattivandolo si ripristina il girone precedente.
+- Rimossi Calendario REBA, il collegamento di navigazione e il relativo rendering duplicato.
+- Preservati evidenziazioni dei risultati recenti, simulatore, classifiche, layout responsive e automazione FIP.
+
 ## v0.3.8 - 25/10/2026
 - Ripristinata cartella assets con logo WebP trasparente.
 - Aggiornati riferimento e resa CSS del logo, senza alterare proporzioni.
