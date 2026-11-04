@@ -108,6 +108,7 @@ def main():
     updates = {}
     errors = []
     checked_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
+    diagnostics = {}
     for group in CODES:
         try:
             resp = requests.get(url_for(group), headers=HEADERS, timeout=25)
@@ -127,6 +128,7 @@ def main():
                     snippets.append({'id': game_id, 'contesto': text[max(0,match.start()-180):match.end()+35]})
                 if len(snippets) >= 4:
                     break
+            diagnostics[group] = {'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets}
             print('DIAGNOSTICA FIP', group, json.dumps({'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets}, ensure_ascii=False))
             updates.update({str(k):v for k,v in extract(resp.text, group_games).items()})
             print(f'Girone {group}: HTTP {resp.status_code}')
@@ -134,6 +136,7 @@ def main():
             errors.append(f'{group}: {exc}')
     if not errors and not updates:
         errors.append('Nessun punteggio riconosciuto: verifica non valida')
+    (ROOT / 'diagnostica.json').write_text(json.dumps({'tentativo_utc':checked_at,'gironi':diagnostics,'errori':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     state['ultimo_tentativo_utc'] = checked_at
     state['errori'] = errors
     if errors:
