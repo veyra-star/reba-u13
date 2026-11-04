@@ -23,8 +23,8 @@ PARAMS = dict(group='campionati-regionali', regione_codice='PI', comitato_codice
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; RebaU13Results/0.2; public sports results reader)'}
 
 
-def url_for(group):
-    return BASE + '?' + urlencode({**PARAMS, 'codice_girone': CODES[group]})
+def url_for(group, ar, giornata):
+    return BASE + '?' + urlencode({**PARAMS, 'codice_girone': CODES[group], 'codice_ar': ar, 'giornata': giornata})
 
 
 def parse_score(text):
@@ -110,28 +110,37 @@ def main():
         html = args.fixture_html.read_text(encoding='utf-8')
         updates.update(extract(html, [p for p in db['partite'] if p['girone'] == 'C']))
     else:
+        today = dt.datetime.now(dt.timezone(dt.timedelta(hours=1))).date()
         for group in CODES:
-            try:
-                resp = requests.get(url_for(group), headers=HEADERS, timeout=25)
-                resp.raise_for_status()
-                if len(resp.content) < 1000:
-                    raise ValueError('Response too small for a results page')
-                fixtures = [p for p in db['partite'] if p['girone'] == group]
-                text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
-                if not any(re.search(rf'(?<!\d)0*{re.escape(str(int(p["id"])))}(?!\d)', text) for p in fixtures):
-                    raise ValueError('No recognized fixture IDs for this group')
-                parsed = extract(resp.text, fixtures)
-                updates.update(parsed)
-                if not parsed and group == 'C':
-                    soup = BeautifulSoup(resp.text, 'html.parser')
-                    print('DIAGNOSTICA FIP C: titolo=', soup.title.get_text(' ', strip=True) if soup.title else '(nessuno)')
-                    print('DIAGNOSTICA FIP C: testo=', soup.get_text(' ', strip=True)[:1800])
-                    print('DIAGNOSTICA FIP C: selettori=', {k: len(soup.select(k)) for k in ['tr', 'table', '.match-row', '.risultato', '.partita', '.gara', 'script']})
-                print(f'Girone {group}: HTTP {resp.status_code}; extracted {len(parsed)} scores')
-            except (requests.RequestException, ValueError) as exc:
-                errors.append(f'{group}: {exc}')
-    if not errors and not updates and dt.datetime.now(dt.timezone.utc).date() >= dt.date(2026, 10, 30):
-        errors.append('Nessun punteggio riconosciuto dopo l avvio del campionato: verificare struttura FIP e parser')
+            fixtures = [p for p in db['partite'] if p['girone'] == group]
+            rounds = {}
+            for game in fixtures:
+                m = re.fullmatch(r'(\d+)\s+(andata|ritorno)', game['giornata'], re.I)
+                if not m:
+                    errors.append(f'{group}: giornata sconosciuta per {game["id"]}')
+                    continue
+                if dt.datetime.strptime(game['data'], '%d/%m/%Y').date() <= today:
+                    key = (1 if m.group(2).lower() == 'andata' else 0, int(m.group(1)))
+                    rounds.setdefault(key, []).append(game)
+            for (ar, giornata), selected in sorted(rounds.items()):
+                try:
+                    resp = requests.get(url_for(group, ar, giornata), headers=HEADERS, timeout=25)
+                    resp.raise_for_status()
+                    if len(resp.content) < 1000:
+                        raise ValueError('Response too small for a results page')
+                    page_text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
+                    if not any(re.search(r'(?<!\d)0*' + re.escape(str(int(p['id']))) + r'(?!\d)', page_text) for p in selected):
+                        raise ValueError('No expected fixture IDs in round page')
+                    parsed = extract(resp.text, selected)
+                    for game_id, score in parsed.items():
+                        if game_id in updates and updates[game_id] != score:
+                            raise ValueError(f'Conflicting scores for {game_id}')
+                        updates[game_id] = score
+                    print(f'Girone {group}, giornata {giornata}, ar={ar}: HTTP {resp.status_code}; extracted {len(parsed)} scores')
+                except (requests.RequestException, ValueError) as exc:
+                    errors.append(f'{group} ar={ar} giornata={giornata}: {exc}')
+        if not updates and today >= dt.date(2026, 10, 30):
+            errors.append('Nessun punteggio verificato nelle giornate gia disputate')
     if errors:
         print('FIP request failed; leaving JSON unchanged:\n' + '\n'.join(errors), file=sys.stderr)
         return 1
