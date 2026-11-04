@@ -128,7 +128,25 @@ def main():
                     snippets.append({'id': game_id, 'contesto': text[max(0,match.start()-180):match.end()+35]})
                 if len(snippets) >= 4:
                     break
-            diagnostics[group] = {'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets}
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            controls = []
+            for tag in soup.find_all(['a','button','select','option','form','input']):
+                label = tag.get_text(' ', strip=True)[:90]
+                attrs = {k: str(v)[:250] for k,v in tag.attrs.items() if k in ('href','action','name','value','id','class','onclick','data-giornata','data-round','data-url')}
+                if re.search(r'giornat|andata|ritorno|turno|round|risultat|calendari', label + ' ' + str(attrs), re.I):
+                    controls.append({'tag':tag.name,'testo':label,'attributi':attrs})
+            scripts = []
+            for tag in soup.find_all('script'):
+                source = tag.get('src','')
+                body = tag.get_text(' ', strip=True)
+                if source:
+                    scripts.append({'src':source[:300]})
+                elif re.search(r'giornat|andata|ritorno|codice_girone|risultat',body,re.I):
+                    scripts.append({'estratto':body[:600]})
+            diagnostics[group] = {'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets,
+                                  'controlli_giornata':controls[:45], 'script':scripts[:25],
+                                  'url_finale':resp.url}
+
             print('DIAGNOSTICA FIP', group, json.dumps({'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets}, ensure_ascii=False))
             updates.update({str(k):v for k,v in extract(resp.text, group_games).items()})
             print(f'Girone {group}: HTTP {resp.status_code}')
