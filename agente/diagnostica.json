@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-04T07:08:21+00:00",
+  "tentativo_utc": "2026-11-04T07:23:07+00:00",
   "gironi": {
     "A": {
       "lunghezza": 13415,
@@ -13,7 +13,221 @@
           "id": "8664",
           "contesto": " 1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO OLIMPO BASKET ALBA GATORS 07 Novembre 2026 15:00 008664 Gara designata: la designazione è "
         }
-      ]
+      ],
+      "controlli_giornata": [
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "input",
+          "testo": "",
+          "attributi": {
+            "id": "base_url",
+            "value": "https://fip.it/risultati/"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=2",
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "select",
+          "testo": "1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3°",
+          "attributi": {
+            "name": "calendar_mobile_select",
+            "id": ""
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86095&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica calendario",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/calendario.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica giornata",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/giornata.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "href": "https://fip.it/risultati/"
+          }
+        }
+      ],
+      "script": [
+        {
+          "estratto": "{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://fip.it/risultati/\",\"url\":\"https://fip.it/risultati/\",\"name\":\"Risultati - Federazione Italiana Pallacanestro\",\"isPartOf\":{\"@id\":\"https://fip.it/#website\"},\"datePublished\":\"2022-05-02T13:52:29+00:00\",\"breadcrumb\":{\"@id\":\"https://fip.it/risultati/#breadcrumb\"},\"inLanguage\":\"it-IT\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://fip.it/risultati/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://fip.it/risultati/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://fip.it/\""
+        },
+        {
+          "src": "https://fip.it/wp-content/themes/fip/assets/build/js/all.min.js?ver=1775027999"
+        }
+      ],
+      "url_finale": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86095"
     },
     "B": {
       "lunghezza": 13321,
@@ -27,7 +241,221 @@
           "id": "8684",
           "contesto": " 3° Arbitro Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi Arbitri Designazione in attesa di conferma. ALFIERI BASKET AREA PRO 2020 08 Novembre 2026 09:00 008684 Gara designata: la designazione è "
         }
-      ]
+      ],
+      "controlli_giornata": [
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "input",
+          "testo": "",
+          "attributi": {
+            "id": "base_url",
+            "value": "https://fip.it/risultati/"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=2",
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "select",
+          "testo": "1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3°",
+          "attributi": {
+            "name": "calendar_mobile_select",
+            "id": ""
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86096&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica calendario",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/calendario.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica giornata",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/giornata.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "href": "https://fip.it/risultati/"
+          }
+        }
+      ],
+      "script": [
+        {
+          "estratto": "{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://fip.it/risultati/\",\"url\":\"https://fip.it/risultati/\",\"name\":\"Risultati - Federazione Italiana Pallacanestro\",\"isPartOf\":{\"@id\":\"https://fip.it/#website\"},\"datePublished\":\"2022-05-02T13:52:29+00:00\",\"breadcrumb\":{\"@id\":\"https://fip.it/risultati/#breadcrumb\"},\"inLanguage\":\"it-IT\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://fip.it/risultati/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://fip.it/risultati/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://fip.it/\""
+        },
+        {
+          "src": "https://fip.it/wp-content/themes/fip/assets/build/js/all.min.js?ver=1775027999"
+        }
+      ],
+      "url_finale": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86096"
     },
     "C": {
       "lunghezza": 13338,
@@ -41,7 +469,221 @@
           "id": "8704",
           "contesto": "A 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO USAC RIVAROLO BK 2009 BASKET VENARIA 07 Novembre 2026 15:00 008704 Gara designata: la designazione è "
         }
-      ]
+      ],
+      "controlli_giornata": [
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "input",
+          "testo": "",
+          "attributi": {
+            "id": "base_url",
+            "value": "https://fip.it/risultati/"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=2",
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "select",
+          "testo": "1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3°",
+          "attributi": {
+            "name": "calendar_mobile_select",
+            "id": ""
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86097&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica calendario",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/calendario.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica giornata",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/giornata.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "href": "https://fip.it/risultati/"
+          }
+        }
+      ],
+      "script": [
+        {
+          "estratto": "{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://fip.it/risultati/\",\"url\":\"https://fip.it/risultati/\",\"name\":\"Risultati - Federazione Italiana Pallacanestro\",\"isPartOf\":{\"@id\":\"https://fip.it/#website\"},\"datePublished\":\"2022-05-02T13:52:29+00:00\",\"breadcrumb\":{\"@id\":\"https://fip.it/risultati/#breadcrumb\"},\"inLanguage\":\"it-IT\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://fip.it/risultati/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://fip.it/risultati/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://fip.it/\""
+        },
+        {
+          "src": "https://fip.it/wp-content/themes/fip/assets/build/js/all.min.js?ver=1775027999"
+        }
+      ],
+      "url_finale": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86097"
     },
     "D": {
       "lunghezza": 13432,
@@ -55,7 +697,221 @@
           "id": "8724",
           "contesto": " Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi Arbitri Designazione in attesa di conferma. AVIGLIANA BASKET VIRTUS BASKET SALUGGIA 08 Novembre 2026 11:45 008724 Gara designata: la designazione è "
         }
-      ]
+      ],
+      "controlli_giornata": [
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "input",
+          "testo": "",
+          "attributi": {
+            "id": "base_url",
+            "value": "https://fip.it/risultati/"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=2",
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "select",
+          "testo": "1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3°",
+          "attributi": {
+            "name": "calendar_mobile_select",
+            "id": ""
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86098&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica calendario",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/calendario.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica giornata",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/giornata.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "href": "https://fip.it/risultati/"
+          }
+        }
+      ],
+      "script": [
+        {
+          "estratto": "{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://fip.it/risultati/\",\"url\":\"https://fip.it/risultati/\",\"name\":\"Risultati - Federazione Italiana Pallacanestro\",\"isPartOf\":{\"@id\":\"https://fip.it/#website\"},\"datePublished\":\"2022-05-02T13:52:29+00:00\",\"breadcrumb\":{\"@id\":\"https://fip.it/risultati/#breadcrumb\"},\"inLanguage\":\"it-IT\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://fip.it/risultati/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://fip.it/risultati/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://fip.it/\""
+        },
+        {
+          "src": "https://fip.it/wp-content/themes/fip/assets/build/js/all.min.js?ver=1775027999"
+        }
+      ],
+      "url_finale": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86098"
     },
     "E": {
       "lunghezza": 13379,
@@ -69,7 +925,221 @@
           "id": "8744",
           "contesto": "° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO A.S.D. OLYMPIA BASKET 2000 POLISPORTIVA SAN GIACOMO 08 Novembre 2026 11:00 008744 Gara designata: la designazione è "
         }
-      ]
+      ],
+      "controlli_giornata": [
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "RISULTATI",
+          "attributi": {
+            "href": "https://fip.it/risultati",
+            "class": "['nav-result-link']"
+          }
+        },
+        {
+          "tag": "input",
+          "testo": "",
+          "attributi": {
+            "id": "base_url",
+            "value": "https://fip.it/risultati/"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=2",
+            "class": "['active']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "1",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "2",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "3",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "4",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "5",
+          "attributi": {
+            "href": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "select",
+          "testo": "1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3°",
+          "attributi": {
+            "name": "calendar_mobile_select",
+            "id": ""
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° - ANDATA",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=5"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "1° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=1"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "2° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=2"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "3° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=3"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "4° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=4"
+          }
+        },
+        {
+          "tag": "option",
+          "testo": "5° -  RITORNO",
+          "attributi": {
+            "value": "https://fip.it/risultati/?group=campionati-regionali®ione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13/F&codice_fase=1&codice_girone=86099&codice_ar=0&giornata=5"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica calendario",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/calendario.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Scarica giornata",
+          "attributi": {
+            "href": "https://backend.fip.it/api/v1/giornata.pdf?comitato_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tRPI\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t®ione_codice=\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",
+            "class": "['btn']"
+          }
+        },
+        {
+          "tag": "a",
+          "testo": "Risultati",
+          "attributi": {
+            "href": "https://fip.it/risultati/"
+          }
+        }
+      ],
+      "script": [
+        {
+          "estratto": "{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://fip.it/risultati/\",\"url\":\"https://fip.it/risultati/\",\"name\":\"Risultati - Federazione Italiana Pallacanestro\",\"isPartOf\":{\"@id\":\"https://fip.it/#website\"},\"datePublished\":\"2022-05-02T13:52:29+00:00\",\"breadcrumb\":{\"@id\":\"https://fip.it/risultati/#breadcrumb\"},\"inLanguage\":\"it-IT\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https://fip.it/risultati/\"]}]},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://fip.it/risultati/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://fip.it/\""
+        },
+        {
+          "src": "https://fip.it/wp-content/themes/fip/assets/build/js/all.min.js?ver=1775027999"
+        }
+      ],
+      "url_finale": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86099"
     }
   },
   "errori": [
