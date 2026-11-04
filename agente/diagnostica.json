@@ -1,0 +1,78 @@
+{
+  "tentativo_utc": "2026-11-04T07:08:21+00:00",
+  "gironi": {
+    "A": {
+      "lunghezza": 13415,
+      "codici_trovati": 2,
+      "esempi": [
+        {
+          "id": "8663",
+          "contesto": "ne in attesa di conferma. 3° Arbitro Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi PROMO CUNEO BASKET PINK BANCA B.T.M. CARMAGNOLA 08 Novembre 2026 15:00 008663 Gara designata: la designazione è "
+        },
+        {
+          "id": "8664",
+          "contesto": " 1° - ANDATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO OLIMPO BASKET ALBA GATORS 07 Novembre 2026 15:00 008664 Gara designata: la designazione è "
+        }
+      ]
+    },
+    "B": {
+      "lunghezza": 13321,
+      "codici_trovati": 2,
+      "esempi": [
+        {
+          "id": "8683",
+          "contesto": "TA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO POLISPORTIVA PASTA BEA CHIERI SSDRL 07 Novembre 2026 17:00 008683 Gara non ancora designata Info Squ"
+        },
+        {
+          "id": "8684",
+          "contesto": " 3° Arbitro Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi Arbitri Designazione in attesa di conferma. ALFIERI BASKET AREA PRO 2020 08 Novembre 2026 09:00 008684 Gara designata: la designazione è "
+        }
+      ]
+    },
+    "C": {
+      "lunghezza": 13338,
+      "codici_trovati": 2,
+      "esempi": [
+        {
+          "id": "8703",
+          "contesto": "Arbitro Designazione in attesa di conferma. 3° Arbitro Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi LETTERA 22 A.S.D. LAPOLISMILE 08 Novembre 2026 15:00 008703 Gara designata: la designazione è "
+        },
+        {
+          "id": "8704",
+          "contesto": "A 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO USAC RIVAROLO BK 2009 BASKET VENARIA 07 Novembre 2026 15:00 008704 Gara designata: la designazione è "
+        }
+      ]
+    },
+    "D": {
+      "lunghezza": 13432,
+      "codici_trovati": 2,
+      "esempi": [
+        {
+          "id": "8723",
+          "contesto": "ATA 2° - ANDATA 3° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO POLISPORTIVA REBA SAN MAURO BASKET 07 Novembre 2026 17:45 008723 Gara non ancora designata Info Squ"
+        },
+        {
+          "id": "8724",
+          "contesto": " Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi Arbitri Designazione in attesa di conferma. AVIGLIANA BASKET VIRTUS BASKET SALUGGIA 08 Novembre 2026 11:45 008724 Gara designata: la designazione è "
+        }
+      ]
+    },
+    "E": {
+      "lunghezza": 13379,
+      "codici_trovati": 2,
+      "esempi": [
+        {
+          "id": "8743",
+          "contesto": "in attesa di conferma. 3° Arbitro Designazione in attesa di conferma. Segnapunti Cronometrista 24 secondi BASKET FEMM.LE ALESSANDRIA ALLIANZ DERTHONA BASKET 10 Novembre 2026 18:30 008743 Gara non ancora designata Info Squ"
+        },
+        {
+          "id": "8744",
+          "contesto": "° - ANDATA 4° - ANDATA 5° - ANDATA 1° -  RITORNO 2° -  RITORNO 3° -  RITORNO 4° -  RITORNO 5° -  RITORNO A.S.D. OLYMPIA BASKET 2000 POLISPORTIVA SAN GIACOMO 08 Novembre 2026 11:00 008744 Gara designata: la designazione è "
+        }
+      ]
+    }
+  },
+  "errori": [
+    "Nessun punteggio riconosciuto: verifica non valida"
+  ]
+}
