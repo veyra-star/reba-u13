@@ -118,6 +118,16 @@ def main():
             text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
             if not any(re.search(rf'(?<!\\d)0*{re.escape(str(int(p["id"])))}(?!\\d)', text) for p in group_games):
                 raise ValueError('Nessun codice partita noto trovato')
+            # Diagnostica limitata ai codici gara noti: non salva HTML completo.
+            snippets = []
+            for game in group_games:
+                game_id = str(int(game['id']))
+                match = re.search(r'(?<!\\d)0*' + re.escape(game_id) + r'(?!\\d)', text)
+                if match:
+                    snippets.append({'id': game_id, 'contesto': text[max(0,match.start()-180):match.end()+35]})
+                if len(snippets) >= 4:
+                    break
+            print('DIAGNOSTICA FIP', group, json.dumps({'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets}, ensure_ascii=False))
             updates.update({str(k):v for k,v in extract(resp.text, group_games).items()})
             print(f'Girone {group}: HTTP {resp.status_code}')
         except (requests.RequestException, ValueError) as exc:
