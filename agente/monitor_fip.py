@@ -25,8 +25,8 @@ PARAMS = dict(group='campionati-regionali', regione_codice='PI', comitato_codice
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; RebaU13Results/0.2; public sports results reader)'}
 
 
-def url_for(group):
-    return BASE + '?' + urlencode({**PARAMS, 'codice_girone': CODES[group]})
+def url_for(group, ar, giornata):
+    return BASE + '?' + urlencode({**PARAMS, 'codice_girone': CODES[group], 'codice_ar': ar, 'giornata': giornata})
 
 
 def parse_score(text):
@@ -109,49 +109,41 @@ def main():
     errors = []
     checked_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
     diagnostics = {}
+    today = dt.datetime.now(dt.timezone(dt.timedelta(hours=1))).date()
     for group in CODES:
-        try:
-            resp = requests.get(url_for(group), headers=HEADERS, timeout=25)
-            resp.raise_for_status()
-            if len(resp.content) < 1000:
-                raise ValueError('Risposta FIP troppo breve')
-            group_games = [p for p in fixtures if p['girone'] == group]
-            text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
-            if not any(re.search(rf'(?<!\\d)0*{re.escape(str(int(p["id"])))}(?!\\d)', text) for p in group_games):
-                raise ValueError('Nessun codice partita noto trovato')
-            # Diagnostica limitata ai codici gara noti: non salva HTML completo.
-            snippets = []
-            for game in group_games:
-                game_id = str(int(game['id']))
-                match = re.search(r'(?<!\\d)0*' + re.escape(game_id) + r'(?!\\d)', text)
-                if match:
-                    snippets.append({'id': game_id, 'contesto': text[max(0,match.start()-180):match.end()+35]})
-                if len(snippets) >= 4:
-                    break
-            soup = BeautifulSoup(resp.text, 'html.parser')
-            controls = []
-            for tag in soup.find_all(['a','button','select','option','form','input']):
-                label = tag.get_text(' ', strip=True)[:90]
-                attrs = {k: str(v)[:250] for k,v in tag.attrs.items() if k in ('href','action','name','value','id','class','onclick','data-giornata','data-round','data-url')}
-                if re.search(r'giornat|andata|ritorno|turno|round|risultat|calendari', label + ' ' + str(attrs), re.I):
-                    controls.append({'tag':tag.name,'testo':label,'attributi':attrs})
-            scripts = []
-            for tag in soup.find_all('script'):
-                source = tag.get('src','')
-                body = tag.get_text(' ', strip=True)
-                if source:
-                    scripts.append({'src':source[:300]})
-                elif re.search(r'giornat|andata|ritorno|codice_girone|risultat',body,re.I):
-                    scripts.append({'estratto':body[:600]})
-            diagnostics[group] = {'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets,
-                                  'controlli_giornata':controls[:45], 'script':scripts[:25],
-                                  'url_finale':resp.url}
-
-            print('DIAGNOSTICA FIP', group, json.dumps({'lunghezza':len(text),'codici_trovati':len(snippets),'esempi':snippets}, ensure_ascii=False))
-            updates.update({str(k):v for k,v in extract(resp.text, group_games).items()})
-            print(f'Girone {group}: HTTP {resp.status_code}')
-        except (requests.RequestException, ValueError) as exc:
-            errors.append(f'{group}: {exc}')
+        group_games = [p for p in fixtures if p['girone'] == group]
+        rounds = {}
+        for game in group_games:
+            m = re.match(r'^(\\d+)\\s+(andata|ritorno)$', game['giornata'], re.I)
+            if not m:
+                errors.append(f'{group}: giornata sconosciuta per {game["id"]}')
+                continue
+            day = dt.datetime.strptime(game['data'], '%d/%m/%Y').date()
+            if day <= today:
+                key = (1 if m.group(2).lower() == 'andata' else 0, int(m.group(1)))
+                rounds.setdefault(key, []).append(game)
+        diagnostics[group] = {'giornate': {}, 'data_limite':today.isoformat()}
+        for (ar, giornata), selected in sorted(rounds.items()):
+            key = f'{ar}:{giornata}'
+            try:
+                resp = requests.get(url_for(group, ar, giornata), headers=HEADERS, timeout=25)
+                resp.raise_for_status()
+                if len(resp.content) < 1000:
+                    raise ValueError('Risposta FIP troppo breve')
+                text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
+                seen = [p['id'] for p in selected if re.search(r'(?<!\\d)0*'+re.escape(str(int(p['id'])))+r'(?!\\d)',text)]
+                if not seen:
+                    raise ValueError('Nessun codice gara atteso nella giornata')
+                parsed = {str(k):v for k,v in extract(resp.text, selected).items()}
+                for game_id, score in parsed.items():
+                    if game_id in updates and updates[game_id] != score:
+                        raise ValueError(f'Punteggi discordanti per {game_id}')
+                    updates[game_id] = score
+                diagnostics[group]['giornate'][key] = {'url':resp.url,'codici_trovati':seen,'risultati':parsed}
+                print(f'Girone {group} ar={ar} giornata={giornata}: {len(parsed)} risultati')
+            except (requests.RequestException, ValueError) as exc:
+                errors.append(f'{group} ar={ar} giornata={giornata}: {exc}')
+                diagnostics[group]['giornate'][key] = {'errore':str(exc)}
     if not errors and not updates:
         errors.append('Nessun punteggio riconosciuto: verifica non valida')
     (ROOT / 'diagnostica.json').write_text(json.dumps({'tentativo_utc':checked_at,'gironi':diagnostics,'errori':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
