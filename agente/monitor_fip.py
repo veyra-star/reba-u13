@@ -42,8 +42,8 @@ def extract(html, group):
         raise ValueError("FIP page too short")
     # Find scores only inside match-sized chunks preceding a FIP game identifier.
     # Deliberately conservative: ambiguous rows are omitted rather than guessed.
-    datepat=r"(\\d{1,2}\\s+[A-Za-zÀ-ÿ]+\\s+20\\d{2}\\s+\\d{1,2}:\\d{2})"
-    pattern=re.compile(r"(.{0,210}?)\\s+(\\d{1,3})\\s+(.{3,120}?)\\s+(\\d{1,3})\\s+"+datepat+r"\\s+(\\d{4,7})(?!\\d)",re.I)
+    datepat=r"(\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+20\d{2}\s+\d{1,2}:\d{2})"
+    pattern=re.compile(r"(.{0,210}?)\s+(\d{1,3})\s+(.{3,120}?)\s+(\d{1,3})\s+"+datepat+r"\s+(\d{4,7})(?!\d)",re.I)
     out={}
     for m in pattern.finditer(text):
         home=identify(m.group(1),group)
