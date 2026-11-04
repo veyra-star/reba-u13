@@ -1,6 +1,8 @@
 {
-  "esito": "mai_eseguito",
-  "ultimo_controllo_riuscito_utc": null,
-  "ultimo_tentativo_utc": null,
-  "errori": []
+  "esito": "ok",
+  "ultimo_controllo_riuscito_utc": "2026-11-04T06:56:56+00:00",
+  "ultimo_tentativo_utc": "2026-11-04T06:56:56+00:00",
+  "errori": [],
+  "nuovi_o_modificati": 0,
+  "totale_risultati": 0
 }
