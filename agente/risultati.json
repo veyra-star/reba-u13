@@ -1,4 +1,109 @@
 {
-  "fonte": "FIP Piemonte - acquisizione indipendente",
-  "partite": {}
+  "fonte": "FIP Piemonte - monitor indipendente",
+  "partite": {
+    "8661": {
+      "id": "8661",
+      "girone": "A",
+      "casa": "NEW BASKET ABET",
+      "trasferta": "PROMO CUNEO BASKET",
+      "data": "31/10/2026",
+      "ora": "14:30",
+      "giornata": "1 andata",
+      "risultato": [
+        24,
+        58
+      ]
+    },
+    "8662": {
+      "id": "8662",
+      "girone": "A",
+      "casa": "BANCA B.T.M.",
+      "trasferta": "OLIMPO BASKET ALBA",
+      "data": "31/10/2026",
+      "ora": "16:30",
+      "giornata": "1 andata",
+      "risultato": [
+        68,
+        45
+      ]
+    },
+    "8682": {
+      "id": "8682",
+      "girone": "B",
+      "casa": "BEA CHIERI SSDRL",
+      "trasferta": "AREA PRO 2020",
+      "data": "01/11/2026",
+      "ora": "11:30",
+      "giornata": "1 andata",
+      "risultato": [
+        63,
+        30
+      ]
+    },
+    "8701": {
+      "id": "8701",
+      "girone": "C",
+      "casa": "LAPOLISMILE",
+      "trasferta": "BASKET NOLE",
+      "data": "29/10/2026",
+      "ora": "18:45",
+      "giornata": "1 andata",
+      "risultato": [
+        92,
+        14
+      ]
+    },
+    "8702": {
+      "id": "8702",
+      "girone": "C",
+      "casa": "BASKET VENARIA",
+      "trasferta": "LETTERA 22 A.S.D.",
+      "data": "01/11/2026",
+      "ora": "11:30",
+      "giornata": "1 andata",
+      "risultato": [
+        30,
+        77
+      ]
+    },
+    "8721": {
+      "id": "8721",
+      "girone": "D",
+      "casa": "VIRTUS BASKET SALUGGIA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "31/10/2026",
+      "ora": "17:30",
+      "giornata": "1 andata",
+      "risultato": [
+        21,
+        54
+      ]
+    },
+    "8722": {
+      "id": "8722",
+      "girone": "D",
+      "casa": "SAN MAURO BASKET",
+      "trasferta": "AVIGLIANA BASKET",
+      "data": "01/11/2026",
+      "ora": "14:00",
+      "giornata": "1 andata",
+      "risultato": [
+        33,
+        68
+      ]
+    },
+    "8741": {
+      "id": "8741",
+      "girone": "E",
+      "casa": "BCC DERTHONA BASKET",
+      "trasferta": "A.S.D. OLYMPIA BASKET 2000",
+      "data": "01/11/2026",
+      "ora": "11:00",
+      "giornata": "1 andata",
+      "risultato": [
+        58,
+        52
+      ]
+    }
+  }
 }
