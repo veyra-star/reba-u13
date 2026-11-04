@@ -114,7 +114,7 @@ def main():
         group_games = [p for p in fixtures if p['girone'] == group]
         rounds = {}
         for game in group_games:
-            m = re.match(r'^(\d+)\s+(andata|ritorno)
+            m = re.match(r'^(\d+)\s+(andata|ritorno)$', game['giornata'], re.I)
             if not m:
                 errors.append(f'{group}: giornata sconosciuta per {game["id"]}')
                 continue
