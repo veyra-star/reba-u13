@@ -114,7 +114,66 @@ def main():
         group_games = [p for p in fixtures if p['girone'] == group]
         rounds = {}
         for game in group_games:
-            m = re.match(r'^(\\d+)\\s+(andata|ritorno)$', game['giornata'], re.I)
+            m = re.match(r'^(\d+)\s+(andata|ritorno), game['giornata'], re.I)
+            if not m:
+                errors.append(f'{group}: giornata sconosciuta per {game["id"]}')
+                continue
+            day = dt.datetime.strptime(game['data'], '%d/%m/%Y').date()
+            if day <= today:
+                key = (1 if m.group(2).lower() == 'andata' else 0, int(m.group(1)))
+                rounds.setdefault(key, []).append(game)
+        diagnostics[group] = {'giornate': {}, 'data_limite':today.isoformat()}
+        for (ar, giornata), selected in sorted(rounds.items()):
+            key = f'{ar}:{giornata}'
+            try:
+                resp = requests.get(url_for(group, ar, giornata), headers=HEADERS, timeout=25)
+                resp.raise_for_status()
+                if len(resp.content) < 1000:
+                    raise ValueError('Risposta FIP troppo breve')
+                text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
+                seen = [p['id'] for p in selected if re.search(r'(?<!\\d)0*'+re.escape(str(int(p['id'])))+r'(?!\\d)',text)]
+                if not seen:
+                    raise ValueError('Nessun codice gara atteso nella giornata')
+                parsed = {str(k):v for k,v in extract(resp.text, selected).items()}
+                for game_id, score in parsed.items():
+                    if game_id in updates and updates[game_id] != score:
+                        raise ValueError(f'Punteggi discordanti per {game_id}')
+                    updates[game_id] = score
+                diagnostics[group]['giornate'][key] = {'url':resp.url,'codici_trovati':seen,'risultati':parsed}
+                print(f'Girone {group} ar={ar} giornata={giornata}: {len(parsed)} risultati')
+            except (requests.RequestException, ValueError) as exc:
+                errors.append(f'{group} ar={ar} giornata={giornata}: {exc}')
+                diagnostics[group]['giornate'][key] = {'errore':str(exc)}
+    if not errors and not updates:
+        errors.append('Nessun punteggio riconosciuto: verifica non valida')
+    (ROOT / 'diagnostica.json').write_text(json.dumps({'tentativo_utc':checked_at,'gironi':diagnostics,'errori':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    state['ultimo_tentativo_utc'] = checked_at
+    state['errori'] = errors
+    if errors:
+        state['esito'] = 'errore'
+        STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        print('FIP verification failed: ' + '; '.join(errors), file=sys.stderr)
+        return 1
+    previous = old.get('partite', {})
+    changed = 0
+    for game in fixtures:
+        score = updates.get(str(game['id']))
+        if score is None:
+            continue
+        key = str(game['id'])
+        entry = {**game, 'risultato': score}
+        if previous.get(key) != entry:
+            previous[key] = entry
+            changed += 1
+    RESULTS.write_text(json.dumps({'fonte':'FIP Piemonte - monitor indipendente', 'partite':previous}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    state.update({'esito':'ok','ultimo_controllo_riuscito_utc':checked_at,'nuovi_o_modificati':changed,'totale_risultati':len(previous)})
+    STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    print(f'Verifica riuscita: {len(updates)} punteggi verificati, {changed} modifiche')
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())
+, game['giornata'], re.I)
             if not m:
                 errors.append(f'{group}: giornata sconosciuta per {game["id"]}')
                 continue
