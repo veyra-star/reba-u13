@@ -104,6 +104,32 @@
         58,
         52
       ]
+    },
+    "8681": {
+      "id": "8681",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "ERIDANIA BASKET",
+      "data": "31/10/2026",
+      "ora": "12:00",
+      "giornata": "1 andata",
+      "risultato": [
+        5,
+        113
+      ]
+    },
+    "8742": {
+      "id": "8742",
+      "girone": "E",
+      "casa": "NOVARA BASKET",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "02/11/2026",
+      "ora": "19:00",
+      "giornata": "1 andata",
+      "risultato": [
+        66,
+        33
+      ]
     }
   }
 }
