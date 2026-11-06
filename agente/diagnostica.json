@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-05T21:58:20+00:00",
+  "tentativo_utc": "2026-11-06T02:23:58+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -21,7 +21,7 @@
           }
         }
       },
-      "data_limite": "2026-11-05"
+      "data_limite": "2026-11-06"
     },
     "B": {
       "giornate": {
@@ -43,7 +43,7 @@
           }
         }
       },
-      "data_limite": "2026-11-05"
+      "data_limite": "2026-11-06"
     },
     "C": {
       "giornate": {
@@ -65,7 +65,7 @@
           }
         }
       },
-      "data_limite": "2026-11-05"
+      "data_limite": "2026-11-06"
     },
     "D": {
       "giornate": {
@@ -87,7 +87,7 @@
           }
         }
       },
-      "data_limite": "2026-11-05"
+      "data_limite": "2026-11-06"
     },
     "E": {
       "giornate": {
@@ -109,7 +109,7 @@
           }
         }
       },
-      "data_limite": "2026-11-05"
+      "data_limite": "2026-11-06"
     }
   },
   "errori": []
