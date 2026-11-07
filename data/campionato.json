@@ -700,7 +700,11 @@
       "data": "07/11/2026",
       "ora": "17:45",
       "giornata": "2 andata",
-      "risultato": null
+      "risultato": [
+        110,
+        17
+      ],
+      "acquisito_il": "2026-11-07T21:58:02+00:00"
     },
     {
       "id": "8724",
@@ -1080,6 +1084,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-07T18:06:08+00:00",
-  "ultimo_controllo_fip": "2026-11-07T18:06:08+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-07T21:58:02+00:00",
+  "ultimo_controllo_fip": "2026-11-07T21:58:02+00:00"
 }
