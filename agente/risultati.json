@@ -130,6 +130,19 @@
         66,
         33
       ]
+    },
+    "8664": {
+      "id": "8664",
+      "girone": "A",
+      "casa": "OLIMPO BASKET ALBA",
+      "trasferta": "GATORS",
+      "data": "07/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": [
+        15,
+        103
+      ]
     }
   }
 }
