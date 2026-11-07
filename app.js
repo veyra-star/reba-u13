@@ -248,7 +248,7 @@ function standings(g) {
 function matchHTML(p) {
   let r = results(p);
   const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
-  const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 36 * 60 * 60 * 1000;
+  const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 72 * 60 * 60 * 1000;
   return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
 }
 function render() {
