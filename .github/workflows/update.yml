@@ -16,6 +16,9 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    concurrency:
+      group: reba-fip-writes
+      cancel-in-progress: false
 
     steps:
       - name: Scarica repository
@@ -58,7 +61,17 @@ jobs:
           git add data/
           if ! git diff --cached --quiet; then
             git commit -m "Aggiornamento automatico risultati FIP"
-            git push
+            for attempt in 1 2 3 4 5; do
+              if git pull --rebase origin main && git push origin HEAD:main; then
+                echo "Aggiornamento salvato."
+                exit 0
+              fi
+              git rebase --abort 2>/dev/null || true
+              echo "Tentativo $attempt fallito; riprovo."
+              sleep 3
+            done
+            echo "Impossibile salvare dopo 5 tentativi." >&2
+            exit 1
           else
             echo "Nessun nuovo risultato da salvare."
           fi
