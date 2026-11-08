@@ -1,3 +1,10 @@
+## v0.5.1 — 08/11/2026
+- Play-In: una sola ammessa tra REBA e REBA Bianco, stessa società (PDF FIP, formula U13F 2026/27).
+- Per le proiezioni, scelta della meglio classificata con gli spareggi esistenti a partire dagli scontri diretti; parità residue segnalate come da definire.
+- Altra squadra indicata «Non ammessa – stessa società»; nessuna fusione di risultati o classifica e nessun ripescaggio automatico della terza.
+- Regola applicata al tracker dopo risultati ufficiali, simulazioni manuali e simulazione completa; reset ripristina la proiezione dei risultati ufficiali.
+- Archivio pre-release: ramo archive/pre-v0.5.1-2026-11-08, commit e8bdb29e718836abf9e679e76dd02a6e73d9b99c; indice nella cartella ARCHIVE su Drive.
+
 ## v0.4.4 — 03/11/2026
 - Ridotta la finestra del centro partite da 12 a 8 righe, mantenendo lo scorrimento.
 - Aggiunto il filtro Solo REBA in Risultati e partite, prima del selettore gironi.

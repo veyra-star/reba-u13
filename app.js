@@ -245,6 +245,38 @@ function standings(g) {
   }
   return out;
 }
+// Il limite FIP vale per la società; la scelta della meglio classificata
+// è una convenzione della simulazione. Nessun subentro della terza verificato.
+const REBA_TEAMS = ['POLISPORTIVA REBA', 'POLISPORTIVA REBA BIANCO'];
+function playInProjection(g) {
+  const rows = standings(g);
+  const clubRows = rows.filter(t => REBA_TEAMS.includes(t.nome));
+  let excluded = null, unresolved = false;
+  if (clubRows.length === 2) {
+    const [first, second] = clubRows;
+    if (first.pts === second.pts) {
+      const tied = rows.filter(t => t.pts === first.pts);
+      const games = db.partite.filter(p => p.girone === g);
+      // L'ordine d'inserimento non è uno spareggio: rileva parità residue
+      // dopo scontri diretti e quozienti, anche nelle classifiche avulse.
+      const reversed = orderTies([...tied].reverse(), games);
+      unresolved = reversed.findIndex(t => t.nome === first.nome) >
+        reversed.findIndex(t => t.nome === second.nome);
+    }
+    if (!unresolved) excluded = second.nome;
+  }
+  return rows.map((row, i) => ({...row, position: i + 1,
+    admission: row.nome === excluded ? 'same-club' :
+      unresolved && REBA_TEAMS.includes(row.nome) ? 'unresolved' : 'eligible'
+  }));
+}
+function playInSlot(row) {
+  if (row?.admission === 'same-club')
+    return `${escapeHTML(short(row.nome))}<small>Non ammessa – stessa società</small><small>Posto da definire: subentro non verificato</small>`;
+  if (row?.admission === 'unresolved')
+    return '<small>REBA / REBA Bianco: ammissione da definire · spareggio non risolto</small>';
+  return row?.G ? escapeHTML(short(row.nome)) : 'Da definire';
+}
 function matchHTML(p) {
   let r = results(p);
   const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
@@ -276,7 +308,11 @@ function render() {
   }
   $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${escapeHTML(g)}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isReba(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
   let gs = 'ABCDE';
-  $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = standings(g)[0], b = standings(other)[1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${a?.G?escapeHTML(short(a.nome)):'Da definire'}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${b?.G?escapeHTML(short(b.nome)):'Da definire'}</div></div>`; }).join('');
+  const projections = Object.fromEntries([...gs].map(g => [g, playInProjection(g)]));
+  $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = projections[g][0], b = projections[other][1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${playInSlot(a)}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${playInSlot(b)}</div></div>`; }).join('');
+  $('#playinStatus').textContent = Object.values(projections).flat()
+    .filter(t => t.admission === 'same-club')
+    .map(t => `${short(t.nome)}: Non ammessa – stessa società (${t.position}ª nel girone; classifica e risultati indipendenti).`).join(' ');
   let done = all.filter(p => results(p));
   $('#stats').innerHTML = `<div><b>${done.length}</b><p>Partite con risultato</p></div><div><b>${all.length}</b><p>Gare nel calendario importato</p></div><div><b>25</b><p>Squadre partecipanti</p></div>`;
   $('#teams').innerHTML = Object.entries(db.squadre).map(([g,teams]) => `<div><b>GIRONE ${escapeHTML(g)}</b>${teams.map(t => `<p>${escapeHTML(short(t))}</p>`).join('')}</div>`).join('');
