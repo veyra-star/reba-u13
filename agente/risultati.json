@@ -156,6 +156,19 @@
         110,
         17
       ]
+    },
+    "8744": {
+      "id": "8744",
+      "girone": "E",
+      "casa": "A.S.D. OLYMPIA BASKET 2000",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "08/11/2026",
+      "ora": "11:00",
+      "giornata": "2 andata",
+      "risultato": [
+        160,
+        20
+      ]
     }
   }
 }

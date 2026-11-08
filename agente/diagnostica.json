@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-08T01:24:41+00:00",
+  "tentativo_utc": "2026-11-08T13:18:35+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -155,7 +155,12 @@
           "codici_trovati": [
             "8744"
           ],
-          "risultati": {}
+          "risultati": {
+            "8744": [
+              160,
+              20
+            ]
+          }
         }
       },
       "data_limite": "2026-11-08"
