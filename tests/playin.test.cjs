@@ -12,14 +12,19 @@ function setup(teams, games) {
   return expression => JSON.parse(JSON.stringify(vm.runInContext(expression, context)));
 }
 const game = (id, casa, trasferta, risultato) => ({id, casa, trasferta, risultato, girone:'D', data:'08/11/2026', ora:'10:00'});
-test('top two REBA remain distinct; excluded slot does not promote third', () => {
+test('top two REBA remain distinct; third replaces excluded team in projection only', () => {
   const run = setup([R,B,'Third'], [game(1,R,B,[60,40]),game(2,R,'Third',[60,40]),game(3,B,'Third',[60,40])]);
   const before = run("standings('D')");
   const rows = run("playInProjection('D')");
   assert.equal(rows[0].nome,R);
   assert.equal(rows[1].admission,'same-club');
   assert.match(run("playInSlot(playInProjection('D')[1])"),/Non ammessa – stessa società/);
-  assert.doesNotMatch(run("playInSlot(playInProjection('D')[1])"),/Third/);
+  const candidates=run("playInCandidates(playInProjection('D'))");
+  assert.equal(candidates[0].nome,R);
+  assert.equal(candidates[1].nome,'Third');
+  assert.equal(candidates[1].position,3);
+  assert.equal(candidates[1].promoted,true);
+  assert.match(run("playInSlot(playInCandidates(playInProjection('D'))[1])"),/ipotesi simulation|ipotesi simulazione/);
   assert.deepEqual(run("standings('D')"),before);
 });
 test('Bianco can be selected; direct encounter precedes overall quotient', () => {
@@ -58,4 +63,20 @@ test('full season simulation enforces one REBA candidate and preserves source da
     assert.ok(vm.runInContext("playInProjection('D').filter(t=>REBA_TEAMS.includes(t.nome)&&t.admission==='eligible').length <= 1",context));
     assert.equal(JSON.stringify(fixture),before);
   }
+});
+
+test('third replaces REBA when Bianco is first, without reordering standings', () => {
+  const run=setup([R,B,'Third'], [game(1,B,R,[60,40]),game(2,B,'Third',[60,40]),game(3,R,'Third',[60,40])]);
+  assert.deepEqual(run("playInCandidates(playInProjection('D')).map(t=>t.nome)"),[B,'Third']);
+  assert.deepEqual(run("standings('D').map(t=>t.nome)"),[B,R,'Third']);
+});
+test('no third-team promotion when only one REBA is in top two', () => {
+  const run=setup([R,B,'Third'], [game(1,R,B,[60,40]),game(2,'Third',R,[60,40]),game(3,'Third',B,[60,40])]);
+  assert.deepEqual(run("playInCandidates(playInProjection('D')).map(t=>t.nome)"),['Third',R]);
+  assert.ok(run("playInCandidates(playInProjection('D')).every(t=>!t.promoted)"));
+});
+test('unresolved club tie does not trigger third-team promotion', () => {
+  const run=setup([R,B,'Third'], [game(1,R,B,[50,40]),game(2,B,R,[50,40]),game(3,R,'Third',[60,40]),game(4,B,'Third',[60,40])]);
+  assert.deepEqual(run("playInCandidates(playInProjection('D')).map(t=>t.admission)"),['unresolved','unresolved']);
+  assert.ok(run("playInCandidates(playInProjection('D')).every(t=>!t.promoted)"));
 });

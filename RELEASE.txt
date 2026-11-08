@@ -1,3 +1,3 @@
-REBA U13F v0.5.1 - 08/11/2026
-Play-In Tracker: una sola squadra REBA ammessa per società, scelta per classifica e spareggi.
-Classifica e risultati indipendenti; nessun subentro automatico della terza.
+REBA U13F v0.5.1 - revisione simulazione Play-In - 08/11/2026
+Una sola REBA ammessa. Se entrambe sono nelle prime due posizioni, subentra la terza: ipotesi di simulazione da confermare con FIP.
+Risultati e classifica sportiva indipendenti. Parità residue da definire.

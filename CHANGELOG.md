@@ -1,3 +1,9 @@
+## v0.5.1 — Revisione simulazione Play-In — 08/11/2026
+- Su conferma dell’utente, se le due REBA occupano i primi due posti e lo spareggio è risolto, la terza subentra nella proiezione al posto della REBA esclusa.
+- Il subentro è esplicitamente segnalato come ipotesi della simulazione da confermare con FIP, senza modificare risultati o classifica sportiva.
+- Nessun subentro per parità interna irrisolta o se solo una REBA è nelle prime due.
+- Stato precedente conservato nel ramo archive/v0.5.1-pre-subentro-terza.
+
 ## v0.5.1 — 08/11/2026
 - Play-In: una sola ammessa tra REBA e REBA Bianco, stessa società (PDF FIP, formula U13F 2026/27).
 - Per le proiezioni, scelta della meglio classificata con gli spareggi esistenti a partire dagli scontri diretti; parità residue segnalate come da definire.
