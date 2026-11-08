@@ -143,6 +143,19 @@
         15,
         103
       ]
+    },
+    "8723": {
+      "id": "8723",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "SAN MAURO BASKET",
+      "data": "07/11/2026",
+      "ora": "17:45",
+      "giornata": "2 andata",
+      "risultato": [
+        110,
+        17
+      ]
     }
   }
 }
