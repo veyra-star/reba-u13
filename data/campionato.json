@@ -285,7 +285,11 @@
       "data": "07/11/2026",
       "ora": "15:00",
       "giornata": "2 andata",
-      "risultato": null
+      "risultato": [
+        15,
+        63
+      ],
+      "acquisito_il": "2026-11-09T16:34:43+00:00"
     },
     {
       "id": "8684",
@@ -295,7 +299,11 @@
       "data": "08/11/2026",
       "ora": "09:00",
       "giornata": "2 andata",
-      "risultato": null
+      "risultato": [
+        79,
+        32
+      ],
+      "acquisito_il": "2026-11-09T16:34:43+00:00"
     },
     {
       "id": "8685",
@@ -502,7 +510,11 @@
       "data": "07/11/2026",
       "ora": "15:00",
       "giornata": "2 andata",
-      "risultato": null
+      "risultato": [
+        69,
+        26
+      ],
+      "acquisito_il": "2026-11-09T16:34:43+00:00"
     },
     {
       "id": "8705",
@@ -714,7 +726,11 @@
       "data": "08/11/2026",
       "ora": "11:45",
       "giornata": "2 andata",
-      "risultato": null
+      "risultato": [
+        84,
+        41
+      ],
+      "acquisito_il": "2026-11-09T16:34:43+00:00"
     },
     {
       "id": "8725",
@@ -1088,6 +1104,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-08T13:36:47+00:00",
-  "ultimo_controllo_fip": "2026-11-08T22:56:53+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-09T16:34:43+00:00",
+  "ultimo_controllo_fip": "2026-11-09T16:34:43+00:00"
 }
