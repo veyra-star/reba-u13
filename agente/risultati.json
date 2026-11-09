@@ -169,6 +169,58 @@
         160,
         20
       ]
+    },
+    "8683": {
+      "id": "8683",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "BEA CHIERI SSDRL",
+      "data": "07/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": [
+        15,
+        63
+      ]
+    },
+    "8684": {
+      "id": "8684",
+      "girone": "B",
+      "casa": "ALFIERI BASKET",
+      "trasferta": "AREA PRO 2020",
+      "data": "08/11/2026",
+      "ora": "09:00",
+      "giornata": "2 andata",
+      "risultato": [
+        79,
+        32
+      ]
+    },
+    "8704": {
+      "id": "8704",
+      "girone": "C",
+      "casa": "USAC RIVAROLO BK 2009",
+      "trasferta": "BASKET VENARIA",
+      "data": "07/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": [
+        69,
+        26
+      ]
+    },
+    "8724": {
+      "id": "8724",
+      "girone": "D",
+      "casa": "AVIGLIANA BASKET",
+      "trasferta": "VIRTUS BASKET SALUGGIA",
+      "data": "08/11/2026",
+      "ora": "11:45",
+      "giornata": "2 andata",
+      "risultato": [
+        84,
+        41
+      ]
     }
   }
 }
