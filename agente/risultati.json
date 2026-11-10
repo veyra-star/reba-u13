@@ -234,6 +234,19 @@
         105,
         17
       ]
+    },
+    "8743": {
+      "id": "8743",
+      "girone": "E",
+      "casa": "BASKET FEMM.LE ALESSANDRIA",
+      "trasferta": "BCC DERTHONA BASKET",
+      "data": "10/11/2026",
+      "ora": "18:30",
+      "giornata": "2 andata",
+      "risultato": [
+        10,
+        110
+      ]
     }
   }
 }
