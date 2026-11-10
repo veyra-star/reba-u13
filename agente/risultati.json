@@ -221,6 +221,19 @@
         84,
         41
       ]
+    },
+    "8663": {
+      "id": "8663",
+      "girone": "A",
+      "casa": "PROMO CUNEO BASKET",
+      "trasferta": "BANCA B.T.M.",
+      "data": "08/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": [
+        105,
+        17
+      ]
     }
   }
 }
