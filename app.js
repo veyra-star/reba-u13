@@ -56,6 +56,11 @@ function eloLabel(team, ratings) {
 }
 // Stima Elo retrospettiva, indipendente per ciascun girone.
 // Ogni nuovo risultato rivaluta tutte le partite gia giocate del girone.
+// v4.02: due componenti indipendenti: vittorie Elo e scarto relativo (0.5).
+// La media dell'avversaria esclude la gara valutata; due gare virtuali
+// a scarto zero stabilizzano il dato nelle prime giornate.
+const RELATIVE_MARGIN_WEIGHT = 0.5;
+const MARGIN_PRIOR_GAMES = 2;
 function retrospectiveRatings(games, scoreFor) {
   const ratings = initialRatings();
   const completed = games.map(p => ({p, score: scoreFor(p)}))
@@ -63,15 +68,13 @@ function retrospectiveRatings(games, scoreFor) {
       score.every(v => v !== '' && Number.isFinite(Number(v))) &&
       Number(score[0]) !== Number(score[1]));
   if (!completed.length) return ratings;
-  // Aggiornamenti simultanei: nessuna partita ha vantaggi cronologici.
-  // Il fattore di apprendimento decrescente evita oscillazioni.
+  // Componente 1: solo vittoria/sconfitta, corretta per la forza avversaria.
   for (let pass = 0; pass < 48; pass++) {
     const delta = new Map();
     for (const {p, score} of completed) {
       const [h,a] = score.map(Number);
       const expected = winProbability(p.casa, p.trasferta, ratings);
-      const marginFactor = Math.min(1.6, 1 + Math.log1p(Math.abs(h-a))/10);
-      const change = RATING_K * marginFactor * ((h > a ? 1 : 0) - expected);
+      const change = RATING_K * ((h > a ? 1 : 0) - expected);
       delta.set(p.casa, (delta.get(p.casa) || 0) + change);
       delta.set(p.trasferta, (delta.get(p.trasferta) || 0) - change);
     }
@@ -79,6 +82,31 @@ function retrospectiveRatings(games, scoreFor) {
     for (const [team, change] of delta)
       ratings.set(team, (ratings.get(team) ?? INITIAL_RATING) + step * change);
   }
+  // Componente 2: scarto della squadra rispetto agli altri risultati
+  // dell'avversaria. Si media sulle gare disputate dalla squadra.
+  const played = new Map();
+  const relative = new Map();
+  for (const {p, score} of completed) {
+    const [h,a] = score.map(Number);
+    for (const [team, opponent, margin] of [
+      [p.casa, p.trasferta, h-a],
+      [p.trasferta, p.casa, a-h]
+    ]) {
+      const other = completed.filter(x => x.p.id !== p.id &&
+        (x.p.casa === opponent || x.p.trasferta === opponent));
+      const opponentMargin = other.reduce((sum, x) => {
+        const [oh,oa] = x.score.map(Number);
+        return sum + (x.p.casa === opponent ? oh-oa : oa-oh);
+      }, 0) / (other.length + MARGIN_PRIOR_GAMES);
+      relative.set(team, (relative.get(team) || 0) + margin + opponentMargin);
+      played.set(team, (played.get(team) || 0) + 1);
+    }
+  }
+  const teams = [...ratings.keys()];
+  const raw = new Map(teams.map(t => [t, played.has(t) ? relative.get(t) / played.get(t) : 0]));
+  const center = teams.reduce((sum,t) => sum + raw.get(t), 0) / teams.length;
+  for (const team of teams)
+    ratings.set(team, ratings.get(team) + RELATIVE_MARGIN_WEIGHT * (raw.get(team) - center));
   return ratings;
 }
 function currentRatings() {
@@ -115,7 +143,7 @@ function renderNext(p, ratings) {
   }
   el.innerHTML = parts.join('');
 }
-// REBA v4.01: Elo retrospettivo per girone, base 1000 e nessun favorito.
+// REBA v4.02: Elo vittorie + 0.5 per punto di scarto relativo, base 1000.
 const INITIAL_RATING = 1000;
 const RATING_K = 28;
 const HOME_ADVANTAGE = 30;
