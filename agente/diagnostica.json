@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-09T16:10:54+00:00",
+  "tentativo_utc": "2026-11-10T00:14:47+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -34,7 +34,7 @@
           }
         }
       },
-      "data_limite": "2026-11-09"
+      "data_limite": "2026-11-10"
     },
     "B": {
       "giornate": {
@@ -73,7 +73,7 @@
           }
         }
       },
-      "data_limite": "2026-11-09"
+      "data_limite": "2026-11-10"
     },
     "C": {
       "giornate": {
@@ -108,7 +108,7 @@
           }
         }
       },
-      "data_limite": "2026-11-09"
+      "data_limite": "2026-11-10"
     },
     "D": {
       "giornate": {
@@ -147,7 +147,7 @@
           }
         }
       },
-      "data_limite": "2026-11-09"
+      "data_limite": "2026-11-10"
     },
     "E": {
       "giornate": {
@@ -171,6 +171,7 @@
         "1:2": {
           "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=2",
           "codici_trovati": [
+            "8743",
             "8744"
           ],
           "risultati": {
@@ -181,7 +182,7 @@
           }
         }
       },
-      "data_limite": "2026-11-09"
+      "data_limite": "2026-11-10"
     }
   },
   "errori": []
