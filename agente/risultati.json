@@ -247,6 +247,19 @@
         10,
         110
       ]
+    },
+    "8746": {
+      "id": "8746",
+      "girone": "E",
+      "casa": "NOVARA BASKET",
+      "trasferta": "A.S.D. OLYMPIA BASKET 2000",
+      "data": "11/11/2026",
+      "ora": "19:00",
+      "giornata": "3 andata",
+      "risultato": [
+        17,
+        107
+      ]
     }
   }
 }
