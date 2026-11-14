@@ -260,6 +260,19 @@
         17,
         107
       ]
+    },
+    "8686": {
+      "id": "8686",
+      "girone": "B",
+      "casa": "ERIDANIA BASKET",
+      "trasferta": "ALFIERI BASKET",
+      "data": "14/11/2026",
+      "ora": "16:30",
+      "giornata": "3 andata",
+      "risultato": [
+        74,
+        39
+      ]
     }
   }
 }
