@@ -127,3 +127,7 @@
 .skin-alfieri .next-vs,.skin-alfieri .playcard strong,.skin-alfieri .stats b,.skin-alfieri .phases b{color:#d6dee8}
 .skin-alfieri button{background:#85d5f5;color:#081f3d}
 .skin-alfieri button.ghost{background:transparent;color:#f7f9fc}
+
+.skin-alfieri #teams > div:nth-child(n){background:#081f3d;border-color:#8194a9}
+.skin-alfieri #teams > div:nth-child(n) b{color:#d6dee8}
+.skin-alfieri #teams > div p{color:#c4ccd6}
