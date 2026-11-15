@@ -111,3 +111,8 @@
 .skin-alfieri .hero h1,.skin-alfieri .section-head h2,.skin-alfieri .feature h2,.skin-alfieri .match,.skin-alfieri table,.skin-alfieri .playcard{color:#f7f9fc}
 .skin-alfieri .hero h1 em,.skin-alfieri .section-head h2 em,.skin-alfieri .stats b,.skin-alfieri .phases b,.skin-alfieri .brand,.skin-alfieri .table-card h3{color:#d6dee8}
 .skin-alfieri .eyebrow,.skin-alfieri .match .score,.skin-alfieri .playcard .vs{color:#85d5f5}
+
+/* Alfieri: riquadri blu scuro ispirati allo scudo. */
+.skin-alfieri{--panel:#081f3d;--panel2:#0b284c}
+.skin-alfieri .feature{background:#0b284c}
+.skin-alfieri .table-card h3,.skin-alfieri .match.reba,.skin-alfieri tr.highlight{background:#0b284c}
