@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-15T01:52:01+00:00",
+  "tentativo_utc": "2026-11-15T17:55:38+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -42,7 +42,12 @@
           "codici_trovati": [
             "8666"
           ],
-          "risultati": {}
+          "risultati": {
+            "8666": [
+              23,
+              64
+            ]
+          }
         }
       },
       "data_limite": "2026-11-15"
@@ -90,6 +95,10 @@
             "8686"
           ],
           "risultati": {
+            "8685": [
+              59,
+              21
+            ],
             "8686": [
               74,
               39
@@ -183,7 +192,12 @@
           "codici_trovati": [
             "8725"
           ],
-          "risultati": {}
+          "risultati": {
+            "8725": [
+              52,
+              27
+            ]
+          }
         }
       },
       "data_limite": "2026-11-15"

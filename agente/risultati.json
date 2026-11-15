@@ -273,6 +273,45 @@
         74,
         39
       ]
+    },
+    "8666": {
+      "id": "8666",
+      "girone": "A",
+      "casa": "OLIMPO BASKET ALBA",
+      "trasferta": "PROMO CUNEO BASKET",
+      "data": "14/11/2026",
+      "ora": "15:00",
+      "giornata": "3 andata",
+      "risultato": [
+        23,
+        64
+      ]
+    },
+    "8685": {
+      "id": "8685",
+      "girone": "B",
+      "casa": "AREA PRO 2020",
+      "trasferta": "POLISPORTIVA PASTA",
+      "data": "15/11/2026",
+      "ora": "14:30",
+      "giornata": "3 andata",
+      "risultato": [
+        59,
+        21
+      ]
+    },
+    "8725": {
+      "id": "8725",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA BIANCO",
+      "trasferta": "AVIGLIANA BASKET",
+      "data": "15/11/2026",
+      "ora": "16:10",
+      "giornata": "3 andata",
+      "risultato": [
+        52,
+        27
+      ]
     }
   }
 }
