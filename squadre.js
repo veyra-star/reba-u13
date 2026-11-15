@@ -1,0 +1,400 @@
+const $ = s => document.querySelector(s);
+let db, sim = {};
+const date = s => { const [d,m,y] = s.split('/'); return new Date(`${y}-${m}-${d}T12:00:00`); };
+const when = p => `${p.data} · ${p.ora}`;
+const isReba = s => s === 'POLISPORTIVA REBA';
+const TEAM_SKINS = {
+  alfieri: { team: 'ALFIERI BASKET', name: 'Alfieri', monogram: 'A' },
+  eridania: { team: 'ERIDANIA BASKET', name: 'Eridania', monogram: 'E' }
+};
+const skin = TEAM_SKINS[document.body.dataset.team];
+const isFocus = s => s === skin.team;
+document.body.classList.add(`skin-${document.body.dataset.team}`);
+$('#teamBrand').textContent = skin.name.toUpperCase();
+$('#focusName').textContent = skin.name.toUpperCase();
+$('#nextLabel').textContent = skin.team;
+$('#filterName').textContent = skin.name;
+$('#footerName').textContent = skin.name;
+if ($('#teamMonogram')) $('#teamMonogram').textContent = skin.monogram;
+
+// Nomi pubblici: le chiavi restano identiche ai dati FIP per risultati, Elo e sincronizzazione.
+const TEAM_DISPLAY_NAMES = {
+  "OLIMPO BASKET ALBA": "Alba Olimpo",
+  "BANCA B.T.M.": "Carmagnola",
+  "PROMO CUNEO BASKET": "Cuneo Pink",
+  "GATORS": "Savigliano Gators",
+  "NEW BASKET ABET": "Bra ABET",
+  "BEA CHIERI SSDRL": "Chieri BEA",
+  "ERIDANIA BASKET": "Eridania",
+  "POLISPORTIVA PASTA": "Rivalta Pasta",
+  "ALFIERI BASKET": "Alfieri",
+  "AREA PRO 2020": "Rivalta Area Pro",
+  "USAC RIVAROLO BK 2009": "Rivarolo USAC",
+  "BASKET NOLE": "Nole",
+  "BASKET VENARIA": "Venaria",
+  "LETTERA 22 A.S.D.": "Ivrea Lettera 22",
+  "LAPOLISMILE": "Lapolismile",
+  "POLISPORTIVA REBA": "REBA",
+  "POLISPORTIVA REBA BIANCO": "REBA Bianco",
+  "SAN MAURO BASKET": "San Mauro",
+  "AVIGLIANA BASKET": "Avigliana",
+  "VIRTUS BASKET SALUGGIA": "Saluggia Virtus",
+  "BASKET FEMM.LE ALESSANDRIA": "Alessandria",
+  "NOVARA BASKET": "Novara",
+  "BCC DERTHONA BASKET": "Derthona",
+  "A.S.D. OLYMPIA BASKET 2000": "Casale Olympia",
+  "POLISPORTIVA SAN GIACOMO": "Novara San Giacomo"
+};
+const short = s => TEAM_DISPLAY_NAMES[s] || s;
+const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function results(p) { return sim[p.id] || p.risultato; }
+
+// Per le gare in casa REBA: indirizzo comunicato per la prima gara.
+// Se il JSON contiene l'indirizzo della singola partita, prevale sempre quello.
+const REBA_FIRST_HOME_ADDRESS = 'Via Balla 13, 10137 Torino';
+function venueFor(p) {
+  const entry = db.palestre?.[p.casa] || db.impianti?.[p.casa] || db.indirizzi?.[p.casa];
+  const obj = typeof entry === 'string' ? { indirizzo: entry } : (entry || {});
+  const nome = p.palestra || p.impianto || p.nome_palestra || obj.nome || obj.palestra || obj.impianto || '';
+  let indirizzo = p.indirizzo_palestra || p.indirizzo || p.campo_indirizzo || obj.indirizzo || obj.address || '';
+  // Non attribuiamo Via Balla a tutte le partite in casa: sappiamo solo della prima.
+  if (!indirizzo && isReba(p.casa)) {
+    const homeGames = db.partite.filter(x => isReba(x.casa)).sort((a,b) => date(a.data)-date(b.data));
+    if (homeGames[0]?.id === p.id) indirizzo = REBA_FIRST_HOME_ADDRESS;
+  }
+  return { nome, indirizzo };
+}
+function eloLabel(team, ratings) {
+  const value = Math.round(ratings.get(team) ?? INITIAL_RATING);
+  return `<span class="elo-rating" title="Coefficiente Elo stimato">(${value})</span>`;
+}
+// Stima Elo retrospettiva, indipendente per ciascun girone.
+// Ogni nuovo risultato rivaluta tutte le partite gia giocate del girone.
+function retrospectiveRatings(games, scoreFor) {
+  const ratings = initialRatings();
+  const completed = games.map(p => ({p, score: scoreFor(p)}))
+    .filter(({score}) => Array.isArray(score) && score.length === 2 &&
+      score.every(v => v !== '' && Number.isFinite(Number(v))) &&
+      Number(score[0]) !== Number(score[1]));
+  if (!completed.length) return ratings;
+  // Aggiornamenti simultanei: nessuna partita ha vantaggi cronologici.
+  // Il fattore di apprendimento decrescente evita oscillazioni.
+  for (let pass = 0; pass < 48; pass++) {
+    const delta = new Map();
+    for (const {p, score} of completed) {
+      const [h,a] = score.map(Number);
+      const expected = winProbability(p.casa, p.trasferta, ratings);
+      const marginFactor = Math.min(1.6, 1 + Math.log1p(Math.abs(h-a))/10);
+      const change = RATING_K * marginFactor * ((h > a ? 1 : 0) - expected);
+      delta.set(p.casa, (delta.get(p.casa) || 0) + change);
+      delta.set(p.trasferta, (delta.get(p.trasferta) || 0) - change);
+    }
+    const step = 0.14 / (1 + pass * 0.1);
+    for (const [team, change] of delta)
+      ratings.set(team, (ratings.get(team) ?? INITIAL_RATING) + step * change);
+  }
+  return ratings;
+}
+function currentRatings() {
+  const ratings = initialRatings();
+  for (const group of Object.keys(db.squadre)) {
+    const groupRatings = retrospectiveRatings(
+      db.partite.filter(p => p.girone === group),
+      p => p.risultato || sim[p.id]
+    );
+    for (const team of db.squadre[group])
+      ratings.set(team, groupRatings.get(team) ?? INITIAL_RATING);
+  }
+  return ratings;
+}
+function renderNext(p, ratings) {
+  $('#nextTitle').innerHTML = p ? `<span class="next-team">${escapeHTML(skin.name)}<span class="next-rating">${eloLabel(skin.team, ratings)}</span></span><span class="next-vs">${isFocus(p.casa) ? 'VS' : '@'}</span><span class="next-team">${escapeHTML(short(isFocus(p.casa) ? p.trasferta : p.casa))}<span class="next-rating">${eloLabel(isFocus(p.casa) ? p.trasferta : p.casa, ratings)}</span></span>` : 'Nessuna prossima gara in calendario';
+  $('#nextInfo').textContent = p ? `${when(p)} · Girone ${p.girone}` : '';
+
+}
+// REBA v4.01: Elo retrospettivo per girone, base 1000 e nessun favorito.
+const INITIAL_RATING = 1000;
+const RATING_K = 28;
+const HOME_ADVANTAGE = 30;
+const orderedGames = () => [...db.partite].sort((a,b) =>
+  date(a.data)-date(b.data) || String(a.ora||'').localeCompare(String(b.ora||'')) || String(a.girone).localeCompare(String(b.girone)) || String(a.id).localeCompare(String(b.id))
+);
+function initialRatings() {
+  const ratings = new Map();
+  for (const teams of Object.values(db.squadre)) for (const team of teams) ratings.set(team, INITIAL_RATING);
+  return ratings;
+}
+function winProbability(home, away, ratings) {
+  const difference = (ratings.get(home) ?? INITIAL_RATING) + HOME_ADVANTAGE - (ratings.get(away) ?? INITIAL_RATING);
+  return 1 / (1 + Math.pow(10, -difference / 400));
+}
+function updateRatings(p, score, ratings) {
+  if (!score || !Number.isFinite(Number(score[0])) || !Number.isFinite(Number(score[1]))) return;
+  const [h,a] = score.map(Number);
+  if (h === a) return;
+  const probability = winProbability(p.casa, p.trasferta, ratings);
+  const actual = h > a ? 1 : 0;
+  // La differenza punti conta, ma e limitata per non premiare eccessivamente i divari ampi.
+  const marginFactor = Math.min(1.6, 1 + Math.log1p(Math.abs(h-a))/10);
+  const change = RATING_K * marginFactor * (actual-probability);
+  ratings.set(p.casa, (ratings.get(p.casa) ?? INITIAL_RATING) + change);
+  ratings.set(p.trasferta, (ratings.get(p.trasferta) ?? INITIAL_RATING) - change);
+}
+function normalNoise() {
+  const u = Math.max(1e-9, Math.random()), v = Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+function simulatedScore(p, ratings) {
+  const probability = winProbability(p.casa, p.trasferta, ratings);
+  const homeWins = Math.random() < probability;
+  // Coefficienti simili producono gare piu equilibrate; differenze crescenti,
+  // margini medi piu ampi. La casualita rimane anche a stagione avanzata.
+  const gap = Math.abs((ratings.get(p.casa) ?? INITIAL_RATING) - (ratings.get(p.trasferta) ?? INITIAL_RATING));
+  const margin = Math.max(1, Math.round(3 + gap/35 + Math.abs(normalNoise())*6));
+  const losingScore = Math.max(8, Math.min(85, Math.round(35 + normalNoise()*10)));
+  return homeWins ? [losingScore+margin, losingScore] : [losingScore, losingScore+margin];
+}
+function simulateRemaining() {
+  let count = 0;
+  for (const p of orderedGames()) {
+    // Risultati ufficiali e simulazioni manuali hanno precedenza.
+    if (!p.risultato && !sim[p.id]) {
+      const ratings = retrospectiveRatings(
+        db.partite.filter(x => x.girone === p.girone),
+        x => x.risultato || sim[x.id]
+      );
+      sim[p.id] = simulatedScore(p, ratings);
+      count++;
+    }
+  }
+  render();
+  const msg = document.querySelector('#simBulkNote');
+  if (msg) msg.textContent = count ? `${count} gare simulate. Ogni squadra parte da coefficiente 1000; il coefficiente si aggiorna dopo ogni risultato.` : 'Nessuna gara rimasta da simulare. Premi Ripristina per ricominciare.';
+}
+function installBulkButton() {
+  if (document.querySelector('#simulateAll')) return;
+  const button = document.createElement('button');
+  button.id = 'simulateAll';
+  button.type = 'button';
+  button.textContent = '🎲 Simula tutte le restanti';
+  button.title = 'Simula le partite ancora senza punteggio, usando progressivamente i risultati precedenti';
+  document.querySelector('#simulate').insertAdjacentElement('afterend', button);
+  const note = document.createElement('p');
+  note.id = 'simBulkNote';
+  note.style.fontSize = '0.85em';
+  note.style.opacity = '0.8';
+  note.textContent = 'Ogni squadra parte da coefficiente 1000. Vittorie, sconfitte e scarti aggiornano la forza stimata dopo ogni partita; la probabilità di vittoria cambia di conseguenza.';
+  button.insertAdjacentElement('afterend', note);
+  button.addEventListener('click', simulateRemaining);
+}
+// Regolamento Esecutivo Gare FIP 25/03/2026, artt. 60 e 62.
+// 2 punti per vittoria, 0 per sconfitta. Graduatorie in corso provvisorie.
+function quotient(pf, ps) {
+  if (ps === 0) return pf > 0 ? Infinity : 1;
+  return Math.floor((pf / ps) * 10000 + 1e-9) / 10000;
+}
+function orderTies(group, games, depth = 0) {
+  if (group.length < 2 || depth > 12) return group;
+  const names = new Set(group.map(x => x.nome));
+  const direct = Object.fromEntries(group.map(x => [x.nome,{wins:0,points:0,pf:0,ps:0}]));
+  for (const p of games) {
+    if (!names.has(p.casa) || !names.has(p.trasferta)) continue;
+    const r=results(p); if (!r || r[0] === r[1]) continue;
+    const [h,a]=r.map(Number), home=direct[p.casa], away=direct[p.trasferta];
+    home.pf+=h; home.ps+=a; away.pf+=a; away.ps+=h;
+    if (h>a) {home.wins++;home.points+=2;} else {away.wins++;away.points+=2;}
+  }
+  const keys=group.length===2
+    ? [x=>direct[x.nome].wins,x=>quotient(direct[x.nome].pf,direct[x.nome].ps),x=>quotient(x.PF,x.PS)]
+    : [x=>direct[x.nome].points,x=>quotient(direct[x.nome].pf,direct[x.nome].ps),x=>quotient(x.PF,x.PS)];
+  function apply(items,step) {
+    if(items.length<2 || step>=keys.length) return items;
+    const key=keys[step], ordered=[...items].sort((x,y)=>key(y)-key(x));
+    const out=[];
+    for(let i=0;i<ordered.length;) {
+      let j=i+1;while(j<ordered.length && key(ordered[i])===key(ordered[j]))j++;
+      const tied=ordered.slice(i,j);
+      if(tied.length>1 && tied.length<items.length && step<2)
+        out.push(...orderTies(tied,games,depth+1));
+      else out.push(...apply(tied,step+1));
+      i=j;
+    }
+    return out;
+  }
+  return apply(group,0);
+}
+function standings(g) {
+  const rows=db.squadre[g].map(nome=>({nome,G:0,V:0,P:0,PF:0,PS:0,pts:0}));
+  const games=db.partite.filter(x=>x.girone===g);
+  for(const p of games) {
+    const r=results(p);if(!r || r[0]===r[1])continue;
+    const home=rows.find(x=>x.nome===p.casa),away=rows.find(x=>x.nome===p.trasferta);
+    if(!home||!away)continue;
+    const [h,a]=r.map(Number);
+    home.G++;away.G++;home.PF+=h;home.PS+=a;away.PF+=a;away.PS+=h;
+    if(h>a){home.V++;home.pts+=2;away.P++;}else{away.V++;away.pts+=2;home.P++;}
+  }
+  const sorted=[...rows].sort((x,y)=>y.pts-x.pts);
+  const out=[];
+  for(let i=0;i<sorted.length;) {
+    let j=i+1;while(j<sorted.length && sorted[j].pts===sorted[i].pts)j++;
+    out.push(...orderTies(sorted.slice(i,j),games));i=j;
+  }
+  return out;
+}
+// Il limite FIP vale per la società; la scelta della meglio classificata
+// e il subentro della terza sono convenzioni della simulazione da confermare.
+const REBA_TEAMS = ['POLISPORTIVA REBA', 'POLISPORTIVA REBA BIANCO'];
+function playInProjection(g) {
+  const rows = standings(g);
+  const clubRows = rows.filter(t => REBA_TEAMS.includes(t.nome));
+  let excluded = null, unresolved = false;
+  if (clubRows.length === 2) {
+    const [first, second] = clubRows;
+    if (first.pts === second.pts) {
+      const tied = rows.filter(t => t.pts === first.pts);
+      const games = db.partite.filter(p => p.girone === g);
+      // L'ordine d'inserimento non è uno spareggio: rileva parità residue
+      // dopo scontri diretti e quozienti, anche nelle classifiche avulse.
+      const reversed = orderTies([...tied].reverse(), games);
+      unresolved = reversed.findIndex(t => t.nome === first.nome) >
+        reversed.findIndex(t => t.nome === second.nome);
+    }
+    if (!unresolved) excluded = second.nome;
+  }
+  return rows.map((row, i) => ({...row, position: i + 1,
+    admission: row.nome === excluded ? 'same-club' :
+      unresolved && REBA_TEAMS.includes(row.nome) ? 'unresolved' : 'eligible'
+  }));
+}
+function playInSlot(row) {
+  if (row?.promoted)
+    return `${row.G ? escapeHTML(short(row.nome)) : 'Da definire'}<small>Subentro della 3ª · ipotesi simulazione, da confermare con FIP</small>`;
+  if (row?.admission === 'same-club')
+    return `${escapeHTML(short(row.nome))}<small>Non ammessa – stessa società</small><small>Posto da definire: subentro non verificato</small>`;
+  if (row?.admission === 'unresolved')
+    return '<small>REBA / REBA Bianco: ammissione da definire · spareggio non risolto</small>';
+  return row?.G ? escapeHTML(short(row.nome)) : 'Da definire';
+}
+function playInCandidates(rows) {
+  const candidates = rows.slice(0, 2);
+  // Subentra la terza soltanto quando entrambe le REBA sono nelle prime
+  // due posizioni e la scelta interna alla società è risolta.
+  if (candidates.length === 2 && candidates.every(t => REBA_TEAMS.includes(t.nome)) &&
+      candidates.some(t => t.admission === 'same-club') && rows[2]) {
+    const slot = candidates.findIndex(t => t.admission === 'same-club');
+    candidates[slot] = {...rows[2], promoted: true};
+  }
+  return candidates;
+}
+function matchHTML(p) {
+  let r = results(p);
+  const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
+  const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 72 * 60 * 60 * 1000;
+  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isFocus(p.casa)||isFocus(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
+}
+function render() {
+  let all = orderedGames();
+  const today = new Date(new Date().toDateString());
+  let upcoming = all.filter(p => date(p.data) >= today && (isFocus(p.casa) || isFocus(p.trasferta)) && !p.risultato);
+  const ratings = currentRatings();
+  renderNext(upcoming[0], ratings);
+  let grp = $('#matchGroup').value;
+  const onlyReba = $('#onlyReba').checked;
+  $('#matchGroup').disabled = onlyReba;
+  let filtered = all.filter(p => onlyReba
+    ? isFocus(p.casa) || isFocus(p.trasferta)
+    : grp === 'all' || p.girone === grp);
+  const matchList = $('#matches');
+  matchList.innerHTML = filtered.map(matchHTML).join('');
+  // Preserve chronological order; initially center the most recently
+  // acquired result, leaving previous and following fixtures scrollable.
+  const latest = filtered.filter(p => p.risultato && p.acquisito_il && Number.isFinite(Date.parse(p.acquisito_il)))
+    .sort((a,b) => Date.parse(b.acquisito_il)-Date.parse(a.acquisito_il))[0];
+  const focus = latest || [...filtered].filter(p => p.risultato).slice(-1)[0] || filtered[0];
+  if (focus) {
+    const row = [...matchList.children].find(el => el.dataset.matchId === String(focus.id));
+    if (row) matchList.scrollTop = Math.max(0, row.offsetTop - matchList.offsetTop - matchList.clientHeight / 2 + row.offsetHeight / 2);
+  }
+  $('#tables').innerHTML = Object.keys(db.squadre).map(g => `<div class="table-card"><h3>GIRONE ${escapeHTML(g)}</h3><div class="table-scroll"><table><thead><tr><th>SQUADRA</th><th>G</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>PT</th></tr></thead><tbody>${standings(g).map((t,i) => `<tr class="${isFocus(t.nome)?'highlight':''}"><td>${i+1}. ${escapeHTML(short(t.nome))} ${eloLabel(t.nome, ratings)}</td><td>${t.G}</td><td>${t.V}</td><td>${t.P}</td><td>${t.PF}</td><td>${t.PS}</td><td>${t.pts}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
+  let gs = 'ABCDE';
+  const projections = Object.fromEntries([...gs].map(g => [g, playInProjection(g)]));
+  const candidates = Object.fromEntries([...gs].map(g => [g, playInCandidates(projections[g])]));
+  $('#bracket').innerHTML = [...gs].map((g,i) => { let other = gs[(i+1)%5], a = candidates[g][0], b = candidates[other][1]; return `<div class="playcard"><strong>0${i+1}</strong><div><small>1ª GIRONE ${g}</small>${playInSlot(a)}</div><span class="vs">VS</span><div><small>2ª GIRONE ${other}</small>${playInSlot(b)}</div></div>`; }).join('');
+  $('#playinStatus').textContent = Object.values(projections).flat()
+    .filter(t => t.admission === 'same-club')
+    .map(t => `${short(t.nome)}: Non ammessa – stessa società (${t.position}ª nel girone; classifica e risultati indipendenti).`).join(' ');
+  let done = all.filter(p => results(p));
+  $('#stats').innerHTML = `<div><b>${done.length}</b><p>Partite con risultato</p></div><div><b>${all.length}</b><p>Gare nel calendario importato</p></div><div><b>25</b><p>Squadre partecipanti</p></div>`;
+  $('#teams').innerHTML = Object.entries(db.squadre).map(([g,teams]) => `<div><b>GIRONE ${escapeHTML(g)}</b>${teams.map(t => `<p>${escapeHTML(short(t))}</p>`).join('')}</div>`).join('');
+  $('#simStatus').textContent = Object.keys(sim).length ? `${Object.keys(sim).length} simulazione/i attiva/e · risultati non ufficiali` : '';
+}
+fetch('data/campionato.json').then(r => r.json()).then(data => {
+  db = data;
+  // Controllo strutturale: ogni girone deve avere 20 gare, ogni squadra 8.
+  const errors = [];
+  const seenIds = new Set();
+  for (const game of db.partite) {
+    if (seenIds.has(String(game.id))) errors.push(`Gara duplicata: ${game.id}`);
+    seenIds.add(String(game.id));
+  }
+  for (const [group, teams] of Object.entries(db.squadre)) {
+    const games = db.partite.filter(p => p.girone === group);
+    if (games.length !== 20) errors.push(`Girone ${group}: ${games.length}/20 gare`);
+    for (const team of teams) {
+      const n = games.filter(p => p.casa === team || p.trasferta === team).length;
+      if (n !== 8) errors.push(`${team}: ${n}/8 gare`);
+    }
+  }
+  if (errors.length) {
+    console.error('Calendario non valido:', errors);
+    $('#status').textContent = 'ATTENZIONE: calendario incompleto, controllare la console.';
+    alert('Calendario incompleto o non valido: ' + errors.join('; '));
+    return;
+  }
+  if (db.ultimo_controllo_fip) {
+    const checked = new Date(db.ultimo_controllo_fip);
+    const day = checked.toLocaleDateString('it-IT', { timeZone: 'Europe/Rome', day: '2-digit', month: '2-digit', year: 'numeric' });
+    const time = checked.toLocaleTimeString('it-IT', { timeZone: 'Europe/Rome', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+    $('#sync').textContent = `Ultimo controllo FIP effettuato: ${day} · ${time}`;
+    $('#status').textContent = 'Risultati FIP sincronizzati.';
+  }
+  $('#matchGroup').innerHTML = '<option value="all">Tutti i gironi</option>' + Object.keys(db.squadre).map(g => `<option value="${escapeHTML(g)}">Girone ${escapeHTML(g)}</option>`).join('');
+  $('#matchGroup').onchange = render;
+  $('#onlyReba').onchange = render;
+  // Raggruppa per giornata ufficiale, quando disponibile nei dati.
+  // In assenza del campo giornata, raggruppa per data senza inventare numeri di turno.
+  const available = db.partite.filter(p => !p.risultato).sort((a,b) =>
+    date(a.data) - date(b.data) || String(a.ora || '').localeCompare(String(b.ora || '')) || String(a.girone).localeCompare(String(b.girone))
+  );
+  const groups = new Map();
+  for (const p of available) {
+    const hasRound = p.giornata !== undefined && p.giornata !== null && String(p.giornata).trim() !== '';
+    const key = hasRound ? `turno:${p.giornata}` : `data:${p.data}`;
+    if (!groups.has(key)) groups.set(key, {label: hasRound ? `Giornata ${p.giornata}` : `Partite del ${p.data} (giornata non indicata)`, games: []});
+    groups.get(key).games.push(p);
+  }
+  $('#simMatch').innerHTML = [...groups.values()].map(group =>
+    `<optgroup label="${escapeHTML(group.label)}">${group.games.map(p =>
+      `<option value="${escapeHTML(p.id)}">${escapeHTML(p.data)} · Girone ${escapeHTML(p.girone)} · ${escapeHTML(short(p.casa))} vs ${escapeHTML(short(p.trasferta))}</option>`
+    ).join('')}</optgroup>`
+  ).join('');
+  $('#simulate').onclick = () => {
+    let h = Number($('#scoreHome').value), a = Number($('#scoreAway').value);
+    if ($('#scoreHome').value === '' || $('#scoreAway').value === '' || h === a || h < 0 || a < 0) { alert('Inserisci due punteggi validi e diversi.'); return; }
+    if (!$('#simMatch').value) { alert('Nessuna partita disponibile per la simulazione'); return; }
+    sim[$('#simMatch').value] = [h,a]; render();
+  };
+  $('#reset').onclick = () => { sim = {}; render(); const msg = $('#simBulkNote'); if (msg) msg.textContent = 'Simulazioni azzerate. Puoi avviare una nuova simulazione.'; };
+  installBulkButton();
+  render();
+}).catch(e => { $('#nextTitle').textContent = 'Dati non caricati'; console.error(e); });
+
+// Elo discreto, senza modificare il foglio di stile del sito.
+(function installEloStyle(){
+  if (document.getElementById("elo-rating-style")) return;
+  const style = document.createElement("style");
+  style.id = "elo-rating-style";
+  style.textContent = ".elo-rating{font-size:.72em;font-weight:400;opacity:.55;white-space:nowrap;letter-spacing:0;color:inherit}#nextTitle .elo-rating{font-size:.48em;vertical-align:middle;opacity:.55}";
+  document.head.appendChild(style);
+})();
