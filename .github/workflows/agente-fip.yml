@@ -1,33 +1,61 @@
 name: Agente indipendente FIP
 on:
   schedule:
-    - cron: '17 6,7,16,22 * * *'
+    # UTC winter/summer candidates; local-time guard selects the correct three.
+    - cron: '30 5,6,11,12,16,17 * * *'
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    concurrency:
+      group: reba-fip-agent
+      cancel-in-progress: false
     steps:
+      - name: Check Italian local schedule
+        id: local_time
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          import os
+          local = datetime.now(ZoneInfo('Europe/Rome'))
+          enabled = os.environ.get('GITHUB_EVENT_NAME') != 'schedule' or (local.hour in (7, 13, 18))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'run={str(enabled).lower()}\n')
+          print(f'Italian time: {local.isoformat()}, run: {enabled}')
+          PY
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
+        if: steps.local_time.outputs.run == 'true'
         run: pip install requests beautifulsoup4
       - name: Check official FIP independently
+        if: steps.local_time.outputs.run == 'true'
         id: check
         continue-on-error: true
         run: python agente/monitor_fip.py
       - name: Save independent monitor data
-        if: always()
+        if: steps.local_time.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add agente/risultati.json agente/stato.json agente/diagnostica.json
           if ! git diff --cached --quiet; then
             git commit -m "Agente: verifica autonoma FIP"
-            git push
+            for attempt in 1 2 3 4 5; do
+              if git pull --rebase origin main && git push origin HEAD:main; then
+                echo "Agent data saved."
+                exit 0
+              fi
+              git rebase --abort 2>/dev/null || true
+              sleep 3
+            done
+            echo "Failed to save agent data after five attempts." >&2
+            exit 1
           fi
       - name: Report failed FIP verification
         if: steps.check.outcome == 'failure'
