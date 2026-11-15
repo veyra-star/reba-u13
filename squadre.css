@@ -116,3 +116,14 @@
 .skin-alfieri{--panel:#081f3d;--panel2:#0b284c}
 .skin-alfieri .feature{background:#0b284c}
 .skin-alfieri .table-card h3,.skin-alfieri .match.reba,.skin-alfieri tr.highlight{background:#0b284c}
+
+/* Alfieri: palette uniforme per tutti i riquadri. */
+.skin-alfieri{--bg:#102c59;--panel:#081f3d;--panel2:#0b284c;--white:#f7f9fc;--muted:#c4ccd6;--cream:#d6dee8;--lime:#85d5f5;--line:#8194a9}
+.skin-alfieri .feature,.skin-alfieri .match,.skin-alfieri .playcard,.skin-alfieri .table-card,.skin-alfieri .stats>div,.skin-alfieri .phases>div,.skin-alfieri .team-grid>div,.skin-alfieri .note{background:#081f3d;border-color:#8194a9;color:#f7f9fc}
+.skin-alfieri .match.reba,.skin-alfieri .table-card h3,.skin-alfieri tr.highlight,.skin-alfieri select,.skin-alfieri input{background:#0b284c;color:#f7f9fc}
+.skin-alfieri .team-grid>div b,.skin-alfieri .team-grid>div p{color:#d6dee8}
+.skin-alfieri .team-grid>div{background:#081f3d;border-color:#8194a9}
+.skin-alfieri .feature p,.skin-alfieri .hint,.skin-alfieri .note,.skin-alfieri .stats p,.skin-alfieri .phases p{color:#c4ccd6}
+.skin-alfieri .next-vs,.skin-alfieri .playcard strong,.skin-alfieri .stats b,.skin-alfieri .phases b{color:#d6dee8}
+.skin-alfieri button{background:#85d5f5;color:#081f3d}
+.skin-alfieri button.ghost{background:transparent;color:#f7f9fc}
