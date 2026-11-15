@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-14T20:42:17+00:00",
+  "tentativo_utc": "2026-11-15T01:52:01+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -45,7 +45,7 @@
           "risultati": {}
         }
       },
-      "data_limite": "2026-11-14"
+      "data_limite": "2026-11-15"
     },
     "B": {
       "giornate": {
@@ -86,6 +86,7 @@
         "1:3": {
           "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86096&codice_ar=1&giornata=3",
           "codici_trovati": [
+            "8685",
             "8686"
           ],
           "risultati": {
@@ -96,7 +97,7 @@
           }
         }
       },
-      "data_limite": "2026-11-14"
+      "data_limite": "2026-11-15"
     },
     "C": {
       "giornate": {
@@ -133,12 +134,13 @@
         "1:3": {
           "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86097&codice_ar=1&giornata=3",
           "codici_trovati": [
-            "8705"
+            "8705",
+            "8706"
           ],
           "risultati": {}
         }
       },
-      "data_limite": "2026-11-14"
+      "data_limite": "2026-11-15"
     },
     "D": {
       "giornate": {
@@ -175,9 +177,16 @@
               41
             ]
           }
+        },
+        "1:3": {
+          "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=3",
+          "codici_trovati": [
+            "8725"
+          ],
+          "risultati": {}
         }
       },
-      "data_limite": "2026-11-14"
+      "data_limite": "2026-11-15"
     },
     "E": {
       "giornate": {
@@ -229,7 +238,7 @@
           }
         }
       },
-      "data_limite": "2026-11-14"
+      "data_limite": "2026-11-15"
     }
   },
   "errori": []
