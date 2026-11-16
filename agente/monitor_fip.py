@@ -43,18 +43,21 @@ def norm(text):
 
 
 def extract(html, fixtures):
-    """Extract a result from the unique FIP fixture ID, independent of sponsors.
+    """Read explicit score fields in the match card anchored by its FIP ID.
 
-    The ID anchors the record; the score must be immediately before the
-    match date/time and each score must follow a recognizable team name.
+    Never infer scores from club names, dates, or neighbouring match cards.
+    Unknown markup, missing points and conflicting duplicate cards fail closed.
     """
     soup = BeautifulSoup(html, 'html.parser')
-    text = soup.get_text(' ', strip=True)
     results = {}
-    date_time = re.compile(
-        r'\s+\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4}\s+\d{1,2}:\d{2}\s*$',
-        re.I,
-    )
+    cards = {}
+    for card in soup.select('.results-matches__match'):
+        refs = card.select('.results-matches__match__info .ref')
+        if len(refs) != 1:
+            continue
+        match = re.fullmatch(r'0*(\d+)', refs[0].get_text(' ', strip=True))
+        if match:
+            cards.setdefault(int(match.group(1)), []).append(card)
 
     def significant_tokens(name):
         return [t for t in re.findall(r'[A-Z0-9]+', name.upper())
@@ -66,37 +69,32 @@ def extract(html, fixtures):
         return bool(tokens) and sum(t in normalized for t in tokens) >= max(1, len(tokens) - 1)
 
     for game in fixtures:
-        ident = re.escape(str(int(game['id'])))
+        matched_cards = cards.get(int(game['id']), [])
         candidates = set()
-        for marker in re.finditer(rf'(?<!\d)0*{ident}(?!\d)', text):
-            prefix = text[max(0, marker.start() - 250):marker.start()]
-            date = date_time.search(prefix)
-            if not date:
+        for card in matched_cards:
+            teams = card.select('.teams > .team')
+            if len(teams) != 2:
                 continue
-            body = prefix[:date.start()]
-            # The away score is the last number immediately before the date.
-            away_score = re.search(r'\s+(\d{1,3})\s*$', body)
-            if not away_score:
-                continue
-            before_away = body[:away_score.start()]
-            # Identify the home score, allowing a sponsor or suffix in the
-            # FIP club names. A club number (e.g. 2020) is not a score.
-            for home_score in re.finditer(r'\s+(\d{1,3})\s+', before_away):
-                home_label = before_away[max(0, home_score.start() - 110):home_score.start()]
-                away_label = before_away[home_score.end():]
-                if not team_matches(home_label, game['casa']):
-                    continue
-                if not team_matches(away_label, game['trasferta']):
-                    continue
-                score = (int(home_score.group(1)), int(away_score.group(1)))
-                if score[0] != score[1]:
-                    candidates.add(score)
+            score = []
+            for team, name in zip(teams, (game['casa'], game['trasferta'])):
+                labels = team.select('.team__name')
+                points = team.select('.team__points')
+                if len(labels) != 1 or len(points) != 1:
+                    break
+                if not team_matches(labels[0].get_text(' ', strip=True), name):
+                    break
+                value = points[0].get_text(' ', strip=True)
+                if not re.fullmatch(r'[0-9]{1,3}', value):
+                    break
+                score.append(int(value))
+            if len(score) == 2 and score[0] != score[1]:
+                candidates.add(tuple(score))
         if len(candidates) == 1:
             results[game['id']] = list(next(iter(candidates)))
             print(f'FIP game {game["id"]}: {results[game["id"]]}')
         elif len(candidates) > 1:
             print(f'WARNING: conflicting scores for game {game["id"]}: {sorted(candidates)}')
-        elif re.search(rf'(?<!\d)0*{ident}(?!\d)', text):
+        elif matched_cards:
             print(f'WARNING: game {game["id"]} present but no verified score')
     return results
 

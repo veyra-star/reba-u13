@@ -33,6 +33,9 @@ jobs:
       - name: Install dependencies
         if: steps.local_time.outputs.run == 'true'
         run: pip install requests beautifulsoup4
+      - name: Test FIP parser regression
+        if: steps.local_time.outputs.run == 'true'
+        run: python -m unittest discover -s tests -p 'test_fip_parser.py' -v
       - name: Check official FIP independently
         if: steps.local_time.outputs.run == 'true'
         id: check

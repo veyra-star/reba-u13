@@ -8,6 +8,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/update_fip.py'
+      - 'tests/test_fip_parser.py'
+      - 'tests/fixtures/fip-c-andata-2.html'
       - '.github/workflows/update.yml'
 
 permissions:
@@ -48,6 +50,10 @@ jobs:
       - name: Installa dipendenze
         if: steps.local_time.outputs.run == 'true'
         run: pip install -r requirements.txt
+
+      - name: Test FIP parser regression
+        if: steps.local_time.outputs.run == 'true'
+        run: python -m unittest discover -s tests -p 'test_fip_parser.py' -v
 
       - name: Recupera risultati FIP
         if: steps.local_time.outputs.run == 'true'

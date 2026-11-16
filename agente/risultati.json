@@ -312,6 +312,32 @@
         52,
         27
       ]
+    },
+    "8703": {
+      "id": "8703",
+      "girone": "C",
+      "casa": "LETTERA 22 A.S.D.",
+      "trasferta": "LAPOLISMILE",
+      "data": "08/11/2026",
+      "ora": "15:00",
+      "giornata": "2 andata",
+      "risultato": [
+        6,
+        103
+      ]
+    },
+    "8745": {
+      "id": "8745",
+      "girone": "E",
+      "casa": "POLISPORTIVA SAN GIACOMO",
+      "trasferta": "BASKET FEMM.LE ALESSANDRIA",
+      "data": "14/11/2026",
+      "ora": "14:15",
+      "giornata": "3 andata",
+      "risultato": [
+        59,
+        40
+      ]
     }
   }
 }
