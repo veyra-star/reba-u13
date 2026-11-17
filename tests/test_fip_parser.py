@@ -105,5 +105,9 @@ class FipParserTests(unittest.TestCase):
                              {'8703': [6, 103], '8704': [69, 26]})
 
 
+# Keep venue regressions in the existing workflow test entry point.
+from fip_venue_cases import VenueTests
+
+
 if __name__ == '__main__':
     unittest.main()

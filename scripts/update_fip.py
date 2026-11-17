@@ -40,6 +40,81 @@ def norm(text):
     return re.sub(r'[^A-Z0-9]', '', text.upper())
 
 
+def is_reba_fixture(game):
+    # REBA Bianco is a distinct team; only include it when playing REBA.
+    return game.get('girone') == 'D' and 'POLISPORTIVA REBA' in (game['casa'], game['trasferta'])
+
+
+def extract_venues(html, fixtures):
+    """Read Campo di gioco inside the Info panel of the exact REBA match."""
+    soup = BeautifulSoup(html, 'html.parser')
+    updates = {}
+    for game in filter(is_reba_fixture, fixtures):
+        candidates = []
+        for card in soup.select('.results-matches__match'):
+            refs = card.select('.results-matches__match__info .ref')
+            if len(refs) != 1 or not re.fullmatch(r'0*' + str(int(game['id'])), refs[0].get_text(strip=True)):
+                continue
+            names = [norm(n.get_text(' ', strip=True)) for n in card.select('.teams > .team .team__name')]
+            if names != [norm(game['casa']), norm(game['trasferta'])]:
+                candidates.append(None)
+                continue
+            values = []
+            for info in card.select('.results-matches__match__moreinfo .info'):
+                label = info.select_one('.label')
+                value = info.select_one('.value')
+                if label and value and label.get_text(' ', strip=True).casefold() == 'campo di gioco':
+                    raw = re.sub(r'\s+', ' ', value.get_text(' ', strip=True))
+                    raw = re.sub(r'\(\s*([A-Z]{2})\s*\)', r'(\1)', raw)
+                    # FIP separates the venue name from its postal address with a comma.
+                    name, sep, address = raw.partition(',')
+                    if sep and name.strip() and re.search(r'\b\d{5}\s+.+\([A-Z]{2}\)$', address.strip()):
+                        address = address.strip()
+                        values.append({'nome': name.strip(), 'indirizzo': address,
+                                       'maps_url': 'https://www.google.com/maps/search/?' + urlencode({'api': 1, 'query': address})})
+            candidates.append(values[0] if len(values) == 1 else None)
+        if candidates and all(v is not None and v == candidates[0] for v in candidates):
+            updates[game['id']] = candidates[0]
+    return updates
+
+
+def refresh_venues(db, fetch=None):
+    """Refresh every REBA round, including future fixtures and later corrections.
+
+    Errors retain previous per-game data and do not interrupt score synchronization.
+    """
+    fetch = fetch or (lambda url: requests.get(url, headers=HEADERS, timeout=25))
+    rounds = {}
+    errors = []
+    changed = 0
+    for game in filter(is_reba_fixture, db['partite']):
+        match = re.fullmatch(r'(\d+)\s+(andata|ritorno)', game['giornata'], re.I)
+        if not match:
+            errors.append(f'Sede {game["id"]}: giornata sconosciuta')
+            continue
+        key = (1 if match[2].lower() == 'andata' else 0, int(match[1]))
+        rounds.setdefault(key, []).append(game)
+    for (ar, giornata), games in sorted(rounds.items()):
+        source = url_for('D', ar, giornata)
+        try:
+            response = fetch(source)
+            response.raise_for_status()
+            venues = extract_venues(response.text, games)
+            for game in games:
+                venue = venues.get(game['id'])
+                if venue is None:
+                    errors.append(f'Sede {game["id"]}: Campo di gioco non verificato; dato precedente conservato')
+                    continue
+                venue['fonte'] = source
+                previous = game.get('campo_gioco') or {}
+                if any(previous.get(k) != v for k, v in venue.items()):
+                    game['campo_gioco'] = {**venue, 'acquisito_il': dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')}
+                    changed += 1
+        except (requests.RequestException, ValueError) as exc:
+            errors.append(f'Sedi D ar={ar} giornata={giornata}: {exc}')
+    return changed, errors
+
+
 def extract(html, fixtures):
     """Read explicit score fields in the match card anchored by its FIP ID.
 
@@ -100,8 +175,19 @@ def extract(html, fixtures):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--fixture-html', type=Path, help='Use saved HTML of girone C to validate parsing offline')
+    parser.add_argument('--venues-only', action='store_true', help='Refresh only REBA venues, without changing scores or score-check timestamps')
     args = parser.parse_args()
+    if args.venues_only and args.fixture_html:
+        parser.error('--venues-only cannot be combined with --fixture-html')
     db = json.loads(DATA.read_text(encoding='utf-8'))
+    if args.venues_only:
+        changed, errors = refresh_venues(db)
+        if changed:
+            DATA.write_text(json.dumps(db, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        for error in errors:
+            print(error, file=sys.stderr)
+        print(f'New/changed verified REBA venues: {changed}')
+        return 1 if errors else 0
     updates = {}
     errors = []
     if args.fixture_html:
@@ -156,6 +242,10 @@ def main():
     # Offline fixture parsing must never advance this timestamp.
     if not args.fixture_html:
         db['ultimo_controllo_fip'] = checked_at
+        venue_changes, venue_errors = refresh_venues(db)
+        print(f'New/changed verified REBA venues: {venue_changes}')
+        for error in venue_errors:
+            print(error, file=sys.stderr)
     if changed or not args.fixture_html:
         DATA.write_text(json.dumps(db, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'New/changed verified score pairs: {changed}. Unrecognized scores are not guessed.')

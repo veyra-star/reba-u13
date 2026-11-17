@@ -1,3 +1,10 @@
+## v0.5.2 — Sedi ufficiali FIP — 17/11/2026
+- Recupero del Campo di gioco per le sole gare della squadra principale REBA U13F.
+- Impianto, indirizzo e Maps nella prossima gara e nel centro partite.
+- Rilettura di tutti gli otto turni, inclusi quelli futuri, per recepire correzioni.
+- Workflow invariati; punteggi e aggiornamenti online preesistenti conservati.
+- Verifica: 16 test automatici e controllo visivo delle sedi.
+
 ## v0.5.1 — Revisione simulazione Play-In — 08/11/2026
 - Su conferma dell’utente, se le due REBA occupano i primi due posti e lo spareggio è risolto, la terza subentra nella proiezione al posto della REBA esclusa.
 - Il subentro è esplicitamente segnalato come ipotesi della simulazione da confermare con FIP, senza modificare risultati o classifica sportiva.

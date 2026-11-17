@@ -39,6 +39,9 @@ function results(p) { return sim[p.id] || p.risultato; }
 // Se il JSON contiene l'indirizzo della singola partita, prevale sempre quello.
 const REBA_FIRST_HOME_ADDRESS = 'Via Balla 13, 10137 Torino';
 function venueFor(p) {
+  if ((isReba(p.casa) || isReba(p.trasferta)) && p.campo_gioco?.nome && p.campo_gioco?.indirizzo) {
+    return {nome: p.campo_gioco.nome, indirizzo: p.campo_gioco.indirizzo};
+  }
   const entry = db.palestre?.[p.casa] || db.impianti?.[p.casa] || db.indirizzi?.[p.casa];
   const obj = typeof entry === 'string' ? { indirizzo: entry } : (entry || {});
   const nome = p.palestra || p.impianto || p.nome_palestra || obj.nome || obj.palestra || obj.impianto || '';
@@ -49,6 +52,12 @@ function venueFor(p) {
     if (homeGames[0]?.id === p.id) indirizzo = REBA_FIRST_HOME_ADDRESS;
   }
   return { nome, indirizzo };
+}
+function matchVenueHTML(p) {
+  if (!isReba(p.casa) && !isReba(p.trasferta)) return '';
+  const {nome, indirizzo} = venueFor(p);
+  const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(indirizzo);
+  return `<div class="match-venue">${nome ? `🏟️ ${escapeHTML(nome)} · ` : ''}${indirizzo ? `📍 ${escapeHTML(indirizzo)} · <a href="${escapeHTML(maps)}" target="_blank" rel="noopener noreferrer">Maps ↗</a>` : '📍 Campo di gioco da confermare'}</div>`;
 }
 function eloLabel(team, ratings) {
   const value = Math.round(ratings.get(team) ?? INITIAL_RATING);
@@ -322,7 +331,7 @@ function matchHTML(p) {
   let r = results(p);
   const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
   const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 72 * 60 * 60 * 1000;
-  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
+  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isReba(p.casa)||isReba(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span>${matchVenueHTML(p)}</div>`;
 }
 function render() {
   let all = orderedGames();
