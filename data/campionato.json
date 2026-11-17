@@ -101,7 +101,11 @@
       "data": "16/11/2026",
       "ora": "18:00",
       "giornata": "3 andata",
-      "risultato": null
+      "risultato": [
+        63,
+        31
+      ],
+      "acquisito_il": "2026-11-17T06:34:33+00:00"
     },
     {
       "id": "8666",
@@ -554,7 +558,11 @@
       "data": "15/11/2026",
       "ora": "11:15",
       "giornata": "3 andata",
-      "risultato": null
+      "risultato": [
+        116,
+        23
+      ],
+      "acquisito_il": "2026-11-17T06:34:33+00:00"
     },
     {
       "id": "8707",
@@ -1196,6 +1204,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-16T07:16:34+00:00",
-  "ultimo_controllo_fip": "2026-11-16T16:00:21+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-17T06:34:33+00:00",
+  "ultimo_controllo_fip": "2026-11-17T06:34:33+00:00"
 }
