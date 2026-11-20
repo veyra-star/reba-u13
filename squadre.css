@@ -127,3 +127,7 @@
 .skin-alfieri .next-vs,.skin-alfieri .playcard strong,.skin-alfieri .stats b,.skin-alfieri .phases b{color:#d6dee8}
 .skin-alfieri button{background:#85d5f5;color:#081f3d}
 .skin-alfieri button.ghost{background:transparent;color:#f7f9fc}
+
+/* Risultati: stesso colore delle squadre, accento solo per quelli recenti. */
+.skin-alfieri .match .score,.skin-eridania .match .score{color:inherit}
+.skin-alfieri .match.fresh-result .score,.skin-eridania .match.fresh-result .score{color:var(--lime);font-weight:900}
