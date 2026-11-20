@@ -548,7 +548,11 @@
       "data": "14/11/2026",
       "ora": "11:30",
       "giornata": "3 andata",
-      "risultato": null
+      "risultato": [
+        49,
+        34
+      ],
+      "acquisito_il": "2026-11-20T08:39:01+00:00"
     },
     {
       "id": "8706",
@@ -789,14 +793,18 @@
       "data": "16/11/2026",
       "ora": "18:30",
       "giornata": "3 andata",
-      "risultato": null,
+      "risultato": [
+        20,
+        106
+      ],
       "campo_gioco": {
         "nome": "Palazzetto Comunale",
         "indirizzo": "Via Ponte Rocca 4 13040 SALUGGIA (VC)",
         "maps_url": "https://www.google.com/maps/search/?api=1&query=Via+Ponte+Rocca+4+13040+SALUGGIA+%28VC%29",
         "fonte": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=3",
         "acquisito_il": "2026-11-17T06:29:54+00:00"
-      }
+      },
+      "acquisito_il": "2026-11-20T08:39:01+00:00"
     },
     {
       "id": "8727",
@@ -1204,6 +1212,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-17T06:34:33+00:00",
-  "ultimo_controllo_fip": "2026-11-19T21:29:38+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-20T08:39:01+00:00",
+  "ultimo_controllo_fip": "2026-11-20T08:39:01+00:00"
 }
