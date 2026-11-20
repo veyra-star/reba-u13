@@ -1,48 +1,46 @@
 name: Agente indipendente FIP
 on:
   schedule:
-    # UTC winter/summer candidates; local-time guard selects the correct three.
-    - cron: '30 5,6,11,12,16,17 * * *'
+    # Run even when GitHub starts a scheduled event late.
+    - cron: '47 * * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'agente/monitor_fip.py'
+      - 'scripts/fip_common.py'
+      - 'scripts/verify_published.py'
+      - 'tests/test_fip*.py'
+      - 'tests/fip_venue_cases.py'
+      - 'tests/fixtures/fip*.html'
+      - '.github/workflows/agente-fip.yml'
 permissions:
   contents: write
+concurrency:
+  # Serialize both writers so their result commits do not race.
+  group: reba-fip-writes
+  cancel-in-progress: false
 jobs:
   monitor:
     runs-on: ubuntu-latest
-    concurrency:
-      group: reba-fip-agent
-      cancel-in-progress: false
+    timeout-minutes: 20
     steps:
-      - name: Check Italian local schedule
-        id: local_time
-        run: |
-          python - <<'PY'
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          import os
-          local = datetime.now(ZoneInfo('Europe/Rome'))
-          enabled = os.environ.get('GITHUB_EVENT_NAME') != 'schedule' or (local.hour in (7, 13, 18))
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write(f'run={str(enabled).lower()}\n')
-          print(f'Italian time: {local.isoformat()}, run: {enabled}')
-          PY
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
-        if: steps.local_time.outputs.run == 'true'
-        run: pip install requests beautifulsoup4
-      - name: Test FIP parser regression
-        if: steps.local_time.outputs.run == 'true'
-        run: python -m unittest discover -s tests -p 'test_fip_parser.py' -v
-      - name: Check official FIP independently
-        if: steps.local_time.outputs.run == 'true'
+        run: pip install -r requirements.txt
+      - name: Test FIP parsing and reliability
+        run: |
+          python -m unittest discover -s tests -p 'test_fip*.py' -v
+          python -m unittest discover -s tests -p 'fip_venue_cases.py' -v
+      - name: Check official FIP
         id: check
         continue-on-error: true
         run: python agente/monitor_fip.py
-      - name: Save independent monitor data
-        if: steps.local_time.outputs.run == 'true'
+      - name: Save results and diagnostic status
+        if: ${{ !cancelled() && (steps.check.outcome == 'success' || steps.check.outcome == 'failure') }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -51,15 +49,14 @@ jobs:
             git commit -m "Agente: verifica autonoma FIP"
             for attempt in 1 2 3 4 5; do
               if git pull --rebase origin main && git push origin HEAD:main; then
-                echo "Agent data saved."
                 exit 0
               fi
               git rebase --abort 2>/dev/null || true
               sleep 3
             done
-            echo "Failed to save agent data after five attempts." >&2
+            echo "Failed to save FIP data after five attempts." >&2
             exit 1
           fi
-      - name: Report failed FIP verification
+      - name: Report incomplete FIP check
         if: steps.check.outcome == 'failure'
         run: exit 1

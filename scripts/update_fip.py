@@ -11,9 +11,14 @@ import re
 import sys
 from pathlib import Path
 from urllib.parse import urlencode
+from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
+
+# Also supports importlib-based regression tests.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from fip_common import fetch_page, verify_round
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data/campionato.json'
@@ -83,7 +88,7 @@ def refresh_venues(db, fetch=None):
 
     Errors retain previous per-game data and do not interrupt score synchronization.
     """
-    fetch = fetch or (lambda url: requests.get(url, headers=HEADERS, timeout=25))
+    fetch = fetch or (lambda url: fetch_page(url, HEADERS))
     rounds = {}
     errors = []
     changed = 0
@@ -194,7 +199,9 @@ def main():
         html = args.fixture_html.read_text(encoding='utf-8')
         updates.update(extract(html, [p for p in db['partite'] if p['girone'] == 'C']))
     else:
-        today = dt.datetime.now(dt.timezone(dt.timedelta(hours=1))).date()
+        today = dt.datetime.now(ZoneInfo('Europe/Rome')).date()
+        attempted = 0
+        completed = 0
         for group in CODES:
             fixtures = [p for p in db['partite'] if p['girone'] == group]
             rounds = {}
@@ -207,15 +214,13 @@ def main():
                     key = (1 if m.group(2).lower() == 'andata' else 0, int(m.group(1)))
                     rounds.setdefault(key, []).append(game)
             for (ar, giornata), selected in sorted(rounds.items()):
+                attempted += 1
                 try:
-                    resp = requests.get(url_for(group, ar, giornata), headers=HEADERS, timeout=25)
+                    resp = fetch_page(url_for(group, ar, giornata), HEADERS,
+                                      lambda html: verify_round(html, selected, extract))
                     resp.raise_for_status()
-                    if len(resp.content) < 1000:
-                        raise ValueError('Response too small for a results page')
-                    page_text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
-                    if not any(re.search(r'(?<!\d)0*' + re.escape(str(int(p['id']))) + r'(?!\d)', page_text) for p in selected):
-                        raise ValueError('No expected fixture IDs in round page')
-                    parsed = extract(resp.text, selected)
+                    parsed = verify_round(resp.text, selected, extract)
+                    completed += 1
                     for game_id, score in parsed.items():
                         if game_id in updates and updates[game_id] != score:
                             raise ValueError(f'Conflicting scores for {game_id}')
@@ -225,8 +230,19 @@ def main():
                     errors.append(f'{group} ar={ar} giornata={giornata}: {exc}')
         if not updates and today >= dt.date(2026, 10, 30):
             errors.append('Nessun punteggio verificato nelle giornate gia disputate')
+    if not args.fixture_html:
+        status_file = DATA.with_name('fip-stato.json')
+        previous = json.loads(status_file.read_text()) if status_file.exists() else {}
+        now = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
+        previous.update({'ultimo_tentativo_utc': now,
+                         'esito': ('parziale' if completed else 'errore') if errors else 'ok',
+                         'giornate_attese': attempted, 'giornate_verificate': completed,
+                         'punteggi_verificati': len(updates), 'errori': errors})
+        if not errors:
+            previous['ultimo_controllo_riuscito_utc'] = now
+        status_file.write_text(json.dumps(previous, ensure_ascii=False, indent=2) + '\n')
     if errors:
-        print('FIP request failed; leaving JSON unchanged:\n' + '\n'.join(errors), file=sys.stderr)
+        print('FIP request failed; leaving results unchanged:\n' + '\n'.join(errors), file=sys.stderr)
         return 1
     checked_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
     changed = 0

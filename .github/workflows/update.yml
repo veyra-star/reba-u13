@@ -1,66 +1,46 @@
 name: Aggiorna risultati FIP
-
 on:
   schedule:
-    - cron: '17 4-22 * * *'
+    # Run even when GitHub starts a scheduled event late.
+    - cron: '17 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - 'scripts/update_fip.py'
-      - 'tests/test_fip_parser.py'
-      - 'tests/fixtures/fip-c-andata-2.html'
+      - 'scripts/fip_common.py'
+      - 'scripts/verify_published.py'
+      - 'tests/test_fip*.py'
+      - 'tests/fip_venue_cases.py'
+      - 'tests/fixtures/fip*.html'
       - '.github/workflows/update.yml'
-
 permissions:
   contents: write
-
+concurrency:
+  # Serialize both writers so their result commits do not race.
+  group: reba-fip-writes
+  cancel-in-progress: false
 jobs:
   update:
     runs-on: ubuntu-latest
-    concurrency:
-      group: reba-fip-writes
-      cancel-in-progress: false
-
+    timeout-minutes: 20
     steps:
-      - name: Scarica repository
-        uses: actions/checkout@v4
-
-      - name: Configura Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Verifica fascia oraria italiana
-        id: local_time
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-        run: |
-          python - <<'PY'
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          import os
-          local = datetime.now(ZoneInfo('Europe/Rome'))
-          enabled = os.environ['EVENT_NAME'] != 'schedule' or 6 <= local.hour <= 23
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write(f'run={str(enabled).lower()}\n')
-          print(f'Ora italiana: {local.isoformat()}; evento: {os.environ["EVENT_NAME"]}; eseguire: {enabled}')
-          PY
-
-      - name: Installa dipendenze
-        if: steps.local_time.outputs.run == 'true'
+      - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Test FIP parser regression
-        if: steps.local_time.outputs.run == 'true'
-        run: python -m unittest discover -s tests -p 'test_fip_parser.py' -v
-
-      - name: Recupera risultati FIP
-        if: steps.local_time.outputs.run == 'true'
+      - name: Test FIP parsing and reliability
+        run: |
+          python -m unittest discover -s tests -p 'test_fip*.py' -v
+          python -m unittest discover -s tests -p 'fip_venue_cases.py' -v
+      - name: Check official FIP
+        id: check
+        continue-on-error: true
         run: python scripts/update_fip.py
-
-      - name: Salva aggiornamenti
-        if: steps.local_time.outputs.run == 'true'
+      - name: Save results and diagnostic status
+        if: ${{ !cancelled() && (steps.check.outcome == 'success' || steps.check.outcome == 'failure') }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -69,15 +49,17 @@ jobs:
             git commit -m "Aggiornamento automatico risultati FIP"
             for attempt in 1 2 3 4 5; do
               if git pull --rebase origin main && git push origin HEAD:main; then
-                echo "Aggiornamento salvato."
                 exit 0
               fi
               git rebase --abort 2>/dev/null || true
-              echo "Tentativo $attempt fallito; riprovo."
               sleep 3
             done
-            echo "Impossibile salvare dopo 5 tentativi." >&2
+            echo "Failed to save FIP data after five attempts." >&2
             exit 1
-          else
-            echo "Nessun nuovo risultato da salvare."
           fi
+      - name: Report incomplete FIP check
+        if: steps.check.outcome == 'failure'
+        run: exit 1
+      - name: Verify scores actually published on the site
+        if: steps.check.outcome == 'success'
+        run: python scripts/verify_published.py

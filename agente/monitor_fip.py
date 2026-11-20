@@ -11,9 +11,13 @@ import re
 import sys
 from pathlib import Path
 from urllib.parse import urlencode
+from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+from fip_common import fetch_page, verify_round
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / 'calendario.json'
@@ -107,7 +111,9 @@ def main():
     errors = []
     checked_at = dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
     diagnostics = {}
-    today = dt.datetime.now(dt.timezone(dt.timedelta(hours=1))).date()
+    today = dt.datetime.now(ZoneInfo('Europe/Rome')).date()
+    attempted = 0
+    completed = 0
     for group in CODES:
         group_games = [p for p in fixtures if p['girone'] == group]
         rounds = {}
@@ -123,16 +129,14 @@ def main():
         diagnostics[group] = {'giornate': {}, 'data_limite':today.isoformat()}
         for (ar, giornata), selected in sorted(rounds.items()):
             key = f'{ar}:{giornata}'
+            attempted += 1
             try:
-                resp = requests.get(url_for(group, ar, giornata), headers=HEADERS, timeout=25)
+                resp = fetch_page(url_for(group, ar, giornata), HEADERS,
+                                  lambda html: verify_round(html, selected, extract))
                 resp.raise_for_status()
-                if len(resp.content) < 1000:
-                    raise ValueError('Risposta FIP troppo breve')
-                text = BeautifulSoup(resp.text, 'html.parser').get_text(' ', strip=True)
-                seen = [p['id'] for p in selected if re.search(r'(?<!\d)0*'+re.escape(str(int(p['id'])))+r'(?!\d)',text)]
-                if not seen:
-                    raise ValueError('Nessun codice gara atteso nella giornata')
-                parsed = {str(k):v for k,v in extract(resp.text, selected).items()}
+                parsed = {str(k): v for k, v in verify_round(resp.text, selected, extract).items()}
+                completed += 1
+                seen = [p['id'] for p in selected]
                 for game_id, score in parsed.items():
                     if game_id in updates and updates[game_id] != score:
                         raise ValueError(f'Punteggi discordanti per {game_id}')
@@ -147,8 +151,11 @@ def main():
     (ROOT / 'diagnostica.json').write_text(json.dumps({'tentativo_utc':checked_at,'gironi':diagnostics,'errori':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     state['ultimo_tentativo_utc'] = checked_at
     state['errori'] = errors
+    state['giornate_attese'] = attempted
+    state['giornate_verificate'] = completed
+    state['punteggi_verificati'] = len(updates)
     if errors:
-        state['esito'] = 'errore'
+        state['esito'] = 'parziale' if completed else 'errore'
         STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print('FIP verification failed: ' + '; '.join(errors), file=sys.stderr)
         return 1
