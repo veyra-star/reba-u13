@@ -338,6 +338,58 @@
         59,
         40
       ]
+    },
+    "8665": {
+      "id": "8665",
+      "girone": "A",
+      "casa": "GATORS",
+      "trasferta": "NEW BASKET ABET",
+      "data": "16/11/2026",
+      "ora": "18:00",
+      "giornata": "3 andata",
+      "risultato": [
+        63,
+        31
+      ]
+    },
+    "8705": {
+      "id": "8705",
+      "girone": "C",
+      "casa": "BASKET NOLE",
+      "trasferta": "LETTERA 22 A.S.D.",
+      "data": "14/11/2026",
+      "ora": "11:30",
+      "giornata": "3 andata",
+      "risultato": [
+        49,
+        34
+      ]
+    },
+    "8706": {
+      "id": "8706",
+      "girone": "C",
+      "casa": "LAPOLISMILE",
+      "trasferta": "USAC RIVAROLO BK 2009",
+      "data": "15/11/2026",
+      "ora": "11:15",
+      "giornata": "3 andata",
+      "risultato": [
+        116,
+        23
+      ]
+    },
+    "8726": {
+      "id": "8726",
+      "girone": "D",
+      "casa": "VIRTUS BASKET SALUGGIA",
+      "trasferta": "POLISPORTIVA REBA",
+      "data": "16/11/2026",
+      "ora": "18:30",
+      "giornata": "3 andata",
+      "risultato": [
+        20,
+        106
+      ]
     }
   }
 }
