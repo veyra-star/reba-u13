@@ -416,6 +416,32 @@
         37,
         61
       ]
+    },
+    "8688": {
+      "id": "8688",
+      "girone": "B",
+      "casa": "ERIDANIA BASKET",
+      "trasferta": "BEA CHIERI SSDRL",
+      "data": "21/11/2026",
+      "ora": "16:15",
+      "giornata": "4 andata",
+      "risultato": [
+        63,
+        43
+      ]
+    },
+    "8708": {
+      "id": "8708",
+      "girone": "C",
+      "casa": "BASKET VENARIA",
+      "trasferta": "LAPOLISMILE",
+      "data": "21/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": [
+        7,
+        69
+      ]
     }
   }
 }
