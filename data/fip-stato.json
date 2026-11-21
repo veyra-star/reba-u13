@@ -1,9 +1,9 @@
 {
-  "ultimo_tentativo_utc": "2026-11-21T15:21:21+00:00",
+  "ultimo_tentativo_utc": "2026-11-21T21:38:49+00:00",
   "esito": "ok",
   "giornate_attese": 19,
   "giornate_verificate": 19,
-  "punteggi_verificati": 32,
+  "punteggi_verificati": 34,
   "errori": [],
-  "ultimo_controllo_riuscito_utc": "2026-11-21T15:21:21+00:00"
+  "ultimo_controllo_riuscito_utc": "2026-11-21T21:38:49+00:00"
 }
