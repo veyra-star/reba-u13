@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-20T23:24:12+00:00",
+  "tentativo_utc": "2026-11-21T04:19:15+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -59,7 +59,12 @@
           "codici_trovati": [
             "8668"
           ],
-          "risultati": {}
+          "risultati": {
+            "8668": [
+              45,
+              31
+            ]
+          }
         }
       },
       "data_limite": "2026-11-21"

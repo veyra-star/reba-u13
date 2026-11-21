@@ -390,6 +390,19 @@
         20,
         106
       ]
+    },
+    "8668": {
+      "id": "8668",
+      "girone": "A",
+      "casa": "NEW BASKET ABET",
+      "trasferta": "OLIMPO BASKET ALBA",
+      "data": "19/11/2026",
+      "ora": "18:00",
+      "giornata": "4 andata",
+      "risultato": [
+        45,
+        31
+      ]
     }
   }
 }
