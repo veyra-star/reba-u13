@@ -403,6 +403,19 @@
         45,
         31
       ]
+    },
+    "8707": {
+      "id": "8707",
+      "girone": "C",
+      "casa": "USAC RIVAROLO BK 2009",
+      "trasferta": "BASKET NOLE",
+      "data": "21/11/2026",
+      "ora": "11:00",
+      "giornata": "4 andata",
+      "risultato": [
+        37,
+        61
+      ]
     }
   }
 }
