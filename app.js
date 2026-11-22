@@ -179,14 +179,61 @@ function normalNoise() {
   return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
 }
 function simulatedScore(p, ratings) {
-  const probability = winProbability(p.casa, p.trasferta, ratings);
-  const homeWins = Math.random() < probability;
-  // Coefficienti simili producono gare piu equilibrate; differenze crescenti,
-  // margini medi piu ampi. La casualita rimane anche a stagione avanzata.
-  const gap = Math.abs((ratings.get(p.casa) ?? INITIAL_RATING) - (ratings.get(p.trasferta) ?? INITIAL_RATING));
-  const margin = Math.max(1, Math.round(3 + gap/35 + Math.abs(normalNoise())*6));
-  const losingScore = Math.max(8, Math.min(85, Math.round(35 + normalNoise()*10)));
-  return homeWins ? [losingScore+margin, losingScore] : [losingScore, losingScore+margin];
+  // Il rating esistente non viene modificato: e solo un input della previsione.
+  // Le medie sono basate sui risultati ufficiali del girone, non su quelli inventati.
+  const played = orderedGames().filter(g => g.girone === p.girone &&
+    Array.isArray(g.risultato) && g.risultato.length === 2 &&
+    g.risultato.every(v => v !== '' && Number.isFinite(Number(v))) &&
+    Number(g.risultato[0]) !== Number(g.risultato[1]));
+  const samples = new Map();
+  let total = 0, n = 0;
+  for (const g of played) {
+    const h = Number(g.risultato[0]), a = Number(g.risultato[1]);
+    total += h + a; n += 2;
+    for (const [team, scored, conceded, atHome, opponent] of [
+      [g.casa, h, a, true, g.trasferta],
+      [g.trasferta, a, h, false, g.casa]
+    ]) {
+      if (!samples.has(team)) samples.set(team, []);
+      samples.get(team).push({scored, conceded, atHome, opponent});
+    }
+  }
+  const league = n ? total / n : 48;
+  const avg = (arr, key) => arr.reduce((s, x) => s + x[key], 0) / arr.length;
+  function profile(team, home) {
+    const games = samples.get(team) || [];
+    if (!games.length) return {attack: league, defense: league};
+    // Smorza i dati scarsi e gli estremi, ma conserva le squadre da 100+ punti.
+    const adjust = games.map(g => {
+      const oppRating = ratings.get(g.opponent) ?? INITIAL_RATING;
+      const correction = Math.max(-12, Math.min(12, (oppRating - INITIAL_RATING) * 0.055));
+      return {scored: g.scored + correction, conceded: g.conceded - correction, atHome: g.atHome};
+    });
+    const baseAttack = avg(adjust, 'scored'), baseDefense = avg(adjust, 'conceded');
+    const confidence = games.length / (games.length + 2);
+    const recent = adjust.slice(-5);
+    const venue = adjust.filter(g => g.atHome === home);
+    const venueWeight = venue.length / (venue.length + 5);
+    const attack = (1 - venueWeight) * (0.8 * baseAttack + 0.2 * avg(recent, 'scored')) +
+      venueWeight * avg(venue, 'scored');
+    const defense = (1 - venueWeight) * (0.8 * baseDefense + 0.2 * avg(recent, 'conceded')) +
+      venueWeight * avg(venue, 'conceded');
+    return {
+      attack: league + confidence * (attack - league),
+      defense: league + confidence * (defense - league)
+    };
+  }
+  const home = profile(p.casa, true), away = profile(p.trasferta, false);
+  // L'attacco e la difesa determinano i punti; Elo corregge il divario.
+  const ratingGap = (ratings.get(p.casa) ?? INITIAL_RATING) -
+    (ratings.get(p.trasferta) ?? INITIAL_RATING);
+  const ratingShift = Math.max(-14, Math.min(14, ratingGap * 0.055));
+  const homeExpected = Math.max(8, home.attack * 0.60 + away.defense * 0.40 + ratingShift + 1.5);
+  const awayExpected = Math.max(8, away.attack * 0.60 + home.defense * 0.40 - ratingShift - 1.5);
+  const h = Math.max(8, Math.round(homeExpected + normalNoise() * 7));
+  const a = Math.max(8, Math.round(awayExpected + normalNoise() * 7));
+  // Nel basket non esiste il pareggio finale.
+  return h === a ? [h + (homeExpected >= awayExpected ? 1 : 0), a + (homeExpected < awayExpected ? 1 : 0)] : [h, a];
 }
 function simulateRemaining() {
   let count = 0;
