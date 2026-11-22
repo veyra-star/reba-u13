@@ -442,6 +442,19 @@
         7,
         69
       ]
+    },
+    "8727": {
+      "id": "8727",
+      "girone": "D",
+      "casa": "SAN MAURO BASKET",
+      "trasferta": "VIRTUS BASKET SALUGGIA",
+      "data": "21/11/2026",
+      "ora": "11:30",
+      "giornata": "4 andata",
+      "risultato": [
+        39,
+        34
+      ]
     }
   }
 }

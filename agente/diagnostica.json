@@ -1,5 +1,5 @@
 {
-  "tentativo_utc": "2026-11-21T20:16:40+00:00",
+  "tentativo_utc": "2026-11-22T00:43:04+00:00",
   "gironi": {
     "A": {
       "giornate": {
@@ -57,6 +57,7 @@
         "1:4": {
           "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86095&codice_ar=1&giornata=4",
           "codici_trovati": [
+            "8667",
             "8668"
           ],
           "risultati": {
@@ -67,7 +68,7 @@
           }
         }
       },
-      "data_limite": "2026-11-21"
+      "data_limite": "2026-11-22"
     },
     "B": {
       "giornate": {
@@ -136,7 +137,7 @@
           }
         }
       },
-      "data_limite": "2026-11-21"
+      "data_limite": "2026-11-22"
     },
     "C": {
       "giornate": {
@@ -209,7 +210,7 @@
           }
         }
       },
-      "data_limite": "2026-11-21"
+      "data_limite": "2026-11-22"
     },
     "D": {
       "giornate": {
@@ -267,12 +268,18 @@
         "1:4": {
           "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=4",
           "codici_trovati": [
-            "8727"
+            "8727",
+            "8728"
           ],
-          "risultati": {}
+          "risultati": {
+            "8727": [
+              39,
+              34
+            ]
+          }
         }
       },
-      "data_limite": "2026-11-21"
+      "data_limite": "2026-11-22"
     },
     "E": {
       "giornate": {
@@ -326,9 +333,17 @@
               107
             ]
           }
+        },
+        "1:4": {
+          "url": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86099&codice_ar=1&giornata=4",
+          "codici_trovati": [
+            "8747",
+            "8748"
+          ],
+          "risultati": {}
         }
       },
-      "data_limite": "2026-11-21"
+      "data_limite": "2026-11-22"
     }
   },
   "errori": []
