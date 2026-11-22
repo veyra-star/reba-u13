@@ -34,10 +34,10 @@ out.innerHTML='<div class="metrics" style="grid-template-columns:repeat(2,1fr);m
 }
 const TEAM_MARKERS={
 'OLIMPO BASKET ALBA':['ALB','#d69a44'],'BANCA B.T.M.':['CAR','#8cb7e5'],'PROMO CUNEO BASKET':['CUN','#d982a9'],'GATORS':['GAT','#79b77d'],'NEW BASKET ABET':['BRA','#d2a06a'],
-'BEA CHIERI SSDRL':['BEA','#f4a15c'],'ERIDANIA BASKET':['ERI','#d88775'],'POLISPORTIVA PASTA':['PAS','#86a4d8'],'ALFIERI BASKET':['ALF','#b9a0d8'],'AREA PRO 2020':['APR','#d4c16b'],
-'USAC RIVAROLO BK 2009':['USA','#a8c16c'],'BASKET NOLE':['NOL','#85c6b2'],'BASKET VENARIA':['VEN','#c1a7e0'],'LETTERA 22 A.S.D.':['IVR','#d7aa75'],'LAPOLISMILE':['LPS','#8ab4d6'],
-'POLISPORTIVA REBA':['REB','#b7ff4a'],'POLISPORTIVA REBA BIANCO':['RBI','#f2f2e8'],'SAN MAURO BASKET':['SMB','#f2ae85'],'AVIGLIANA BASKET':['AVI','#7fc98b'],'VIRTUS BASKET SALUGGIA':['SAL','#a8a6dc'],
-'BASKET FEMM.LE ALESSANDRIA':['ALE','#d2a16d'],'NOVARA BASKET':['NOV','#83bad2'],'BCC DERTHONA BASKET':['DER','#db879e'],'A.S.D. OLYMPIA BASKET 2000':['OLY','#b9ad76'],'POLISPORTIVA SAN GIACOMO':['SGI','#8cbd9a']
+'BEA CHIERI SSDRL':['CHI','#f4a15c'],'ERIDANIA BASKET':['TOR','#d88775'],'POLISPORTIVA PASTA':['RPA','#86a4d8'],'ALFIERI BASKET':['ALF','#b9a0d8'],'AREA PRO 2020':['RAP','#d4c16b'],
+'USAC RIVAROLO BK 2009':['RIV','#a8c16c'],'BASKET NOLE':['NOL','#85c6b2'],'BASKET VENARIA':['VEN','#c1a7e0'],'LETTERA 22 A.S.D.':['IVR','#d7aa75'],'LAPOLISMILE':['TOR','#8ab4d6'],
+'POLISPORTIVA REBA':['REB','#b7ff4a'],'POLISPORTIVA REBA BIANCO':['RBI','#f2f2e8'],'SAN MAURO BASKET':['SMU','#f2ae85'],'AVIGLIANA BASKET':['AVI','#7fc98b'],'VIRTUS BASKET SALUGGIA':['SAL','#a8a6dc'],
+'BASKET FEMM.LE ALESSANDRIA':['ALE','#d2a16d'],'NOVARA BASKET':['NOV','#83bad2'],'BCC DERTHONA BASKET':['TTO','#db879e'],'A.S.D. OLYMPIA BASKET 2000':['CAS','#b9ad76'],'POLISPORTIVA SAN GIACOMO':['NSG','#8cbd9a']
 };
 function scatter(){
 const teams=allTeams().filter(s=>s.played).sort((a,b)=>shown(a).localeCompare(shown(b),'it')),out=byId('scatter');if(!teams.length){out.innerHTML='<p class="empty">Non ci sono risultati per questo filtro.</p>';return}
