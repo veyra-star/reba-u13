@@ -171,7 +171,8 @@ function simulatedScore(p, ratings) {
     if (!games.length) return {attack: league, defense: league};
     // Smorza i dati scarsi e gli estremi, ma conserva le squadre da 100+ punti.
     const adjust = games.map(g => {
-      const oppRating = ratings.get(g.opponent) ?? INITIAL_RATING;
+      const rawOpponentRating = ratings.get(g.opponent);
+      const oppRating = Number.isFinite(rawOpponentRating) ? rawOpponentRating : INITIAL_RATING;
       const correction = Math.max(-12, Math.min(12, (oppRating - INITIAL_RATING) * 0.055));
       return {scored: g.scored + correction, conceded: g.conceded - correction, atHome: g.atHome};
     });
@@ -180,10 +181,12 @@ function simulatedScore(p, ratings) {
     const recent = adjust.slice(-5);
     const venue = adjust.filter(g => g.atHome === home);
     const venueWeight = venue.length / (venue.length + 5);
+    const venueAttack = venue.length ? avg(venue, 'scored') : baseAttack;
+    const venueDefense = venue.length ? avg(venue, 'conceded') : baseDefense;
     const attack = (1 - venueWeight) * (0.8 * baseAttack + 0.2 * avg(recent, 'scored')) +
-      venueWeight * avg(venue, 'scored');
+      venueWeight * venueAttack;
     const defense = (1 - venueWeight) * (0.8 * baseDefense + 0.2 * avg(recent, 'conceded')) +
-      venueWeight * avg(venue, 'conceded');
+      venueWeight * venueDefense;
     return {
       attack: league + confidence * (attack - league),
       defense: league + confidence * (defense - league)
@@ -191,8 +194,9 @@ function simulatedScore(p, ratings) {
   }
   const home = profile(p.casa, true), away = profile(p.trasferta, false);
   // L'attacco e la difesa determinano i punti; Elo corregge il divario.
-  const ratingGap = (ratings.get(p.casa) ?? INITIAL_RATING) -
-    (ratings.get(p.trasferta) ?? INITIAL_RATING);
+  const homeRating = ratings.get(p.casa), awayRating = ratings.get(p.trasferta);
+  const ratingGap = (Number.isFinite(homeRating) ? homeRating : INITIAL_RATING) -
+    (Number.isFinite(awayRating) ? awayRating : INITIAL_RATING);
   const ratingShift = Math.max(-14, Math.min(14, ratingGap * 0.055));
   const homeExpected = Math.max(8, home.attack * 0.60 + away.defense * 0.40 + ratingShift + 1.5);
   const awayExpected = Math.max(8, away.attack * 0.60 + home.defense * 0.40 - ratingShift - 1.5);
@@ -203,20 +207,21 @@ function simulatedScore(p, ratings) {
 }
 function simulateRemaining() {
   let count = 0;
+  const officialRatings = new Map();
+  for (const group of Object.keys(db.squadre)) {
+    const groupRatings = retrospectiveRatings(db.partite.filter(x => x.girone === group), x => x.risultato);
+    for (const team of db.squadre[group]) officialRatings.set(team, groupRatings.get(team) ?? INITIAL_RATING);
+  }
   for (const p of orderedGames()) {
-    // Risultati ufficiali e simulazioni manuali hanno precedenza.
-    if (!p.risultato && !sim[p.id]) {
-      const ratings = retrospectiveRatings(
-        db.partite.filter(x => x.girone === p.girone),
-        x => x.risultato || sim[x.id]
-      );
-      sim[p.id] = simulatedScore(p, ratings);
+    // I risultati simulati non modificano la forza usata nelle previsioni successive.
+    if (!p.risultato && (!sim[p.id] || !Array.isArray(sim[p.id]) || sim[p.id].some(v => !Number.isFinite(Number(v))))) {
+      sim[p.id] = simulatedScore(p, officialRatings);
       count++;
     }
   }
   render();
   const msg = document.querySelector('#simBulkNote');
-  if (msg) msg.textContent = count ? `${count} gare simulate. Ogni squadra parte da coefficiente 1000; il coefficiente si aggiorna dopo ogni risultato.` : 'Nessuna gara rimasta da simulare. Premi Ripristina per ricominciare.';
+  if (msg) msg.textContent = count ? `${count} gare simulate. Previsioni basate sui risultati ufficiali; le gare simulate non influenzano le successive.` : 'Nessuna gara rimasta da simulare. Premi Ripristina per ricominciare.';
 }
 function installBulkButton() {
   if (document.querySelector('#simulateAll')) return;
@@ -224,13 +229,13 @@ function installBulkButton() {
   button.id = 'simulateAll';
   button.type = 'button';
   button.textContent = '🎲 Simula tutte le restanti';
-  button.title = 'Simula le partite ancora senza punteggio, usando progressivamente i risultati precedenti';
+  button.title = 'Simula le partite ancora senza punteggio, usando solo i risultati ufficiali per stimare la forza delle squadre';
   document.querySelector('#simulate').insertAdjacentElement('afterend', button);
   const note = document.createElement('p');
   note.id = 'simBulkNote';
   note.style.fontSize = '0.85em';
   note.style.opacity = '0.8';
-  note.textContent = 'Ogni squadra parte da coefficiente 1000. Vittorie, sconfitte e scarti aggiornano la forza stimata dopo ogni partita; la probabilità di vittoria cambia di conseguenza.';
+  note.textContent = 'Ogni squadra parte da coefficiente 1000. Le previsioni utilizzano il rating e i punteggi delle gare ufficiali, senza effetto trascinamento delle simulazioni.';
   button.insertAdjacentElement('afterend', note);
   button.addEventListener('click', simulateRemaining);
 }
@@ -338,7 +343,7 @@ function matchHTML(p) {
   let r = results(p);
   const acquired = p.acquisito_il ? Date.parse(p.acquisito_il) : NaN;
   const fresh = !!p.risultato && Number.isFinite(acquired) && Date.now() - acquired >= 0 && Date.now() - acquired < 72 * 60 * 60 * 1000;
-  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isFocus(p.casa)||isFocus(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score">${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
+  return `<div data-match-id="${escapeHTML(p.id)}" class="match ${isFocus(p.casa)||isFocus(p.trasferta)?'reba':''} ${fresh?'fresh-result':''}"><span class="date">${escapeHTML(when(p))}</span><span>${escapeHTML(short(p.casa))}</span><span class="score ${!p.risultato && sim[p.id] ? 'simulated-score' : ''}" ${!p.risultato && sim[p.id] ? 'title="Risultato simulato, non ufficiale"' : ''}>${r?escapeHTML(r.join(' : ')):'—'}</span><span class="away">${escapeHTML(short(p.trasferta))}</span><span class="meta date">Girone ${escapeHTML(p.girone)}</span></div>`;
 }
 function render() {
   let all = orderedGames();
@@ -442,6 +447,6 @@ fetch('data/campionato.json').then(r => r.json()).then(data => {
   if (document.getElementById("elo-rating-style")) return;
   const style = document.createElement("style");
   style.id = "elo-rating-style";
-  style.textContent = ".elo-rating{font-size:.72em;font-weight:400;opacity:.55;white-space:nowrap;letter-spacing:0;color:inherit}#nextTitle .elo-rating{font-size:.48em;vertical-align:middle;opacity:.55}";
+  style.textContent = ".match .score.simulated-score{font-weight:400!important;color:#8b949e!important;opacity:.75} .elo-rating{font-size:.72em;font-weight:400;opacity:.55;white-space:nowrap;letter-spacing:0;color:inherit}#nextTitle .elo-rating{font-size:.48em;vertical-align:middle;opacity:.55}";
   document.head.appendChild(style);
 })();
