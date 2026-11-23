@@ -455,6 +455,58 @@
         39,
         34
       ]
+    },
+    "8687": {
+      "id": "8687",
+      "girone": "B",
+      "casa": "POLISPORTIVA PASTA",
+      "trasferta": "ALFIERI BASKET",
+      "data": "21/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": [
+        34,
+        85
+      ]
+    },
+    "8728": {
+      "id": "8728",
+      "girone": "D",
+      "casa": "POLISPORTIVA REBA",
+      "trasferta": "POLISPORTIVA REBA BIANCO",
+      "data": "22/11/2026",
+      "ora": "11:00",
+      "giornata": "4 andata",
+      "risultato": [
+        106,
+        24
+      ]
+    },
+    "8747": {
+      "id": "8747",
+      "girone": "E",
+      "casa": "BASKET FEMM.LE ALESSANDRIA",
+      "trasferta": "NOVARA BASKET",
+      "data": "22/11/2026",
+      "ora": "11:00",
+      "giornata": "4 andata",
+      "risultato": [
+        21,
+        99
+      ]
+    },
+    "8748": {
+      "id": "8748",
+      "girone": "E",
+      "casa": "BCC DERTHONA BASKET",
+      "trasferta": "POLISPORTIVA SAN GIACOMO",
+      "data": "22/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": [
+        108,
+        38
+      ]
     }
   }
 }
