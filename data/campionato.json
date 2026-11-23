@@ -357,7 +357,11 @@
       "data": "21/11/2026",
       "ora": "15:00",
       "giornata": "4 andata",
-      "risultato": null
+      "risultato": [
+        34,
+        85
+      ],
+      "acquisito_il": "2026-11-23T07:33:27+00:00"
     },
     {
       "id": "8688",
@@ -844,14 +848,18 @@
       "data": "22/11/2026",
       "ora": "11:00",
       "giornata": "4 andata",
-      "risultato": null,
+      "risultato": [
+        106,
+        24
+      ],
       "campo_gioco": {
         "nome": "PALESTRA MASSARI",
         "indirizzo": "Via Massari 114 10100 TORINO (TO)",
         "maps_url": "https://www.google.com/maps/search/?api=1&query=Via+Massari+114+10100+TORINO+%28TO%29",
         "fonte": "https://fip.it/risultati/?group=campionati-regionali&regione_codice=PI&comitato_codice=RPI&sesso=F&codice_campionato=U13%2FF&codice_fase=1&codice_girone=86098&codice_ar=1&giornata=4",
         "acquisito_il": "2026-11-17T06:29:55+00:00"
-      }
+      },
+      "acquisito_il": "2026-11-23T07:33:27+00:00"
     },
     {
       "id": "8729",
@@ -1099,7 +1107,11 @@
       "data": "22/11/2026",
       "ora": "11:00",
       "giornata": "4 andata",
-      "risultato": null
+      "risultato": [
+        21,
+        99
+      ],
+      "acquisito_il": "2026-11-23T07:33:27+00:00"
     },
     {
       "id": "8748",
@@ -1109,7 +1121,11 @@
       "data": "22/11/2026",
       "ora": "15:00",
       "giornata": "4 andata",
-      "risultato": null
+      "risultato": [
+        108,
+        38
+      ],
+      "acquisito_il": "2026-11-23T07:33:27+00:00"
     },
     {
       "id": "8749",
@@ -1232,6 +1248,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-22T02:13:06+00:00",
-  "ultimo_controllo_fip": "2026-11-22T23:36:12+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-23T07:33:27+00:00",
+  "ultimo_controllo_fip": "2026-11-23T07:33:27+00:00"
 }
