@@ -17,9 +17,9 @@ if(!oldA&&items.length)left.value=key(items.find(s=>s.name==='POLISPORTIVA REBA'
 if(!oldB&&items.length>1)right.value=key(items.find(s=>key(s)!==left.value)||items[1]);
 const a=stats[left.value],b=stats[right.value],out=byId('comparison');
 if(!a||!b){out.innerHTML='<p class="empty">Seleziona due squadre.</p>';return}
-const fields=[['Elo REBA',elo(a),elo(b)],['Gare',a.played,b.played],['Vittorie',a.w,b.w],['Vittorie %',a.played?100*a.w/a.played:null,b.played?100*b.w/b.played:null],['Punti segnati / gara',avg(a,'pf'),avg(b,'pf')],['Punti subiti / gara',avg(a,'pa'),avg(b,'pa')],['Distacco medio',a.played?(a.pf-a.pa)/a.played:null,b.played?(b.pf-b.pa)/b.played:null]];
+const fields=[['Elo REBA',elo(a),elo(b)],['Gare',a.played,b.played],['Vittorie',a.w,b.w],['Vittorie %',a.played?100*a.w/a.played:null,b.played?100*b.w/b.played:null],['Punti segnati / gara',avg(a,'pf'),avg(b,'pf')],['Punti subiti / gara',avg(a,'pa'),avg(b,'pa')],['Distacco medio',a.played?(a.pf-a.pa)/a.played:null,b.played?(b.pf-b.pa)/b.played:null],['Quoziente punti PF/PS',pointQuotient(a),pointQuotient(b)]];
 let head='<table><thead><tr><th>Indicatore</th><th class="num">'+safe(shown(a))+'</th><th class="num">'+safe(shown(b))+'</th></tr></thead><tbody>';
-out.innerHTML=head+fields.map(([n,x,y])=>'<tr><td>'+n+'</td><td class="num">'+number(x)+'</td><td class="num">'+number(y)+'</td></tr>').join('')+'</tbody></table>';
+out.innerHTML=head+fields.map(([n,x,y])=>'<tr><td>'+n+'</td><td class="num">'+(n==='Quoziente punti PF/PS'?quotientText(x):number(x))+'</td><td class="num">'+(n==='Quoziente punti PF/PS'?quotientText(y):number(y))+'</td></tr>').join('')+'</tbody></table>';
 const meetings=source.partite.filter(p=>p.girone===a.g&&a.g===b.g&&((p.casa===a.name&&p.trasferta===b.name)||(p.casa===b.name&&p.trasferta===a.name))&&Array.isArray(p.risultato));
 out.innerHTML+='<p class="note" style="margin-top:12px">'+(a.g!==b.g?'Gironi diversi: nessun confronto Elo diretto affidabile.':meetings.length?'Scontri diretti: '+meetings.map(p=>safe(p.data)+' · '+safe(displayName(p.casa))+' '+p.risultato[0]+'–'+p.risultato[1]+' '+safe(displayName(p.trasferta))).join(' | '):'Nessuno scontro diretto ancora disputato.')+'</p>';
 }
