@@ -507,6 +507,19 @@
         108,
         38
       ]
+    },
+    "8667": {
+      "id": "8667",
+      "girone": "A",
+      "casa": "GATORS",
+      "trasferta": "BANCA B.T.M.",
+      "data": "22/11/2026",
+      "ora": "15:00",
+      "giornata": "4 andata",
+      "risultato": [
+        75,
+        37
+      ]
     }
   }
 }
