@@ -129,7 +129,11 @@
       "data": "22/11/2026",
       "ora": "15:00",
       "giornata": "4 andata",
-      "risultato": null
+      "risultato": [
+        75,
+        37
+      ],
+      "acquisito_il": "2026-11-26T02:51:29+00:00"
     },
     {
       "id": "8668",
@@ -1248,6 +1252,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-23T07:33:27+00:00",
-  "ultimo_controllo_fip": "2026-11-25T19:56:39+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-26T02:51:29+00:00",
+  "ultimo_controllo_fip": "2026-11-26T02:51:29+00:00"
 }
