@@ -520,6 +520,32 @@
         75,
         37
       ]
+    },
+    "8690": {
+      "id": "8690",
+      "girone": "B",
+      "casa": "BEA CHIERI SSDRL",
+      "trasferta": "ALFIERI BASKET",
+      "data": "28/11/2026",
+      "ora": "15:00",
+      "giornata": "5 andata",
+      "risultato": [
+        60,
+        42
+      ]
+    },
+    "8750": {
+      "id": "8750",
+      "girone": "E",
+      "casa": "A.S.D. OLYMPIA BASKET 2000",
+      "trasferta": "BASKET FEMM.LE ALESSANDRIA",
+      "data": "28/11/2026",
+      "ora": "15:00",
+      "giornata": "5 andata",
+      "risultato": [
+        155,
+        10
+      ]
     }
   }
 }
