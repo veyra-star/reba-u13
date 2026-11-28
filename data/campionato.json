@@ -1149,7 +1149,11 @@
       "data": "28/11/2026",
       "ora": "15:00",
       "giornata": "5 andata",
-      "risultato": null
+      "risultato": [
+        155,
+        10
+      ],
+      "acquisito_il": "2026-11-28T16:53:01+00:00"
     },
     {
       "id": "8751",
@@ -1252,6 +1256,6 @@
       "risultato": null
     }
   ],
-  "ultimo_aggiornamento_fip": "2026-11-26T02:51:29+00:00",
-  "ultimo_controllo_fip": "2026-11-28T07:45:06+00:00"
+  "ultimo_aggiornamento_fip": "2026-11-28T16:53:01+00:00",
+  "ultimo_controllo_fip": "2026-11-28T16:53:01+00:00"
 }
